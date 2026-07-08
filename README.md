@@ -46,12 +46,12 @@ Every push to the `main` branch should trigger a new Cloudflare Pages production
 3. Push to GitHub `main`.
 4. Cloudflare Pages automatically builds and redeploys the live site.
 
-## Custom Domain Later
+## Production Domain
 
-After the site is deployed on Cloudflare Pages, add a custom domain from the Pages project:
+The production site is deployed through Cloudflare at:
 
 ```text
-Workers & Pages -> your Pages project -> Custom domains -> Set up a custom domain
+https://aztexnogaz.com
 ```
 
-Cloudflare will show the DNS records needed for your `.com` domain.
+Pushes to the `main` branch publish to this domain through the connected Cloudflare Pages project.
