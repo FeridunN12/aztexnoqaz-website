@@ -378,8 +378,8 @@ button {
 
 .brand-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(156px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
   align-items: stretch;
 }
 
@@ -389,12 +389,14 @@ button {
   align-items: center;
   justify-content: center;
   min-width: 0;
-  height: 96px;
-  padding: 15px 17px;
-  border: 1px solid #d2ddea;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 10px 24px rgba(7, 28, 55, 0.055);
+  height: 116px;
+  padding: 17px 20px;
+  border: 1px solid #d6e0ec;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #fff 0%, #fbfdff 100%);
+  box-shadow:
+    0 10px 24px rgba(7, 28, 55, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
   overflow: hidden;
   text-decoration: none;
   transition:
@@ -403,10 +405,42 @@ button {
     transform 160ms ease;
 }
 
+.brand-strip > .brand-logo:nth-last-child(3) {
+  grid-column: 2;
+}
+
+.brand-strip > .brand-logo::after {
+  position: absolute;
+  content: "↗";
+  top: 9px;
+  right: 11px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1;
+  background: var(--blue);
+  opacity: 0;
+  transform: translate(-3px, 3px);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
 .brand-strip > .brand-logo:hover {
-  border-color: #9eb9d8;
-  box-shadow: 0 14px 30px rgba(7, 28, 55, 0.1);
-  transform: translateY(-2px);
+  border-color: #8eb3dc;
+  box-shadow: 0 18px 38px rgba(7, 28, 55, 0.12);
+  transform: translateY(-3px);
+}
+
+.brand-strip > .brand-logo:hover::after,
+.brand-strip > .brand-logo:focus-visible::after {
+  opacity: 1;
+  transform: translate(0, 0);
 }
 
 .brand-strip > .brand-logo:focus-visible {
@@ -416,75 +450,85 @@ button {
 
 .brand-strip > .brand-logo--plum {
   border-color: #593b72;
-  background: #251433;
+  background: linear-gradient(145deg, #2d173d 0%, #21102e 100%);
+}
+
+.brand-strip > .brand-logo--elster {
+  background: #fff;
 }
 
 .brand-image {
   display: block;
   width: auto;
-  max-width: 100%;
+  max-width: 88%;
   height: auto;
-  max-height: 56px;
+  max-height: 72px;
   object-fit: contain;
   object-position: center;
 }
 
-.brand-image--honeywell,
+.brand-image--honeywell {
+  max-height: 52px;
+}
+
+.brand-image--elster {
+  width: 92px;
+  max-width: 92px;
+  max-height: 92px;
+}
+
 .brand-image--daikin,
 .brand-image--cem {
-  max-height: 44px;
+  max-height: 52px;
 }
 
 .brand-image--plum {
-  max-height: 48px;
+  max-height: 58px;
 }
 
 .brand-image--fangaz {
-  max-height: 60px;
+  max-height: 76px;
 }
 
 .brand-image--fmg,
 .brand-image--eska,
-.brand-image--madas,
-.brand-image--airfel {
-  max-height: 52px;
+.brand-image--madas {
+  max-height: 68px;
 }
 
-.brand-image--broen {
-  width: min(132px, 100%);
-  max-height: 46px;
+.brand-image--airfel {
+  max-height: 74px;
 }
 
 .brand-image--qwcssc {
-  width: min(132px, 100%);
-  max-height: 48px;
+  width: min(164px, 88%);
+  max-height: 58px;
 }
 
 .brand-image--baylan {
-  width: min(124px, 100%);
-  max-height: 50px;
+  width: min(156px, 88%);
+  max-height: 62px;
 }
 
-.brand-lockup--elster {
+.brand-lockup--broen {
   display: grid;
   justify-items: center;
-  gap: 4px;
+  gap: 7px;
   width: 100%;
-  color: #16365d;
+  color: #8f1f2d;
 }
 
-.brand-lockup--elster img {
+.brand-lockup--broen img {
   display: block;
-  width: min(112px, 100%);
+  width: min(118px, 72%);
   height: auto;
-  max-height: 34px;
 }
 
-.brand-lockup--elster span {
-  font-size: 0.78rem;
-  font-weight: 800;
+.brand-lockup--broen span {
+  font-size: 0.66rem;
+  font-weight: 900;
   line-height: 1;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
@@ -1127,6 +1171,20 @@ button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .brand-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .brand-strip > .brand-logo:nth-last-child(3) {
+    grid-column: auto;
+  }
+
+  .brand-strip > .brand-logo:last-child {
+    grid-column: 2 / span 2;
+    justify-self: center;
+    width: calc(50% - 8px);
+  }
+
   .catalog-toolbar {
     grid-template-columns: 1fr;
   }
@@ -1238,6 +1296,15 @@ button {
     gap: 14px;
   }
 
+  .brand-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .brand-strip > .brand-logo:last-child {
+    grid-column: 2;
+    width: 100%;
+  }
+
   .solution-layout,
   .about-layout,
   .buy-layout,
@@ -1262,6 +1329,22 @@ button {
 
   .contact-rail a {
     min-height: 24px;
+  }
+
+  .brand-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .brand-strip > .brand-logo {
+    height: 108px;
+    padding: 15px;
+  }
+
+  .brand-strip > .brand-logo:last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 6px);
   }
 
   .partners,
