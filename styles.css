@@ -472,9 +472,9 @@ button {
 }
 
 .brand-image--elster {
-  width: 92px;
-  max-width: 92px;
-  max-height: 92px;
+  height: 96px;
+  max-width: 86%;
+  max-height: 96px;
 }
 
 .brand-image--daikin,
