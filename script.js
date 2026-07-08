@@ -1,0 +1,517 @@
+const phonePrimary = "+994505728966";
+const whatsappBase = "https://wa.me/994505728966";
+const salesEmail = "aztexnogaz@gmail.com";
+
+const categoryLabels = {
+  metering: "Metering",
+  regulators: "Regulators",
+  conversion: "Conversion",
+  valves: "Valves",
+  hvac: "HVAC",
+  accessories: "Accessories",
+  cabinets: "Cabinets",
+};
+
+const products = [
+  {
+    id: "homeyway-water-heater",
+    name: "Homeyway Gas Water Heater",
+    brand: "Homeyway",
+    category: "hvac",
+    image: "assets/homeyway-water-heater.jpeg",
+    summary: "Wall-mounted gas water heating unit for residential and commercial hot-water projects.",
+    specs: ["Gas water heating solution", "Suitable for hot-water applications", "Quote confirmed by model and quantity"],
+    tags: ["Heating", "Water", "Gas"],
+  },
+  {
+    id: "eska-regulators-set",
+    name: "ESKA Gas Regulators",
+    brand: "ESKA",
+    category: "regulators",
+    image: "assets/eska-regulators-set.jpeg",
+    summary: "Industrial gas regulator range for pressure control and project installations.",
+    specs: ["Regulator product family", "For gas pressure control", "Technical selection support available"],
+    tags: ["Pressure", "Industrial", "ESKA"],
+  },
+  {
+    id: "cem-water-meter-close",
+    name: "CEM Water Meter",
+    brand: "CEM",
+    category: "metering",
+    image: "assets/cem-water-meter-close.jpeg",
+    summary: "CEM water meter options for utility and facility measurement needs.",
+    specs: ["Mechanical water metering", "CEM branded product", "Model confirmation by request"],
+    tags: ["Water", "Meter", "CEM"],
+  },
+  {
+    id: "elster-honeywell-station",
+    name: "Elster Honeywell Gas Measuring Station",
+    brand: "Elster Honeywell",
+    category: "metering",
+    image: "assets/elster-honeywell-station.jpeg",
+    summary: "Gas measurement station components with meter, corrector and pipe assembly options.",
+    specs: ["Metering station components", "Volume correction options", "Project quotation after specs"],
+    tags: ["Station", "Honeywell", "Elster"],
+  },
+  {
+    id: "qw-cssc-diaphragm-gas-meter",
+    name: "QW/CSSC Diaphragm Gas Meter",
+    brand: "QW/CSSC",
+    category: "metering",
+    image: "assets/qw-cssc-diaphragm-gas-meter.jpeg",
+    summary: "Diaphragm gas meter product line for gas consumption measurement.",
+    specs: ["Gas consumption metering", "Qianwei meter family", "Suitable model selected by usage"],
+    tags: ["Gas meter", "QW/CSSC", "Diaphragm"],
+  },
+  {
+    id: "plum-macbat5-converter",
+    name: "Plum MacBAT 5 Volume Converter",
+    brand: "Plum GAS",
+    category: "conversion",
+    image: "assets/plum-macbat5-converter.jpeg",
+    summary: "Electronic volume conversion device for gas metering and monitoring systems.",
+    specs: ["Volume conversion device", "MacBAT 5 product family", "For gas measurement systems"],
+    tags: ["Converter", "Automation", "Plum GAS"],
+  },
+  {
+    id: "elster-rotary-meters",
+    name: "Elster Rotary Gas Meters",
+    brand: "Elster",
+    category: "metering",
+    image: "assets/elster-rotary-meters.jpeg",
+    summary: "Rotary gas meter products for industrial and commercial measurement points.",
+    specs: ["Rotary meter family", "Industrial metering applications", "Sizing handled by inquiry"],
+    tags: ["Rotary", "Elster", "Gas"],
+  },
+  {
+    id: "eska-gas-technologies",
+    name: "ESKA Gas Technologies Regulators",
+    brand: "ESKA",
+    category: "regulators",
+    image: "assets/eska-gas-technologies.jpeg",
+    summary: "ESKA regulator and gas technology equipment for pipeline and station use.",
+    specs: ["Gas regulator assortment", "Pipeline support components", "Quote by pressure and size"],
+    tags: ["ESKA", "Pipeline", "Regulator"],
+  },
+  {
+    id: "fmg-flow-meter",
+    name: "FMG Flow Meter",
+    brand: "FMG",
+    category: "metering",
+    image: "assets/fmg-flow-meter-ai.png",
+    summary: "FMG flow meter equipment for gas flow measurement and industrial use.",
+    specs: ["Flow meter product", "Industrial gas measurement", "Selection by flow requirements"],
+    tags: ["Flow", "Meter", "FMG"],
+  },
+  {
+    id: "madas-gas-valves",
+    name: "MADAS Gas Safety Valves",
+    brand: "MADAS",
+    category: "valves",
+    image: "assets/madas-gas-valves.jpeg",
+    summary: "MADAS valve and control products for gas safety and line management.",
+    specs: ["Gas valve product line", "Control and safety applications", "Configuration confirmed by request"],
+    tags: ["Valves", "Safety", "MADAS"],
+  },
+  {
+    id: "fangaz-regulators-pair",
+    name: "FANGAZ Gas Regulators",
+    brand: "FANGAZ",
+    category: "regulators",
+    image: "assets/fangaz-regulators-pair.jpeg",
+    summary: "FANGAZ regulator options for gas pressure reduction and control.",
+    specs: ["Pressure regulator family", "Industrial gas equipment", "Model matched to installation"],
+    tags: ["FANGAZ", "Pressure", "Gas"],
+  },
+  {
+    id: "elster-honeywell-volume-converters",
+    name: "Elster Honeywell Volume Converters",
+    brand: "Elster Honeywell",
+    category: "conversion",
+    image: "assets/elster-honeywell-volume-converters.jpeg",
+    summary: "Electronic volume conversion devices for measurement, reporting and gas station control.",
+    specs: ["Volume conversion devices", "Elster and Honeywell product family", "For metering stations"],
+    tags: ["Converter", "Honeywell", "Elster"],
+  },
+  {
+    id: "fangaz-industrial-regulators",
+    name: "FANGAZ Industrial Regulators",
+    brand: "FANGAZ",
+    category: "regulators",
+    image: "assets/fangaz-industrial-regulators.jpeg",
+    summary: "Heavy-duty FANGAZ regulators for larger gas line and station requirements.",
+    specs: ["Industrial regulator options", "Flanged connection product line", "Quote by size and pressure"],
+    tags: ["Industrial", "FANGAZ", "Regulator"],
+  },
+  {
+    id: "fangaz-red-regulator",
+    name: "FANGAZ Red Line Regulator",
+    brand: "FANGAZ",
+    category: "regulators",
+    image: "assets/fangaz-red-regulator.jpeg",
+    summary: "Red-body FANGAZ regulator product for pressure management applications.",
+    specs: ["Gas pressure regulating unit", "FANGAZ branded equipment", "Availability confirmed on request"],
+    tags: ["Regulator", "FANGAZ", "Pressure"],
+  },
+  {
+    id: "baylan-electric-meter",
+    name: "BAYLAN Electric Meter",
+    brand: "BAYLAN",
+    category: "metering",
+    image: "assets/baylan-electric-meter.jpeg",
+    summary: "BAYLAN electronic electricity meter options for measurement applications.",
+    specs: ["Electric meter product line", "BAYLAN branded device", "Model selected by installation need"],
+    tags: ["Electric", "Meter", "BAYLAN"],
+  },
+  {
+    id: "cem-industrial-water-meter",
+    name: "CEM Industrial Water Meter",
+    brand: "CEM",
+    category: "metering",
+    image: "assets/cem-industrial-water-meter.jpeg",
+    summary: "Flanged CEM water meter product for larger pipe and facility requirements.",
+    specs: ["Industrial water metering", "Flanged meter product", "Quote by size and quantity"],
+    tags: ["Water", "Industrial", "CEM"],
+  },
+  {
+    id: "elster-spare-parts",
+    name: "Elster Spare Parts",
+    brand: "Elster",
+    category: "accessories",
+    image: "assets/elster-spare-parts.jpeg",
+    summary: "Replacement parts and precision components for gas meter service and support.",
+    specs: ["Spare part assortment", "Meter service components", "Part matching by photo or code"],
+    tags: ["Parts", "Elster", "Service"],
+  },
+  {
+    id: "pressure-hose",
+    name: "Flexible Pressure Hose",
+    brand: "AzTexnoQaz",
+    category: "accessories",
+    image: "assets/pressure-hose-ai.png",
+    summary: "Stainless flexible pressure hoses for durable gas and industrial connections.",
+    specs: ["Flexible hose assembly", "Stainless braided exterior", "Length and fitting confirmed by order"],
+    tags: ["Hose", "Connection", "Steel"],
+  },
+  {
+    id: "elster-yellow-turbine-meter",
+    name: "Elster Honeywell Turbine Meter",
+    brand: "Elster Honeywell",
+    category: "metering",
+    image: "assets/elster-yellow-turbine-meter.jpeg",
+    summary: "Yellow turbine-style gas meter assembly for higher-flow measurement points.",
+    specs: ["Gas turbine metering equipment", "Honeywell and Elster product family", "Selection by flow and pressure"],
+    tags: ["Turbine", "Gas", "Honeywell"],
+  },
+  {
+    id: "airfel-daikin-water-heater",
+    name: "Airfel / Daikin Gas Water Heater",
+    brand: "Airfel / Daikin",
+    category: "hvac",
+    image: "assets/airfel-daikin-water-heater.jpeg",
+    summary: "Wall-mounted gas heating equipment from Airfel and Daikin product lines.",
+    specs: ["Gas heating equipment", "Airfel and Daikin brands", "Model and capacity by request"],
+    tags: ["Heating", "Daikin", "Airfel"],
+  },
+  {
+    id: "multi-brand-systems",
+    name: "Multi-Brand Gas Equipment Package",
+    brand: "AzTexnoQaz",
+    category: "cabinets",
+    image: "assets/multi-brand-systems.jpeg",
+    summary: "Combined product package for projects requiring several gas equipment categories.",
+    specs: ["Metering, conversion and HVAC options", "Multi-brand supply portfolio", "Quote prepared after project list"],
+    tags: ["Package", "Project", "Supply"],
+  },
+  {
+    id: "airfel-daikin-ac",
+    name: "Airfel / Daikin Air Conditioner Set",
+    brand: "Airfel / Daikin",
+    category: "hvac",
+    image: "assets/airfel-daikin-ac.jpeg",
+    summary: "Air conditioning equipment set with indoor unit, outdoor unit and remote control.",
+    specs: ["HVAC product line", "Airfel and Daikin branding", "Capacity confirmed before order"],
+    tags: ["AC", "Daikin", "Airfel"],
+  },
+  {
+    id: "gas-regulation-cabinet",
+    name: "Gas Regulation Cabinet",
+    brand: "AzTexnoQaz",
+    category: "cabinets",
+    image: "assets/gas-regulation-cabinet.jpeg",
+    summary: "Cabinet-based gas regulation assembly for site installations and controlled line operation.",
+    specs: ["Cabinet assembly option", "Regulators, valves and meters", "Project-based quotation"],
+    tags: ["Cabinet", "Station", "Gas"],
+  },
+  {
+    id: "pakkens-pressure-gauges",
+    name: "Pakkens Pressure Gauges",
+    brand: "Pakkens",
+    category: "accessories",
+    image: "assets/pakkens-pressure-gauges.jpeg",
+    summary: "Pressure gauge options for monitoring gas, water and industrial systems.",
+    specs: ["Pressure gauge product line", "Different ranges available by request", "Accessory supply for installations"],
+    tags: ["Gauge", "Pressure", "Pakkens"],
+  },
+  {
+    id: "broen-ball-valve",
+    name: "BROEN Ball Valve",
+    brand: "BROEN",
+    category: "valves",
+    image: "assets/broen-ball-valve.jpeg",
+    summary: "BROEN flanged ball valve product for natural gas line shut-off applications.",
+    specs: ["Ball valve product line", "Flanged gas valve design", "Size and pressure class by request"],
+    tags: ["Valve", "BROEN", "Gas"],
+  },
+  {
+    id: "brass-fittings-filters",
+    name: "Brass Fittings and Filter Cones",
+    brand: "AzTexnoQaz",
+    category: "accessories",
+    image: "assets/brass-fittings-filters.jpeg",
+    summary: "Precision brass fittings and filter cones for gas equipment service and installation.",
+    specs: ["Fittings and filters", "Replacement and installation parts", "Part matching by photo or sample"],
+    tags: ["Fittings", "Filters", "Brass"],
+  },
+  {
+    id: "partner-components",
+    name: "Precision Gas Components",
+    brand: "AzTexnoQaz",
+    category: "accessories",
+    image: "assets/partner-components.jpeg",
+    summary: "Specialized gas components, nozzles and mesh filter parts for equipment support.",
+    specs: ["Small precision components", "Gas equipment accessories", "Matched by product photo or code"],
+    tags: ["Components", "Filters", "Parts"],
+  },
+  {
+    id: "eska-valve-showcase",
+    name: "ESKA Valve Showcase",
+    brand: "ESKA",
+    category: "valves",
+    image: "assets/eska-valve-showcase.jpeg",
+    summary: "ESKA valve and regulator showcase for gas control installations.",
+    specs: ["Valve and regulator equipment", "ESKA branded products", "Application confirmed before supply"],
+    tags: ["Valve", "ESKA", "Gas"],
+  },
+  {
+    id: "plum-gas-station",
+    name: "Plum GAS Station Assembly",
+    brand: "Plum GAS",
+    category: "conversion",
+    image: "assets/plum-gas-station.jpeg",
+    summary: "Plum GAS converter installed within a gas station and pipeline assembly.",
+    specs: ["Volume conversion equipment", "Station integration example", "Project support by inquiry"],
+    tags: ["Plum GAS", "Station", "Converter"],
+  },
+];
+
+const grid = document.querySelector("#product-grid");
+const count = document.querySelector("#product-count");
+const searchInput = document.querySelector("#product-search");
+const filterButtons = document.querySelectorAll("[data-filter]");
+const quoteProduct = document.querySelector("#quote-product");
+const quoteMessage = document.querySelector("#quote-message");
+const quoteForm = document.querySelector("#quote-form");
+const modal = document.querySelector("#product-modal");
+const modalImage = document.querySelector("#modal-image");
+const modalCategory = document.querySelector("#modal-category");
+const modalTitle = document.querySelector("#modal-title");
+const modalDescription = document.querySelector("#modal-description");
+const modalSpecs = document.querySelector("#modal-specs");
+const modalQuote = document.querySelector("#modal-quote");
+const modalWhatsapp = document.querySelector("#modal-whatsapp");
+const modalClose = document.querySelector(".modal-close");
+const navToggle = document.querySelector(".nav-toggle");
+const navLinks = document.querySelector("#main-menu");
+
+let activeFilter = "all";
+let activeModalProduct = null;
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function refreshIcons() {
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+}
+
+function productMatches(product, query) {
+  const haystack = [product.name, product.brand, product.summary, product.category, ...product.tags].join(" ").toLowerCase();
+  return haystack.includes(query.trim().toLowerCase());
+}
+
+function productCard(product) {
+  const tagMarkup = product.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("");
+  return `
+    <article class="product-card" data-id="${escapeHtml(product.id)}">
+      <button class="product-image-button" type="button" data-detail="${escapeHtml(product.id)}" aria-label="View details for ${escapeHtml(product.name)}">
+        <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" />
+      </button>
+      <div class="product-body">
+        <div class="product-meta">
+          <span>${escapeHtml(categoryLabels[product.category])}</span>
+          <span>${escapeHtml(product.brand)}</span>
+        </div>
+        <h3>${escapeHtml(product.name)}</h3>
+        <p>${escapeHtml(product.summary)}</p>
+        <div class="product-tags">${tagMarkup}</div>
+        <div class="product-actions">
+          <button class="quote-button" type="button" data-quote="${escapeHtml(product.id)}">
+            <i data-lucide="file-text"></i>
+            Request quote
+          </button>
+          <button class="details-button" type="button" data-detail="${escapeHtml(product.id)}" aria-label="View details">
+            <i data-lucide="eye"></i>
+          </button>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function getVisibleProducts() {
+  const query = searchInput.value || "";
+  return products.filter((product) => {
+    const categoryMatch = activeFilter === "all" || product.category === activeFilter;
+    return categoryMatch && productMatches(product, query);
+  });
+}
+
+function renderProducts() {
+  const visibleProducts = getVisibleProducts();
+  grid.innerHTML = visibleProducts.map(productCard).join("");
+  count.textContent = `${visibleProducts.length} product${visibleProducts.length === 1 ? "" : "s"}`;
+
+  grid.querySelectorAll("[data-detail]").forEach((button) => {
+    button.addEventListener("click", () => openProductModal(button.dataset.detail));
+  });
+
+  grid.querySelectorAll("[data-quote]").forEach((button) => {
+    button.addEventListener("click", () => requestProductQuote(button.dataset.quote));
+  });
+
+  refreshIcons();
+}
+
+function populateQuoteProducts() {
+  const productOptions = products
+    .map((product) => `<option value="${escapeHtml(product.name)}">${escapeHtml(product.name)}</option>`)
+    .join("");
+  quoteProduct.innerHTML = `<option value="">Select a product</option>${productOptions}`;
+}
+
+function requestProductQuote(productId) {
+  const product = products.find((item) => item.id === productId);
+  if (!product) return;
+
+  quoteProduct.value = product.name;
+  quoteMessage.value = `I am interested in ${product.name}. Please send price, availability and technical options.`;
+  document.querySelector("#buy").scrollIntoView({ behavior: "smooth", block: "start" });
+  setTimeout(() => quoteMessage.focus({ preventScroll: true }), 450);
+}
+
+function openProductModal(productId) {
+  const product = products.find((item) => item.id === productId);
+  if (!product) return;
+
+  activeModalProduct = product;
+  modalImage.src = product.image;
+  modalImage.alt = product.name;
+  modalCategory.textContent = `${categoryLabels[product.category]} | ${product.brand}`;
+  modalTitle.textContent = product.name;
+  modalDescription.textContent = product.summary;
+  modalSpecs.innerHTML = product.specs.map((spec) => `<li>${escapeHtml(spec)}</li>`).join("");
+  modalWhatsapp.href = `${whatsappBase}?text=${encodeURIComponent(`Hello AzTexnoQaz, I want to request a quote for ${product.name}.`)}`;
+  document.body.classList.add("modal-open");
+  modal.showModal();
+  refreshIcons();
+}
+
+function closeModal() {
+  if (modal.open) {
+    modal.close();
+  }
+  activeModalProduct = null;
+  document.body.classList.remove("modal-open");
+}
+
+function submitQuoteForm(event) {
+  event.preventDefault();
+  const formData = new FormData(quoteForm);
+  const product = formData.get("product") || "General product request";
+  const name = formData.get("name") || "";
+  const contact = formData.get("contact") || "";
+  const message = formData.get("message") || "";
+  const subject = `Quote request: ${product}`;
+  const body = [
+    "Hello AzTexnoQaz,",
+    "",
+    "I would like to request a quote.",
+    "",
+    `Product: ${product}`,
+    `Name/company: ${name}`,
+    `Phone/email: ${contact}`,
+    "",
+    "Details:",
+    message,
+    "",
+    "Please send price, availability and suitable technical options.",
+  ].join("\n");
+
+  window.location.href = `mailto:${salesEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+filterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    activeFilter = button.dataset.filter;
+    filterButtons.forEach((item) => item.classList.toggle("active", item === button));
+    renderProducts();
+  });
+});
+
+searchInput.addEventListener("input", renderProducts);
+
+quoteForm.addEventListener("submit", submitQuoteForm);
+
+modalQuote.addEventListener("click", () => {
+  if (activeModalProduct) {
+    const productId = activeModalProduct.id;
+    closeModal();
+    requestProductQuote(productId);
+  }
+});
+
+modalClose.addEventListener("click", closeModal);
+
+modal.addEventListener("click", (event) => {
+  if (event.target === modal) {
+    closeModal();
+  }
+});
+
+modal.addEventListener("close", () => {
+  document.body.classList.remove("modal-open");
+});
+
+navToggle.addEventListener("click", () => {
+  const isOpen = navLinks.classList.toggle("open");
+  navToggle.setAttribute("aria-expanded", String(isOpen));
+});
+
+navLinks.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", () => {
+    navLinks.classList.remove("open");
+    navToggle.setAttribute("aria-expanded", "false");
+  });
+});
+
+populateQuoteProducts();
+renderProducts();
+refreshIcons();
