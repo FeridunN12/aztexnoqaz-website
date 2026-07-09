@@ -1,4 +1,4 @@
-import { ensureEditors } from "./db.js";
+import { ensureEditors, INITIAL_OWNERS } from "./db.js";
 import { ApiError } from "./http.js";
 
 const SESSION_COOKIE = "aztexnogaz_editor";
@@ -134,6 +134,42 @@ export async function verifyPassword(password, editor, pepper) {
       ? await derivePepperedPasswordHash(value, salt, pepper)
       : await derivePasswordHash(value, salt, iterations || PASSWORD_ITERATIONS);
   return equalBytes(candidate, base64UrlToBytes(editor.password_hash));
+}
+
+function isInitialOwner(email) {
+  const value = String(email || "").trim().toLowerCase();
+  return INITIAL_OWNERS.some((owner) => owner.email.toLowerCase() === value);
+}
+
+export async function bootstrapInitialOwnerPassword(db, editor, password, env) {
+  if (!editor?.email || editor.password_hash || !isInitialOwner(editor.email)) return false;
+  const bootstrapPassword = String(env.INITIAL_EDITOR_PASSWORD || "");
+  const value = String(password || "");
+  if (
+    bootstrapPassword.length < 8 ||
+    bootstrapPassword.length > 128 ||
+    value !== bootstrapPassword
+  ) {
+    return false;
+  }
+
+  const passwordRecord = await createPasswordRecord(value, env.AUTH_PEPPER);
+  const now = new Date().toISOString();
+  const result = await db
+    .prepare(
+      `UPDATE editors
+       SET password_salt = ?, password_hash = ?, password_iterations = ?, updated_at = ?
+       WHERE email = ? COLLATE NOCASE AND password_hash IS NULL`,
+    )
+    .bind(
+      passwordRecord.salt,
+      passwordRecord.hash,
+      passwordRecord.iterations,
+      now,
+      editor.email,
+    )
+    .run();
+  return Number(result.meta?.changes || 0) > 0;
 }
 
 export function getSessionToken(request) {

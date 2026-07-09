@@ -45,6 +45,7 @@ Use Cloudflare Pages with GitHub integration.
 - Build output directory: `/`
 - D1 binding: `DB` -> `aztexnogaz-catalog`
 - Secret: `AUTH_PEPPER` -> at least 32 random characters
+- Secret: `INITIAL_EDITOR_PASSWORD` -> temporary first-login password for the seeded owner accounts
 
 Every push to the `main` branch should trigger a new Cloudflare Pages production deployment.
 
@@ -53,6 +54,10 @@ Editor accounts and peppered password verifiers are stored in D1. Keep
 creates a revocable, `HttpOnly`, same-site device session that rolls forward
 for one year. Every account has full product and user-management access.
 Visitors without a valid session see only the public website.
+
+The seeded owner accounts can use `INITIAL_EDITOR_PASSWORD` only until their
+first successful login creates a stored password verifier. After the first
+owner login works, remove `INITIAL_EDITOR_PASSWORD` from Cloudflare Pages.
 
 ## Updating The Website
 
