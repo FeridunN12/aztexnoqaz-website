@@ -1,20 +1,21 @@
 import initialProducts from "../../data/products.json";
 
 export const INITIAL_OWNERS = [
-  "faridnaghizade7@gmail.com",
-  "kenannaghiyev15@gmail.com",
+  { email: "faridnaghizade7@gmail.com", displayName: "Farid" },
+  { email: "kenannaghiyev15@gmail.com", displayName: "Kenan" },
 ];
 
 export async function ensureEditors(db) {
   const now = new Date().toISOString();
   await db.batch(
-    INITIAL_OWNERS.map((email) =>
+    INITIAL_OWNERS.map(({ email, displayName }) =>
       db
         .prepare(
-          `INSERT OR IGNORE INTO editors (email, role, added_at, added_by)
-           VALUES (?, 'owner', ?, 'system')`,
+          `INSERT OR IGNORE INTO editors (
+             email, role, added_at, added_by, display_name, updated_at
+           ) VALUES (?, 'owner', ?, 'system', ?, ?)`,
         )
-        .bind(email, now),
+        .bind(email, now, displayName, now),
     ),
   );
 }

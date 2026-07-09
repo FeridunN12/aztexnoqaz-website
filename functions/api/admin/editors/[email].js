@@ -4,9 +4,6 @@ import { ApiError, errorResponse, json, requireSameOrigin } from "../../../_lib/
 export async function onRequestDelete({ request, env, data, params }) {
   try {
     requireSameOrigin(request);
-    if (data.editor.role !== "owner") {
-      throw new ApiError(403, "Only owners can remove editors.", "owner_required");
-    }
 
     const email = decodeURIComponent(String(params.email)).trim().toLowerCase();
     const target = await env.DB
@@ -14,10 +11,20 @@ export async function onRequestDelete({ request, env, data, params }) {
       .bind(email)
       .first();
     if (!target) throw new ApiError(404, "That editor no longer exists.", "not_found");
-    if (target.role === "owner") {
-      throw new ApiError(400, "The two account owners cannot be removed here.", "protected_owner");
+    if (target.email.toLowerCase() === data.editor.email.toLowerCase()) {
+      throw new ApiError(400, "Sign in as another administrator to remove this account.", "current_editor");
+    }
+    const count = await env.DB
+      .prepare("SELECT COUNT(*) AS count FROM editors WHERE password_hash IS NOT NULL")
+      .first();
+    if (Number(count?.count || 0) <= 1) {
+      throw new ApiError(400, "The final administrator account cannot be removed.", "final_editor");
     }
 
+    await env.DB
+      .prepare("DELETE FROM editor_sessions WHERE editor_email = ? COLLATE NOCASE")
+      .bind(email)
+      .run();
     await env.DB.prepare("DELETE FROM editors WHERE email = ? COLLATE NOCASE").bind(email).run();
     await writeAudit(env.DB, data.editor.email, "remove", "editor", email);
     return json({ deleted: true, email });

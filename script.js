@@ -47,6 +47,10 @@ const editorImage = document.querySelector("#editor-image");
 const editorImagePreview = document.querySelector("#editor-image-preview");
 const imageDropZone = document.querySelector("#image-drop-zone");
 const imageDropPrompt = document.querySelector("#image-drop-prompt");
+const editorLoginModal = document.querySelector("#editor-login-modal");
+const editorLoginForm = document.querySelector("#editor-login-form");
+const editorLoginMessage = document.querySelector("#editor-login-message");
+const editorLoginSubmit = document.querySelector("#editor-login-submit");
 const accessModal = document.querySelector("#access-modal");
 const addEditorForm = document.querySelector("#add-editor-form");
 const accessMessage = document.querySelector("#access-message");
@@ -274,23 +278,87 @@ async function loadProducts() {
 
 async function checkEditorSession() {
   try {
-    const response = await fetch("/api/admin/session", {
+    const response = await fetch("/api/auth/session", {
       cache: "no-store",
       credentials: "same-origin",
-      redirect: "manual",
       headers: { Accept: "application/json" },
     });
-    if (!response.ok || response.type === "opaqueredirect") return;
+    if (!response.ok) return;
     const body = await response.json();
-    editorSession = body.editor;
-    editorEmail.textContent = editorSession.email;
-    editorBar.hidden = false;
-    staffAccess.hidden = true;
-    manageEditorsButton.hidden = editorSession.role !== "owner";
-    editorSignOut.href = `/cdn-cgi/access/logout?returnTo=${encodeURIComponent(window.location.origin)}`;
-    document.body.classList.add("editor-mode");
+    activateEditorSession(body.editor);
   } catch {
     editorSession = null;
+  }
+}
+
+function activateEditorSession(editor) {
+  editorSession = editor;
+  editorEmail.textContent = editor.displayName || editor.email;
+  editorEmail.title = editor.email;
+  editorBar.hidden = false;
+  staffAccess.hidden = true;
+  manageEditorsButton.hidden = false;
+  document.body.classList.add("editor-mode");
+}
+
+function openEditorLogin() {
+  setFormMessage(editorLoginMessage);
+  document.body.classList.add("modal-open");
+  editorLoginModal.showModal();
+  refreshIcons();
+}
+
+function closeEditorLogin() {
+  editorLoginModal.close();
+  document.body.classList.remove("modal-open");
+}
+
+async function submitEditorLogin(event) {
+  event.preventDefault();
+  setFormMessage(editorLoginMessage);
+  editorLoginSubmit.disabled = true;
+  const formData = new FormData(editorLoginForm);
+  try {
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: formData.get("email"),
+        password: formData.get("password"),
+        deviceName: formData.get("deviceName"),
+      }),
+    });
+    const body = await readApiResponse(response);
+    activateEditorSession(body.editor);
+    editorLoginForm.reset();
+    closeEditorLogin();
+    renderProducts();
+    showToast("Editor mode is active on this device.");
+  } catch (error) {
+    setFormMessage(editorLoginMessage, error.message, true);
+  } finally {
+    editorLoginSubmit.disabled = false;
+    refreshIcons();
+  }
+}
+
+async function signOutEditor() {
+  editorSignOut.disabled = true;
+  try {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+    });
+  } finally {
+    editorSession = null;
+    editorBar.hidden = true;
+    staffAccess.hidden = false;
+    document.body.classList.remove("editor-mode");
+    editorSignOut.disabled = false;
+    renderProducts();
+    showToast("Signed out from this device.");
   }
 }
 
@@ -463,26 +531,53 @@ async function reloadCatalog() {
   renderProducts();
 }
 
-function renderEditors(editors) {
+function formatEditorActivity(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date);
+}
+
+function renderEditors(editors, currentEditor) {
   editorList.innerHTML = editors
-    .map(
-      (editor) => `
+    .map((editor) => {
+      const isCurrent = editor.email.toLowerCase() === currentEditor.toLowerCase();
+      const devices = editor.devices.length
+        ? editor.devices
+            .map(
+              (device) => `
+                <li>
+                  <i data-lucide="monitor-smartphone"></i>
+                  <span>
+                    <strong>${escapeHtml(device.deviceName)}</strong>
+                    <small>${escapeHtml(device.platform)} &middot; Active ${escapeHtml(formatEditorActivity(device.lastSeenAt))}</small>
+                  </span>
+                </li>
+              `,
+            )
+            .join("")
+        : '<li class="no-device"><i data-lucide="monitor-off"></i><span>No approved device sessions</span></li>';
+      return `
         <div class="editor-list-item">
-          <div>
-            <span class="editor-avatar">${escapeHtml(editor.email.slice(0, 1).toUpperCase())}</span>
+          <div class="editor-account-header">
+            <span class="editor-avatar">${escapeHtml((editor.displayName || editor.email).slice(0, 1).toUpperCase())}</span>
             <span>
-              <strong>${escapeHtml(editor.email)}</strong>
-              <small>${editor.role === "owner" ? "Owner" : "Product editor"}</small>
+              <strong>${escapeHtml(editor.displayName || editor.email)}</strong>
+              <small>${escapeHtml(editor.email)}</small>
             </span>
           </div>
           ${
-            editor.role === "owner"
-              ? '<span class="owner-badge"><i data-lucide="shield-check"></i> Owner</span>'
-              : `<button type="button" data-remove-editor="${escapeHtml(editor.email)}" aria-label="Remove ${escapeHtml(editor.email)}" title="Remove editor"><i data-lucide="trash-2"></i></button>`
+            isCurrent
+              ? '<span class="owner-badge"><i data-lucide="shield-check"></i> Current</span>'
+              : `<button type="button" data-remove-editor="${escapeHtml(editor.email)}" aria-label="Remove ${escapeHtml(editor.email)}" title="Remove user"><i data-lucide="trash-2"></i></button>`
           }
+          <div class="editor-access-label"><i data-lucide="key-round"></i> Full administrator access</div>
+          <ul class="editor-device-list">${devices}</ul>
         </div>
-      `,
-    )
+      `;
+    })
     .join("");
 
   editorList.querySelectorAll("[data-remove-editor]").forEach((button) => {
@@ -499,7 +594,7 @@ async function loadEditors() {
     headers: { Accept: "application/json" },
   });
   const body = await readApiResponse(response);
-  renderEditors(body.editors);
+  renderEditors(body.editors, body.currentEditor);
 }
 
 async function openAccessModal() {
@@ -521,18 +616,22 @@ function closeAccessModal() {
 async function addEditor(event) {
   event.preventDefault();
   setFormMessage(accessMessage);
-  const email = new FormData(addEditorForm).get("email");
+  const formData = new FormData(addEditorForm);
   try {
     const response = await fetch("/api/admin/editors", {
       method: "POST",
       credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({
+        displayName: formData.get("displayName"),
+        email: formData.get("email"),
+        password: formData.get("password"),
+      }),
     });
     await readApiResponse(response);
     addEditorForm.reset();
     await loadEditors();
-    showToast("Editor access added.");
+    showToast("Administrator account added.");
   } catch (error) {
     setFormMessage(accessMessage, error.message, true);
   }
@@ -547,7 +646,7 @@ async function removeEditor(email) {
     });
     await readApiResponse(response);
     await loadEditors();
-    showToast("Editor access removed.");
+    showToast("Administrator account removed.");
   } catch (error) {
     setFormMessage(accessMessage, error.message, true);
   }
@@ -599,6 +698,18 @@ navLinks.querySelectorAll("a").forEach((link) => {
 
 addProductButton.addEventListener("click", () => openProductEditor());
 manageEditorsButton.addEventListener("click", openAccessModal);
+staffAccess.addEventListener("click", (event) => {
+  event.preventDefault();
+  openEditorLogin();
+});
+editorSignOut.addEventListener("click", signOutEditor);
+editorLoginForm.addEventListener("submit", submitEditorLogin);
+editorLoginModal.querySelectorAll(".login-dialog-close").forEach((button) => {
+  button.addEventListener("click", closeEditorLogin);
+});
+editorLoginModal.addEventListener("close", () => {
+  document.body.classList.remove("modal-open");
+});
 productEditorForm.addEventListener("submit", saveProduct);
 productEditorModal.querySelectorAll(".editor-dialog-close").forEach((button) => {
   button.addEventListener("click", closeProductEditor);

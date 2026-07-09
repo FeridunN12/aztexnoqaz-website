@@ -1,3 +1,4 @@
+import { createPasswordRecord } from "../../_lib/auth.js";
 import { ensureEditors, writeAudit } from "../../_lib/db.js";
 import {
   ApiError,
@@ -11,14 +12,44 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function onRequestGet({ env, data }) {
   try {
-    if (data.editor.role !== "owner") {
-      throw new ApiError(403, "Only owners can manage editor access.", "owner_required");
-    }
     await ensureEditors(env.DB);
-    const result = await env.DB
-      .prepare("SELECT email, role, added_at AS addedAt, added_by AS addedBy FROM editors ORDER BY role DESC, email")
+    const now = new Date().toISOString();
+    await env.DB.prepare("DELETE FROM editor_sessions WHERE expires_at <= ?").bind(now).run();
+    const editorResult = await env.DB
+      .prepare(
+        `SELECT
+           email, role, display_name AS displayName,
+           added_at AS addedAt, added_by AS addedBy
+         FROM editors
+         WHERE password_hash IS NOT NULL
+         ORDER BY display_name, email`,
+      )
       .all();
-    return json({ editors: result.results });
+    const sessionResult = await env.DB
+      .prepare(
+        `SELECT
+           editor_email AS editorEmail, device_name AS deviceName,
+           platform, created_at AS createdAt, last_seen_at AS lastSeenAt
+         FROM editor_sessions
+         WHERE expires_at > ?
+         ORDER BY last_seen_at DESC`,
+      )
+      .bind(now)
+      .all();
+    const sessionsByEmail = new Map();
+    for (const session of sessionResult.results) {
+      const key = session.editorEmail.toLowerCase();
+      if (!sessionsByEmail.has(key)) sessionsByEmail.set(key, []);
+      sessionsByEmail.get(key).push(session);
+    }
+    return json({
+      currentEditor: data.editor.email,
+      editors: editorResult.results.map((editor) => ({
+        ...editor,
+        role: "owner",
+        devices: sessionsByEmail.get(editor.email.toLowerCase()) || [],
+      })),
+    });
   } catch (error) {
     return errorResponse(error);
   }
@@ -27,26 +58,57 @@ export async function onRequestGet({ env, data }) {
 export async function onRequestPost({ request, env, data }) {
   try {
     requireSameOrigin(request);
-    if (data.editor.role !== "owner") {
-      throw new ApiError(403, "Only owners can add editors.", "owner_required");
-    }
     const body = await readJson(request);
     const email = String(body.email || "").trim().toLowerCase();
+    const displayName = String(body.displayName || "").trim();
     if (!EMAIL_PATTERN.test(email) || email.length > 254) {
       throw new ApiError(400, "Enter a valid email address.", "invalid_email");
     }
+    if (displayName.length < 2 || displayName.length > 60) {
+      throw new ApiError(400, "Enter the editor's name.", "invalid_name");
+    }
+    const existing = await env.DB
+      .prepare("SELECT email FROM editors WHERE email = ? COLLATE NOCASE")
+      .bind(email)
+      .first();
+    if (existing) {
+      throw new ApiError(409, "An account with that email already exists.", "editor_exists");
+    }
 
     const now = new Date().toISOString();
+    const password = await createPasswordRecord(body.password);
     await env.DB
       .prepare(
-        `INSERT INTO editors (email, role, added_at, added_by)
-         VALUES (?, 'editor', ?, ?)
-         ON CONFLICT(email) DO NOTHING`,
+        `INSERT INTO editors (
+           email, role, added_at, added_by, display_name,
+           password_salt, password_hash, password_iterations, updated_at
+         ) VALUES (?, 'owner', ?, ?, ?, ?, ?, ?, ?)`,
       )
-      .bind(email, now, data.editor.email)
+      .bind(
+        email,
+        now,
+        data.editor.email,
+        displayName,
+        password.salt,
+        password.hash,
+        password.iterations,
+        now,
+      )
       .run();
     await writeAudit(env.DB, data.editor.email, "add", "editor", email);
-    return json({ editor: { email, role: "editor", addedAt: now, addedBy: data.editor.email } }, 201);
+    return json(
+      {
+        editor: {
+          email,
+          displayName,
+          role: "owner",
+          devices: [],
+          addedAt: now,
+          addedBy: data.editor.email,
+        },
+      },
+      201,
+    );
   } catch (error) {
     return errorResponse(error);
   }

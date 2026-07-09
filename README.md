@@ -29,12 +29,11 @@ npx wrangler pages dev . --port 8792
 Then open:
 
 ```text
-http://127.0.0.1:8792/?editor=1#products
+http://127.0.0.1:8792
 ```
 
-For local editor access, use an ignored `wrangler.jsonc` with a `DB` D1
-binding and `DEV_AUTH_EMAIL` set to an owner email. The development bypass is
-accepted only on localhost.
+For local editor access, seed a development-only account with a password hash
+in the local D1 database. Never commit real passwords or password hashes.
 
 ## Cloudflare Pages Settings
 
@@ -45,20 +44,19 @@ Use Cloudflare Pages with GitHub integration.
 - Build command: leave empty
 - Build output directory: `/`
 - D1 binding: `DB` -> `aztexnogaz-catalog`
-- Variable: `ACCESS_TEAM_DOMAIN`
-- Variable: `ACCESS_AUD`
 
 Every push to the `main` branch should trigger a new Cloudflare Pages production deployment.
 
-Cloudflare Access protects only `aztexnogaz.com/api/admin/*`. Access performs
-email authentication, and the application validates the Access JWT plus the
-editor allowlist stored in D1.
+Editor accounts and salted password hashes are stored in D1. Successful login
+creates a revocable, `HttpOnly`, same-site device session that rolls forward
+for one year. Every account has full product and user-management access.
+Visitors without a valid session see only the public website.
 
 ## Updating The Website
 
-Owners can update products and editor access from the website editor. Changes
-are written directly to D1 and appear on the public catalog without a new
-deployment.
+Administrators can update products and user access from the website editor.
+Changes are written directly to D1 and appear on the public catalog without a
+new deployment.
 
 Code changes still follow the normal deployment flow:
 

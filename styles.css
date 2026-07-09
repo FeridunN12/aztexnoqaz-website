@@ -1450,7 +1450,8 @@ button {
 }
 
 .editor-fields label,
-.add-editor-form label {
+.add-editor-form label,
+.login-form-fields label {
   display: grid;
   gap: 6px;
   color: #273c57;
@@ -1461,7 +1462,8 @@ button {
 .editor-fields input,
 .editor-fields select,
 .editor-fields textarea,
-.add-editor-form input {
+.add-editor-form input,
+.login-form-fields input {
   width: 100%;
   border: 1px solid #cbd7e5;
   border-radius: 6px;
@@ -1472,7 +1474,8 @@ button {
 
 .editor-fields input,
 .editor-fields select,
-.add-editor-form input {
+.add-editor-form input,
+.login-form-fields input {
   height: 44px;
   padding: 0 12px;
 }
@@ -1486,7 +1489,8 @@ button {
 .editor-fields input:focus,
 .editor-fields select:focus,
 .editor-fields textarea:focus,
-.add-editor-form input:focus {
+.add-editor-form input:focus,
+.login-form-fields input:focus {
   border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.11);
 }
@@ -1528,17 +1532,29 @@ button {
 }
 
 .access-modal {
-  width: min(680px, calc(100% - 28px));
+  width: min(780px, calc(100% - 28px));
+}
+
+.login-modal {
+  width: min(480px, calc(100% - 28px));
+}
+
+.login-form-fields {
+  display: grid;
+  gap: 15px;
+  padding: 22px 0;
 }
 
 .add-editor-form {
+  display: grid;
+  grid-template-columns: 0.8fr 1.25fr 1fr auto;
+  align-items: end;
+  gap: 10px;
   padding: 22px 0 16px;
 }
 
-.add-editor-form label > div {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px;
+.add-editor-button {
+  min-width: 110px;
 }
 
 .editor-list {
@@ -1553,27 +1569,26 @@ button {
 
 .editor-list-item {
   min-width: 0;
-  min-height: 70px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
   gap: 12px;
   background: #fff;
 }
 
-.editor-list-item > div,
-.editor-list-item > div > span:last-child {
+.editor-account-header,
+.editor-account-header > span:last-child {
   display: flex;
   align-items: center;
   min-width: 0;
 }
 
-.editor-list-item > div {
+.editor-account-header {
   gap: 11px;
 }
 
-.editor-list-item > div > span:last-child {
+.editor-account-header > span:last-child {
   align-items: flex-start;
   flex-direction: column;
 }
@@ -1619,6 +1634,65 @@ button {
 .editor-list-item > button svg {
   width: 17px;
   height: 17px;
+}
+
+.editor-access-label {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #315777;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.editor-access-label svg {
+  width: 15px;
+  height: 15px;
+}
+
+.editor-device-list {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.editor-device-list li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid #dce7f2;
+  border-radius: 6px;
+  background: #f7faff;
+}
+
+.editor-device-list li > svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: var(--blue);
+}
+
+.editor-device-list li > span {
+  display: grid;
+  min-width: 0;
+}
+
+.editor-device-list li strong {
+  font-size: 0.84rem;
+}
+
+.editor-device-list li small {
+  font-size: 0.76rem;
+}
+
+.editor-device-list .no-device {
+  color: var(--muted);
 }
 
 .owner-badge {
@@ -2053,12 +2127,12 @@ button {
     grid-template-columns: 1fr 1fr;
   }
 
-  .add-editor-form label > div {
+  .add-editor-form {
     grid-template-columns: 1fr;
   }
 
   .editor-list-item {
-    align-items: flex-start;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
   .editor-list-item strong {
