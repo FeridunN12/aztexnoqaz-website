@@ -113,9 +113,11 @@ export async function onRequestPost({ request, env }) {
           .run();
         updated.push(owner.email);
       }
+      await env.DB.prepare("DELETE FROM login_attempts").run();
       return json({
         version: "2026-07-10-editor-diagnostics-post",
         updated,
+        clearedLoginAttempts: true,
       });
     }
 
