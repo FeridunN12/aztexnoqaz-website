@@ -12,298 +12,7 @@ const categoryLabels = {
   cabinets: "Cabinets",
 };
 
-const products = [
-  {
-    id: "homeyway-water-heater",
-    name: "Homeyway Gas Water Heater",
-    brand: "Homeyway",
-    category: "hvac",
-    image: "assets/homeyway-water-heater.jpeg",
-    summary: "Wall-mounted gas water heating unit for residential and commercial hot-water projects.",
-    specs: ["Gas water heating solution", "Suitable for hot-water applications", "Quote confirmed by model and quantity"],
-    tags: ["Heating", "Water", "Gas"],
-  },
-  {
-    id: "eska-regulators-set",
-    name: "ESKA Gas Regulators",
-    brand: "ESKA",
-    category: "regulators",
-    image: "assets/eska-regulators-set.jpeg",
-    summary: "Industrial gas regulator range for pressure control and project installations.",
-    specs: ["Regulator product family", "For gas pressure control", "Technical selection support available"],
-    tags: ["Pressure", "Industrial", "ESKA"],
-  },
-  {
-    id: "cem-water-meter-close",
-    name: "CEM Water Meter",
-    brand: "CEM",
-    category: "metering",
-    image: "assets/cem-water-meter-close.jpeg",
-    summary: "CEM water meter options for utility and facility measurement needs.",
-    specs: ["Mechanical water metering", "CEM branded product", "Model confirmation by request"],
-    tags: ["Water", "Meter", "CEM"],
-  },
-  {
-    id: "elster-honeywell-station",
-    name: "Elster Honeywell Gas Measuring Station",
-    brand: "Elster Honeywell",
-    category: "metering",
-    image: "assets/elster-honeywell-station.jpeg",
-    summary: "Gas measurement station components with meter, corrector and pipe assembly options.",
-    specs: ["Metering station components", "Volume correction options", "Project quotation after specs"],
-    tags: ["Station", "Honeywell", "Elster"],
-  },
-  {
-    id: "qw-cssc-diaphragm-gas-meter",
-    name: "QW/CSSC Diaphragm Gas Meter",
-    brand: "QW/CSSC",
-    category: "metering",
-    image: "assets/qw-cssc-diaphragm-gas-meter.jpeg",
-    summary: "Diaphragm gas meter product line for gas consumption measurement.",
-    specs: ["Gas consumption metering", "Qianwei meter family", "Suitable model selected by usage"],
-    tags: ["Gas meter", "QW/CSSC", "Diaphragm"],
-  },
-  {
-    id: "plum-macbat5-converter",
-    name: "Plum MacBAT 5 Volume Converter",
-    brand: "Plum GAS",
-    category: "conversion",
-    image: "assets/plum-macbat5-converter.jpeg",
-    summary: "Electronic volume conversion device for gas metering and monitoring systems.",
-    specs: ["Volume conversion device", "MacBAT 5 product family", "For gas measurement systems"],
-    tags: ["Converter", "Automation", "Plum GAS"],
-  },
-  {
-    id: "elster-rotary-meters",
-    name: "Elster Rotary Gas Meters",
-    brand: "Elster",
-    category: "metering",
-    image: "assets/elster-rotary-meters.jpeg",
-    summary: "Rotary gas meter products for industrial and commercial measurement points.",
-    specs: ["Rotary meter family", "Industrial metering applications", "Sizing handled by inquiry"],
-    tags: ["Rotary", "Elster", "Gas"],
-  },
-  {
-    id: "eska-gas-technologies",
-    name: "ESKA Gas Technologies Regulators",
-    brand: "ESKA",
-    category: "regulators",
-    image: "assets/eska-gas-technologies.jpeg",
-    summary: "ESKA regulator and gas technology equipment for pipeline and station use.",
-    specs: ["Gas regulator assortment", "Pipeline support components", "Quote by pressure and size"],
-    tags: ["ESKA", "Pipeline", "Regulator"],
-  },
-  {
-    id: "fmg-flow-meter",
-    name: "FMG Flow Meter",
-    brand: "FMG",
-    category: "metering",
-    image: "assets/fmg-flow-meter-ai.png",
-    summary: "FMG flow meter equipment for gas flow measurement and industrial use.",
-    specs: ["Flow meter product", "Industrial gas measurement", "Selection by flow requirements"],
-    tags: ["Flow", "Meter", "FMG"],
-  },
-  {
-    id: "madas-gas-valves",
-    name: "MADAS Gas Safety Valves",
-    brand: "MADAS",
-    category: "valves",
-    image: "assets/madas-gas-valves.jpeg",
-    summary: "MADAS valve and control products for gas safety and line management.",
-    specs: ["Gas valve product line", "Control and safety applications", "Configuration confirmed by request"],
-    tags: ["Valves", "Safety", "MADAS"],
-  },
-  {
-    id: "fangaz-regulators-pair",
-    name: "FANGAZ Gas Regulators",
-    brand: "FANGAZ",
-    category: "regulators",
-    image: "assets/fangaz-regulators-pair.jpeg",
-    summary: "FANGAZ regulator options for gas pressure reduction and control.",
-    specs: ["Pressure regulator family", "Industrial gas equipment", "Model matched to installation"],
-    tags: ["FANGAZ", "Pressure", "Gas"],
-  },
-  {
-    id: "elster-honeywell-volume-converters",
-    name: "Elster Honeywell Volume Converters",
-    brand: "Elster Honeywell",
-    category: "conversion",
-    image: "assets/elster-honeywell-volume-converters.jpeg",
-    summary: "Electronic volume conversion devices for measurement, reporting and gas station control.",
-    specs: ["Volume conversion devices", "Elster and Honeywell product family", "For metering stations"],
-    tags: ["Converter", "Honeywell", "Elster"],
-  },
-  {
-    id: "fangaz-industrial-regulators",
-    name: "FANGAZ Industrial Regulators",
-    brand: "FANGAZ",
-    category: "regulators",
-    image: "assets/fangaz-industrial-regulators.jpeg",
-    summary: "Heavy-duty FANGAZ regulators for larger gas line and station requirements.",
-    specs: ["Industrial regulator options", "Flanged connection product line", "Quote by size and pressure"],
-    tags: ["Industrial", "FANGAZ", "Regulator"],
-  },
-  {
-    id: "fangaz-red-regulator",
-    name: "FANGAZ Red Line Regulator",
-    brand: "FANGAZ",
-    category: "regulators",
-    image: "assets/fangaz-red-regulator.jpeg",
-    summary: "Red-body FANGAZ regulator product for pressure management applications.",
-    specs: ["Gas pressure regulating unit", "FANGAZ branded equipment", "Availability confirmed on request"],
-    tags: ["Regulator", "FANGAZ", "Pressure"],
-  },
-  {
-    id: "baylan-electric-meter",
-    name: "BAYLAN Electric Meter",
-    brand: "BAYLAN",
-    category: "metering",
-    image: "assets/baylan-electric-meter.jpeg",
-    summary: "BAYLAN electronic electricity meter options for measurement applications.",
-    specs: ["Electric meter product line", "BAYLAN branded device", "Model selected by installation need"],
-    tags: ["Electric", "Meter", "BAYLAN"],
-  },
-  {
-    id: "cem-industrial-water-meter",
-    name: "CEM Industrial Water Meter",
-    brand: "CEM",
-    category: "metering",
-    image: "assets/cem-industrial-water-meter.jpeg",
-    summary: "Flanged CEM water meter product for larger pipe and facility requirements.",
-    specs: ["Industrial water metering", "Flanged meter product", "Quote by size and quantity"],
-    tags: ["Water", "Industrial", "CEM"],
-  },
-  {
-    id: "elster-spare-parts",
-    name: "Elster Spare Parts",
-    brand: "Elster",
-    category: "accessories",
-    image: "assets/elster-spare-parts.jpeg",
-    summary: "Replacement parts and precision components for gas meter service and support.",
-    specs: ["Spare part assortment", "Meter service components", "Part matching by photo or code"],
-    tags: ["Parts", "Elster", "Service"],
-  },
-  {
-    id: "pressure-hose",
-    name: "Flexible Pressure Hose",
-    brand: "AzTexnoQaz",
-    category: "accessories",
-    image: "assets/pressure-hose-ai.png",
-    summary: "Stainless flexible pressure hoses for durable gas and industrial connections.",
-    specs: ["Flexible hose assembly", "Stainless braided exterior", "Length and fitting confirmed by order"],
-    tags: ["Hose", "Connection", "Steel"],
-  },
-  {
-    id: "elster-yellow-turbine-meter",
-    name: "Elster Honeywell Turbine Meter",
-    brand: "Elster Honeywell",
-    category: "metering",
-    image: "assets/elster-yellow-turbine-meter.jpeg",
-    summary: "Yellow turbine-style gas meter assembly for higher-flow measurement points.",
-    specs: ["Gas turbine metering equipment", "Honeywell and Elster product family", "Selection by flow and pressure"],
-    tags: ["Turbine", "Gas", "Honeywell"],
-  },
-  {
-    id: "airfel-daikin-water-heater",
-    name: "Airfel / Daikin Gas Water Heater",
-    brand: "Airfel / Daikin",
-    category: "hvac",
-    image: "assets/airfel-daikin-water-heater.jpeg",
-    summary: "Wall-mounted gas heating equipment from Airfel and Daikin product lines.",
-    specs: ["Gas heating equipment", "Airfel and Daikin brands", "Model and capacity by request"],
-    tags: ["Heating", "Daikin", "Airfel"],
-  },
-  {
-    id: "multi-brand-systems",
-    name: "Multi-Brand Gas Equipment Package",
-    brand: "AzTexnoQaz",
-    category: "cabinets",
-    image: "assets/multi-brand-systems.jpeg",
-    summary: "Combined product package for projects requiring several gas equipment categories.",
-    specs: ["Metering, conversion and HVAC options", "Multi-brand supply portfolio", "Quote prepared after project list"],
-    tags: ["Package", "Project", "Supply"],
-  },
-  {
-    id: "airfel-daikin-ac",
-    name: "Airfel / Daikin Air Conditioner Set",
-    brand: "Airfel / Daikin",
-    category: "hvac",
-    image: "assets/airfel-daikin-ac.jpeg",
-    summary: "Air conditioning equipment set with indoor unit, outdoor unit and remote control.",
-    specs: ["HVAC product line", "Airfel and Daikin branding", "Capacity confirmed before order"],
-    tags: ["AC", "Daikin", "Airfel"],
-  },
-  {
-    id: "gas-regulation-cabinet",
-    name: "Gas Regulation Cabinet",
-    brand: "AzTexnoQaz",
-    category: "cabinets",
-    image: "assets/gas-regulation-cabinet.jpeg",
-    summary: "Cabinet-based gas regulation assembly for site installations and controlled line operation.",
-    specs: ["Cabinet assembly option", "Regulators, valves and meters", "Project-based quotation"],
-    tags: ["Cabinet", "Station", "Gas"],
-  },
-  {
-    id: "pakkens-pressure-gauges",
-    name: "Pakkens Pressure Gauges",
-    brand: "Pakkens",
-    category: "accessories",
-    image: "assets/pakkens-pressure-gauges.jpeg",
-    summary: "Pressure gauge options for monitoring gas, water and industrial systems.",
-    specs: ["Pressure gauge product line", "Different ranges available by request", "Accessory supply for installations"],
-    tags: ["Gauge", "Pressure", "Pakkens"],
-  },
-  {
-    id: "broen-ball-valve",
-    name: "BROEN Ball Valve",
-    brand: "BROEN",
-    category: "valves",
-    image: "assets/broen-ball-valve.jpeg",
-    summary: "BROEN flanged ball valve product for natural gas line shut-off applications.",
-    specs: ["Ball valve product line", "Flanged gas valve design", "Size and pressure class by request"],
-    tags: ["Valve", "BROEN", "Gas"],
-  },
-  {
-    id: "brass-fittings-filters",
-    name: "Brass Fittings and Filter Cones",
-    brand: "AzTexnoQaz",
-    category: "accessories",
-    image: "assets/brass-fittings-filters.jpeg",
-    summary: "Precision brass fittings and filter cones for gas equipment service and installation.",
-    specs: ["Fittings and filters", "Replacement and installation parts", "Part matching by photo or sample"],
-    tags: ["Fittings", "Filters", "Brass"],
-  },
-  {
-    id: "partner-components",
-    name: "Precision Gas Components",
-    brand: "AzTexnoQaz",
-    category: "accessories",
-    image: "assets/partner-components.jpeg",
-    summary: "Specialized gas components, nozzles and mesh filter parts for equipment support.",
-    specs: ["Small precision components", "Gas equipment accessories", "Matched by product photo or code"],
-    tags: ["Components", "Filters", "Parts"],
-  },
-  {
-    id: "eska-valve-showcase",
-    name: "ESKA Valve Showcase",
-    brand: "ESKA",
-    category: "valves",
-    image: "assets/eska-valve-showcase.jpeg",
-    summary: "ESKA valve and regulator showcase for gas control installations.",
-    specs: ["Valve and regulator equipment", "ESKA branded products", "Application confirmed before supply"],
-    tags: ["Valve", "ESKA", "Gas"],
-  },
-  {
-    id: "plum-gas-station",
-    name: "Plum GAS Station Assembly",
-    brand: "Plum GAS",
-    category: "conversion",
-    image: "assets/plum-gas-station.jpeg",
-    summary: "Plum GAS converter installed within a gas station and pipeline assembly.",
-    specs: ["Volume conversion equipment", "Station integration example", "Project support by inquiry"],
-    tags: ["Plum GAS", "Station", "Converter"],
-  },
-];
+let products = [];
 
 const grid = document.querySelector("#product-grid");
 const count = document.querySelector("#product-count");
@@ -323,9 +32,38 @@ const modalWhatsapp = document.querySelector("#modal-whatsapp");
 const modalClose = document.querySelector(".modal-close");
 const navToggle = document.querySelector(".nav-toggle");
 const navLinks = document.querySelector("#main-menu");
+const staffAccess = document.querySelector("#staff-access");
+const editorBar = document.querySelector("#editor-bar");
+const editorEmail = document.querySelector("#editor-email");
+const editorSignOut = document.querySelector("#editor-sign-out");
+const addProductButton = document.querySelector("#add-product-button");
+const manageEditorsButton = document.querySelector("#manage-editors-button");
+const productEditorModal = document.querySelector("#product-editor-modal");
+const productEditorForm = document.querySelector("#product-editor-form");
+const productEditorTitle = document.querySelector("#product-editor-title");
+const productEditorMessage = document.querySelector("#product-editor-message");
+const productEditorSave = document.querySelector("#product-editor-save");
+const editorImage = document.querySelector("#editor-image");
+const editorImagePreview = document.querySelector("#editor-image-preview");
+const imageDropZone = document.querySelector("#image-drop-zone");
+const imageDropPrompt = document.querySelector("#image-drop-prompt");
+const accessModal = document.querySelector("#access-modal");
+const addEditorForm = document.querySelector("#add-editor-form");
+const accessMessage = document.querySelector("#access-message");
+const editorList = document.querySelector("#editor-list");
+const confirmModal = document.querySelector("#confirm-modal");
+const confirmMessage = document.querySelector("#confirm-message");
+const confirmCancel = document.querySelector("#confirm-cancel");
+const confirmDelete = document.querySelector("#confirm-delete");
+const editorToast = document.querySelector("#editor-toast");
 
 let activeFilter = "all";
 let activeModalProduct = null;
+let editorSession = null;
+let editingProduct = null;
+let pendingDelete = null;
+let previewObjectUrl = null;
+let droppedImageFile = null;
 
 function escapeHtml(value) {
   return String(value)
@@ -349,8 +87,21 @@ function productMatches(product, query) {
 
 function productCard(product) {
   const tagMarkup = product.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("");
+  const editorActions = editorSession
+    ? `
+      <div class="product-admin-actions">
+        <button type="button" data-edit="${escapeHtml(product.id)}" aria-label="Edit ${escapeHtml(product.name)}" title="Edit product">
+          <i data-lucide="pencil"></i>
+        </button>
+        <button class="delete" type="button" data-delete="${escapeHtml(product.id)}" aria-label="Delete ${escapeHtml(product.name)}" title="Delete product">
+          <i data-lucide="trash-2"></i>
+        </button>
+      </div>
+    `
+    : "";
   return `
     <article class="product-card" data-id="${escapeHtml(product.id)}">
+      ${editorActions}
       <button class="product-image-button" type="button" data-detail="${escapeHtml(product.id)}" aria-label="View details for ${escapeHtml(product.name)}">
         <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" />
       </button>
@@ -395,6 +146,14 @@ function renderProducts() {
 
   grid.querySelectorAll("[data-quote]").forEach((button) => {
     button.addEventListener("click", () => requestProductQuote(button.dataset.quote));
+  });
+
+  grid.querySelectorAll("[data-edit]").forEach((button) => {
+    button.addEventListener("click", () => openProductEditor(button.dataset.edit));
+  });
+
+  grid.querySelectorAll("[data-delete]").forEach((button) => {
+    button.addEventListener("click", () => openDeleteConfirmation(button.dataset.delete));
   });
 
   refreshIcons();
@@ -468,6 +227,332 @@ function submitQuoteForm(event) {
   window.location.href = `mailto:${salesEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
+async function readApiResponse(response) {
+  let body = {};
+  try {
+    body = await response.json();
+  } catch {
+    body = {};
+  }
+  if (!response.ok) {
+    const error = new Error(body.error || "The request could not be completed.");
+    error.code = body.code;
+    error.status = response.status;
+    throw error;
+  }
+  return body;
+}
+
+function setFormMessage(element, message = "", isError = false) {
+  element.textContent = message;
+  element.classList.toggle("error", isError);
+}
+
+function showToast(message) {
+  editorToast.textContent = message;
+  editorToast.hidden = false;
+  window.clearTimeout(showToast.timeout);
+  showToast.timeout = window.setTimeout(() => {
+    editorToast.hidden = true;
+  }, 3600);
+}
+
+async function loadProducts() {
+  try {
+    const response = await fetch("/api/products", {
+      cache: "no-store",
+      headers: { Accept: "application/json" },
+    });
+    const body = await readApiResponse(response);
+    products = body.products;
+  } catch {
+    const response = await fetch("data/products.json", { cache: "no-store" });
+    if (!response.ok) throw new Error("The product catalog could not be loaded.");
+    products = await response.json();
+  }
+}
+
+async function checkEditorSession() {
+  try {
+    const response = await fetch("/api/admin/session", {
+      cache: "no-store",
+      credentials: "same-origin",
+      redirect: "manual",
+      headers: { Accept: "application/json" },
+    });
+    if (!response.ok || response.type === "opaqueredirect") return;
+    const body = await response.json();
+    editorSession = body.editor;
+    editorEmail.textContent = editorSession.email;
+    editorBar.hidden = false;
+    staffAccess.hidden = true;
+    manageEditorsButton.hidden = editorSession.role !== "owner";
+    editorSignOut.href = `/cdn-cgi/access/logout?returnTo=${encodeURIComponent(window.location.origin)}`;
+    document.body.classList.add("editor-mode");
+  } catch {
+    editorSession = null;
+  }
+}
+
+function clearImagePreview() {
+  if (previewObjectUrl) URL.revokeObjectURL(previewObjectUrl);
+  previewObjectUrl = null;
+  droppedImageFile = null;
+  editorImage.value = "";
+  editorImagePreview.src = "";
+  editorImagePreview.hidden = true;
+  imageDropPrompt.hidden = false;
+}
+
+function showImagePreview(fileOrUrl) {
+  if (previewObjectUrl) URL.revokeObjectURL(previewObjectUrl);
+  previewObjectUrl = typeof fileOrUrl === "string" ? null : URL.createObjectURL(fileOrUrl);
+  editorImagePreview.src = typeof fileOrUrl === "string" ? fileOrUrl : previewObjectUrl;
+  editorImagePreview.hidden = false;
+  imageDropPrompt.hidden = true;
+}
+
+async function optimizeProductImage(file) {
+  if (file.size > 8 * 1024 * 1024) {
+    throw new Error("Choose a product photo smaller than 8 MB.");
+  }
+  if (file.size <= 1_400_000) return file;
+
+  const bitmap = await createImageBitmap(file);
+  const maxDimension = 1600;
+  const initialScale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height));
+  let width = Math.max(1, Math.round(bitmap.width * initialScale));
+  let height = Math.max(1, Math.round(bitmap.height * initialScale));
+  let quality = 0.84;
+
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    canvas.getContext("2d").drawImage(bitmap, 0, 0, width, height);
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", quality));
+    if (blob && blob.size <= 1_400_000) {
+      bitmap.close();
+      return new File([blob], `${file.name.replace(/\.[^.]+$/, "") || "product"}.webp`, {
+        type: "image/webp",
+      });
+    }
+    width = Math.max(1, Math.round(width * 0.82));
+    height = Math.max(1, Math.round(height * 0.82));
+    quality = Math.max(0.58, quality - 0.07);
+  }
+
+  bitmap.close();
+  throw new Error("This photo could not be optimized. Choose a smaller image.");
+}
+
+function openProductEditor(productId = null) {
+  editingProduct = productId ? products.find((product) => product.id === productId) : null;
+  productEditorForm.reset();
+  clearImagePreview();
+  setFormMessage(productEditorMessage);
+  productEditorTitle.textContent = editingProduct ? "Edit product" : "Add new product";
+  productEditorSave.innerHTML = `<i data-lucide="upload-cloud"></i>${editingProduct ? "Publish changes" : "Publish product"}`;
+  editorImage.required = !editingProduct;
+
+  if (editingProduct) {
+    productEditorForm.querySelector('[name="name"]').value = editingProduct.name;
+    productEditorForm.querySelector('[name="brand"]').value = editingProduct.brand;
+    productEditorForm.querySelector('[name="category"]').value = editingProduct.category;
+    productEditorForm.querySelector('[name="summary"]').value = editingProduct.summary;
+    productEditorForm.querySelector('[name="specs"]').value = editingProduct.specs.join("\n");
+    productEditorForm.querySelector('[name="tags"]').value = editingProduct.tags.join(", ");
+    showImagePreview(editingProduct.image);
+  }
+
+  document.body.classList.add("modal-open");
+  productEditorModal.showModal();
+  refreshIcons();
+  window.setTimeout(() => productEditorForm.querySelector('[name="name"]').focus(), 50);
+}
+
+function closeProductEditor() {
+  productEditorModal.close();
+  editingProduct = null;
+  clearImagePreview();
+  document.body.classList.remove("modal-open");
+}
+
+async function saveProduct(event) {
+  event.preventDefault();
+  setFormMessage(productEditorMessage);
+  const formData = new FormData(productEditorForm);
+  const selectedImage = droppedImageFile || editorImage.files[0];
+  if (selectedImage) {
+    setFormMessage(productEditorMessage, "Optimizing product photo...");
+    try {
+      formData.set("image", await optimizeProductImage(selectedImage));
+    } catch (error) {
+      setFormMessage(productEditorMessage, error.message, true);
+      return;
+    }
+  }
+  if (editingProduct) formData.set("revision", String(editingProduct.revision));
+
+  productEditorSave.disabled = true;
+  productEditorSave.classList.add("loading");
+  try {
+    const endpoint = editingProduct
+      ? `/api/admin/products/${encodeURIComponent(editingProduct.id)}`
+      : "/api/admin/products";
+    const response = await fetch(endpoint, {
+      method: editingProduct ? "PUT" : "POST",
+      body: formData,
+      credentials: "same-origin",
+    });
+    const body = await readApiResponse(response);
+    const existingIndex = products.findIndex((product) => product.id === body.product.id);
+    if (existingIndex >= 0) products.splice(existingIndex, 1, body.product);
+    else products.push(body.product);
+    const message = editingProduct ? "Product changes are live." : "New product is live.";
+    closeProductEditor();
+    populateQuoteProducts();
+    renderProducts();
+    showToast(message);
+  } catch (error) {
+    setFormMessage(productEditorMessage, error.message, true);
+    if (error.code === "conflict") await reloadCatalog();
+  } finally {
+    productEditorSave.disabled = false;
+    productEditorSave.classList.remove("loading");
+  }
+}
+
+function openDeleteConfirmation(productId) {
+  pendingDelete = products.find((product) => product.id === productId);
+  if (!pendingDelete) return;
+  confirmMessage.textContent = `“${pendingDelete.name}” will be removed from the public catalog.`;
+  confirmModal.showModal();
+  refreshIcons();
+}
+
+async function deletePendingProduct() {
+  if (!pendingDelete) return;
+  confirmDelete.disabled = true;
+  try {
+    const response = await fetch(`/api/admin/products/${encodeURIComponent(pendingDelete.id)}`, {
+      method: "DELETE",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ revision: pendingDelete.revision }),
+    });
+    await readApiResponse(response);
+    products = products.filter((product) => product.id !== pendingDelete.id);
+    pendingDelete = null;
+    confirmModal.close();
+    populateQuoteProducts();
+    renderProducts();
+    showToast("Product deleted.");
+  } catch (error) {
+    confirmModal.close();
+    showToast(error.message);
+    if (error.code === "conflict") await reloadCatalog();
+  } finally {
+    confirmDelete.disabled = false;
+  }
+}
+
+async function reloadCatalog() {
+  await loadProducts();
+  populateQuoteProducts();
+  renderProducts();
+}
+
+function renderEditors(editors) {
+  editorList.innerHTML = editors
+    .map(
+      (editor) => `
+        <div class="editor-list-item">
+          <div>
+            <span class="editor-avatar">${escapeHtml(editor.email.slice(0, 1).toUpperCase())}</span>
+            <span>
+              <strong>${escapeHtml(editor.email)}</strong>
+              <small>${editor.role === "owner" ? "Owner" : "Product editor"}</small>
+            </span>
+          </div>
+          ${
+            editor.role === "owner"
+              ? '<span class="owner-badge"><i data-lucide="shield-check"></i> Owner</span>'
+              : `<button type="button" data-remove-editor="${escapeHtml(editor.email)}" aria-label="Remove ${escapeHtml(editor.email)}" title="Remove editor"><i data-lucide="trash-2"></i></button>`
+          }
+        </div>
+      `,
+    )
+    .join("");
+
+  editorList.querySelectorAll("[data-remove-editor]").forEach((button) => {
+    button.addEventListener("click", () => removeEditor(button.dataset.removeEditor));
+  });
+  refreshIcons();
+}
+
+async function loadEditors() {
+  setFormMessage(accessMessage);
+  const response = await fetch("/api/admin/editors", {
+    cache: "no-store",
+    credentials: "same-origin",
+    headers: { Accept: "application/json" },
+  });
+  const body = await readApiResponse(response);
+  renderEditors(body.editors);
+}
+
+async function openAccessModal() {
+  document.body.classList.add("modal-open");
+  accessModal.showModal();
+  refreshIcons();
+  try {
+    await loadEditors();
+  } catch (error) {
+    setFormMessage(accessMessage, error.message, true);
+  }
+}
+
+function closeAccessModal() {
+  accessModal.close();
+  document.body.classList.remove("modal-open");
+}
+
+async function addEditor(event) {
+  event.preventDefault();
+  setFormMessage(accessMessage);
+  const email = new FormData(addEditorForm).get("email");
+  try {
+    const response = await fetch("/api/admin/editors", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    await readApiResponse(response);
+    addEditorForm.reset();
+    await loadEditors();
+    showToast("Editor access added.");
+  } catch (error) {
+    setFormMessage(accessMessage, error.message, true);
+  }
+}
+
+async function removeEditor(email) {
+  setFormMessage(accessMessage);
+  try {
+    const response = await fetch(`/api/admin/editors/${encodeURIComponent(email)}`, {
+      method: "DELETE",
+      credentials: "same-origin",
+    });
+    await readApiResponse(response);
+    await loadEditors();
+    showToast("Editor access removed.");
+  } catch (error) {
+    setFormMessage(accessMessage, error.message, true);
+  }
+}
+
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     activeFilter = button.dataset.filter;
@@ -512,6 +597,72 @@ navLinks.querySelectorAll("a").forEach((link) => {
   });
 });
 
-populateQuoteProducts();
-renderProducts();
-refreshIcons();
+addProductButton.addEventListener("click", () => openProductEditor());
+manageEditorsButton.addEventListener("click", openAccessModal);
+productEditorForm.addEventListener("submit", saveProduct);
+productEditorModal.querySelectorAll(".editor-dialog-close").forEach((button) => {
+  button.addEventListener("click", closeProductEditor);
+});
+productEditorModal.addEventListener("close", () => {
+  document.body.classList.remove("modal-open");
+});
+
+editorImage.addEventListener("change", () => {
+  droppedImageFile = null;
+  const [file] = editorImage.files;
+  editorImage.required = !editingProduct;
+  if (file) showImagePreview(file);
+});
+
+["dragenter", "dragover"].forEach((eventName) => {
+  imageDropZone.addEventListener(eventName, (event) => {
+    event.preventDefault();
+    imageDropZone.classList.add("dragging");
+  });
+});
+
+["dragleave", "drop"].forEach((eventName) => {
+  imageDropZone.addEventListener(eventName, (event) => {
+    event.preventDefault();
+    imageDropZone.classList.remove("dragging");
+  });
+});
+
+imageDropZone.addEventListener("drop", (event) => {
+  const [file] = event.dataTransfer.files;
+  if (!file) return;
+  droppedImageFile = file;
+  editorImage.required = false;
+  showImagePreview(file);
+});
+
+accessModal.querySelector(".access-dialog-close").addEventListener("click", closeAccessModal);
+accessModal.addEventListener("close", () => {
+  document.body.classList.remove("modal-open");
+});
+addEditorForm.addEventListener("submit", addEditor);
+
+confirmCancel.addEventListener("click", () => {
+  pendingDelete = null;
+  confirmModal.close();
+});
+confirmDelete.addEventListener("click", deletePendingProduct);
+confirmModal.addEventListener("close", () => {
+  pendingDelete = null;
+});
+
+async function initializeSite() {
+  try {
+    await Promise.all([loadProducts(), checkEditorSession()]);
+  } catch (error) {
+    count.textContent = "Catalog unavailable";
+    grid.innerHTML = `<p class="catalog-error">${escapeHtml(error.message)}</p>`;
+    refreshIcons();
+    return;
+  }
+  populateQuoteProducts();
+  renderProducts();
+  refreshIcons();
+}
+
+initializeSite();

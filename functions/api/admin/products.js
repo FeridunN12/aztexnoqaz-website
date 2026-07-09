@@ -1,0 +1,61 @@
+import { ensureCatalog, rowToProduct, writeAudit } from "../../_lib/db.js";
+import { errorResponse, json, requireSameOrigin } from "../../_lib/http.js";
+import {
+  parseProductForm,
+  storeImage,
+  uniqueProductId,
+} from "../../_lib/products.js";
+
+export async function onRequestPost({ request, env, data }) {
+  let storedImage = null;
+  try {
+    requireSameOrigin(request);
+    await ensureCatalog(env.DB);
+    const formData = await request.formData();
+    const product = parseProductForm(formData);
+    const id = await uniqueProductId(env.DB, product.name);
+    storedImage = await storeImage(env.DB, formData.get("image"), id);
+    const orderRow = await env.DB
+      .prepare("SELECT COALESCE(MAX(sort_order), -1) + 1 AS next_order FROM products")
+      .first();
+    const now = new Date().toISOString();
+
+    await env.DB
+      .prepare(
+        `INSERT INTO products (
+           id, name, brand, category, image_url, summary, specs_json, tags_json,
+           sort_order, version, created_at, updated_at, updated_by
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`,
+      )
+      .bind(
+        id,
+        product.name,
+        product.brand,
+        product.category,
+        storedImage.url,
+        product.summary,
+        JSON.stringify(product.specs),
+        JSON.stringify(product.tags),
+        Number(orderRow?.next_order || 0),
+        now,
+        now,
+        data.editor.email,
+      )
+      .run();
+
+    await writeAudit(env.DB, data.editor.email, "create", "product", id, {
+      name: product.name,
+    });
+    const row = await env.DB.prepare("SELECT * FROM products WHERE id = ?").bind(id).first();
+    return json({ product: rowToProduct(row) }, 201);
+  } catch (error) {
+    if (storedImage?.key && env.DB) {
+      await env.DB
+        .prepare("DELETE FROM product_images WHERE image_key = ?")
+        .bind(storedImage.key)
+        .run()
+        .catch(() => {});
+    }
+    return errorResponse(error);
+  }
+}

@@ -13,6 +13,8 @@ dist/
 build/
 .cache/
 .wrangler/
+wrangler.local.jsonc
+wrangler.jsonc
 
 .vscode/
 .idea/

@@ -9,9 +9,9 @@
       content="AzTexnoQaz LLC supplies gas meters, regulators, valves, volume converters, pressure hoses, HVAC equipment and industrial gas cabinets in Azerbaijan."
     />
     <link rel="icon" href="assets/logo-mark.png" />
-    <link rel="stylesheet" href="styles.css?v=20260708-elster" />
+    <link rel="stylesheet" href="styles.css?v=20260709-editor" />
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-    <script defer src="script.js"></script>
+    <script defer src="script.js?v=20260709-editor"></script>
   </head>
   <body>
     <a class="skip-link" href="#products">Skip to products</a>
@@ -42,12 +42,39 @@
           <a href="#buy">How to buy</a>
           <a href="#contact">Contact</a>
         </div>
+        <a class="staff-access" id="staff-access" href="/api/admin/login" aria-label="Staff access" title="Staff access">
+          <i data-lucide="lock-keyhole"></i>
+        </a>
         <a class="nav-cta" href="#buy">
           <i data-lucide="file-text"></i>
           Request quote
         </a>
       </nav>
     </header>
+
+    <div class="editor-bar" id="editor-bar" hidden>
+      <div class="editor-bar-inner">
+        <div class="editor-identity">
+          <span class="editor-status-dot" aria-hidden="true"></span>
+          <span>
+            <small>Editing as</small>
+            <strong id="editor-email"></strong>
+          </span>
+        </div>
+        <div class="editor-bar-actions">
+          <button class="editor-primary-action" id="add-product-button" type="button">
+            <i data-lucide="plus"></i>
+            Add product
+          </button>
+          <button class="editor-icon-action" id="manage-editors-button" type="button" aria-label="Manage editors" title="Manage editors" hidden>
+            <i data-lucide="users"></i>
+          </button>
+          <a class="editor-icon-action" id="editor-sign-out" href="/cdn-cgi/access/logout" aria-label="Sign out" title="Sign out">
+            <i data-lucide="log-out"></i>
+          </a>
+        </div>
+      </div>
+    </div>
 
     <main id="top">
       <section class="hero" aria-label="AzTexnoQaz product showcase">
@@ -389,5 +416,123 @@
         </div>
       </div>
     </dialog>
+
+    <dialog class="editor-modal" id="product-editor-modal" aria-labelledby="product-editor-title">
+      <form id="product-editor-form" method="dialog">
+        <header class="editor-modal-header">
+          <div>
+            <p class="section-kicker">Catalog editor</p>
+            <h3 id="product-editor-title">Add new product</h3>
+          </div>
+          <button class="icon-button editor-dialog-close" type="button" aria-label="Close product editor">
+            <i data-lucide="x"></i>
+          </button>
+        </header>
+
+        <div class="editor-form-layout">
+          <label class="image-drop-zone" id="image-drop-zone" for="editor-image">
+            <input id="editor-image" name="image" type="file" accept="image/jpeg,image/png,image/webp" />
+            <img id="editor-image-preview" alt="" hidden />
+            <span class="image-drop-prompt" id="image-drop-prompt">
+              <i data-lucide="image-plus"></i>
+              <strong>Add product photo</strong>
+              <small>JPG, PNG or WebP, optimized automatically</small>
+            </span>
+          </label>
+
+          <div class="editor-fields">
+            <div class="editor-field-row">
+              <label>
+                <span>Product name</span>
+                <input name="name" type="text" maxlength="120" required />
+              </label>
+              <label>
+                <span>Brand</span>
+                <input name="brand" type="text" maxlength="80" required />
+              </label>
+            </div>
+
+            <label>
+              <span>Category</span>
+              <select name="category" required>
+                <option value="metering">Metering</option>
+                <option value="regulators">Regulators</option>
+                <option value="conversion">Conversion</option>
+                <option value="valves">Valves</option>
+                <option value="hvac">HVAC</option>
+                <option value="accessories">Accessories</option>
+                <option value="cabinets">Cabinets</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Description</span>
+              <textarea name="summary" rows="4" maxlength="600" required></textarea>
+            </label>
+
+            <label>
+              <span>Specifications</span>
+              <textarea name="specs" rows="4" placeholder="One specification per line"></textarea>
+            </label>
+
+            <label>
+              <span>Tags</span>
+              <input name="tags" type="text" placeholder="Gas, Meter, Industrial" />
+            </label>
+          </div>
+        </div>
+
+        <p class="editor-form-message" id="product-editor-message" role="status"></p>
+        <footer class="editor-modal-footer">
+          <button class="editor-secondary-button editor-dialog-close" type="button">Cancel</button>
+          <button class="editor-save-button" id="product-editor-save" type="submit">
+            <i data-lucide="upload-cloud"></i>
+            Publish product
+          </button>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog class="editor-modal access-modal" id="access-modal" aria-labelledby="access-modal-title">
+      <div>
+        <header class="editor-modal-header">
+          <div>
+            <p class="section-kicker">Team access</p>
+            <h3 id="access-modal-title">Manage editors</h3>
+          </div>
+          <button class="icon-button access-dialog-close" type="button" aria-label="Close editor access">
+            <i data-lucide="x"></i>
+          </button>
+        </header>
+
+        <form class="add-editor-form" id="add-editor-form">
+          <label>
+            <span>Add editor by email</span>
+            <div>
+              <input id="new-editor-email" name="email" type="email" autocomplete="email" placeholder="name@example.com" required />
+              <button class="editor-save-button" type="submit">
+                <i data-lucide="user-plus"></i>
+                Add
+              </button>
+            </div>
+          </label>
+        </form>
+
+        <p class="editor-form-message" id="access-message" role="status"></p>
+        <div class="editor-list" id="editor-list"></div>
+      </div>
+    </dialog>
+
+    <dialog class="confirm-modal" id="confirm-modal" aria-labelledby="confirm-title">
+      <div class="confirm-icon"><i data-lucide="trash-2"></i></div>
+      <h3 id="confirm-title">Delete product?</h3>
+      <p id="confirm-message"></p>
+      <div>
+        <button class="editor-secondary-button" id="confirm-cancel" type="button">Cancel</button>
+        <button class="danger-button" id="confirm-delete" type="button">Delete</button>
+      </div>
+    </dialog>
+
+    <div class="editor-toast" id="editor-toast" role="status" aria-live="polite" hidden></div>
   </body>
 </html>
