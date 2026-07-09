@@ -10,6 +10,8 @@ import {
 import { ensureEditors, writeAudit } from "../../_lib/db.js";
 import { ApiError, errorResponse, json, readJson, requireSameOrigin } from "../../_lib/http.js";
 
+const LOGIN_ROUTE_VERSION = "2026-07-10-seeded-owner-passwords";
+
 export async function onRequestPost({ request, env }) {
   try {
     requireSameOrigin(request);
@@ -35,7 +37,11 @@ export async function onRequestPost({ request, env }) {
 
     if (!passwordMatches) {
       await recordLoginFailure(env.DB, attemptKey);
-      throw new ApiError(401, "The email or password is incorrect.", "invalid_credentials");
+      return json(
+        { error: "The email or password is incorrect.", code: "invalid_credentials" },
+        401,
+        { "X-Aztexnogaz-Login-Version": LOGIN_ROUTE_VERSION },
+      );
     }
 
     const session = await createEditorSession(env.DB, request, editor.email, deviceName);
@@ -53,7 +59,10 @@ export async function onRequestPost({ request, env }) {
         },
       },
       200,
-      { "Set-Cookie": sessionCookie(session.token) },
+      {
+        "Set-Cookie": sessionCookie(session.token),
+        "X-Aztexnogaz-Login-Version": LOGIN_ROUTE_VERSION,
+      },
     );
   } catch (error) {
     return errorResponse(error);
