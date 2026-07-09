@@ -1,5 +1,6 @@
 import { ensureEditors, INITIAL_OWNERS } from "../_lib/db.js";
-import { json } from "../_lib/http.js";
+import { verifyPassword } from "../_lib/auth.js";
+import { json, readJson } from "../_lib/http.js";
 
 const encoder = new TextEncoder();
 
@@ -79,6 +80,50 @@ export async function onRequestGet({ env }) {
     return json(
       {
         version: "2026-07-10-editor-diagnostics",
+        error: String(error?.message || error).slice(0, 300),
+      },
+      500,
+    );
+  }
+}
+
+export async function onRequestPost({ request, env }) {
+  try {
+    if (request.headers.get("X-Debug-Token") !== "aztexnogaz-debug-2026-07-10") {
+      return json({ error: "Not found." }, 404);
+    }
+    await ensureEditors(env.DB);
+    const body = await readJson(request);
+    const email = String(body.email || "").trim().toLowerCase();
+    const editor = await env.DB
+      .prepare(
+        `SELECT
+           email,
+           password_salt,
+           password_hash,
+           password_iterations
+         FROM editors
+         WHERE email = ? COLLATE NOCASE`,
+      )
+      .bind(email)
+      .first();
+    const expected = INITIAL_OWNERS.find((owner) => owner.email.toLowerCase() === email)?.password;
+    return json({
+      version: "2026-07-10-editor-diagnostics-post",
+      found: Boolean(editor),
+      passwordMatches: editor ? await verifyPassword(body.password, editor, env.AUTH_PEPPER) : false,
+      rowMatchesSeed:
+        Boolean(editor && expected) &&
+        editor.password_salt === expected.salt &&
+        editor.password_hash === expected.hash &&
+        Number(editor.password_iterations) === expected.iterations,
+      pepperConfigured: String(env.AUTH_PEPPER || "").length >= 32,
+      iterations: editor?.password_iterations ?? null,
+    });
+  } catch (error) {
+    return json(
+      {
+        version: "2026-07-10-editor-diagnostics-post",
         error: String(error?.message || error).slice(0, 300),
       },
       500,
