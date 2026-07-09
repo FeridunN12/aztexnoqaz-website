@@ -32,8 +32,7 @@ Then open:
 http://127.0.0.1:8792
 ```
 
-For local editor access, seed a development-only account with a password hash
-in the local D1 database. Never commit real passwords or password hashes.
+Local editor access uses the seeded owner password records in `functions/_lib/db.js`.
 
 ## Cloudflare Pages Settings
 
@@ -44,20 +43,20 @@ Use Cloudflare Pages with GitHub integration.
 - Build command: leave empty
 - Build output directory: `/`
 - D1 binding: `DB` -> `aztexnogaz-catalog`
-- Secret: `AUTH_PEPPER` -> at least 32 random characters
-- Secret: `INITIAL_EDITOR_PASSWORD` -> temporary first-login password for the seeded owner accounts
+- Secret: `AUTH_PEPPER` -> recommended 32+ character private pepper for new password records
 
 Every push to the `main` branch should trigger a new Cloudflare Pages production deployment.
 
-Editor accounts and peppered password verifiers are stored in D1. Keep
-`AUTH_PEPPER` private and never commit the production value. Successful login
-creates a revocable, `HttpOnly`, same-site device session that rolls forward
-for one year. Every account has full product and user-management access.
+Editor accounts and password verifiers are stored in D1. New passwords use
+`AUTH_PEPPER` when it is configured, and otherwise fall back to slow salted
+PBKDF2 records. Successful login creates a revocable, `HttpOnly`, same-site
+device session that rolls forward for ten years. Every account has full product
+and user-management access.
 Visitors without a valid session see only the public website.
 
-The seeded owner accounts can use `INITIAL_EDITOR_PASSWORD` to create or repair
-their stored password verifier. After the owner login works, remove
-`INITIAL_EDITOR_PASSWORD` from Cloudflare Pages.
+The two seeded owner accounts are repaired automatically from the checked-in
+password verifier records, so they remain usable even if the production D1 rows
+are missing or stale.
 
 ## Updating The Website
 

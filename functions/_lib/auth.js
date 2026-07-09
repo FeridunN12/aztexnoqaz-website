@@ -2,7 +2,7 @@ import { ensureEditors, INITIAL_OWNERS } from "./db.js";
 import { ApiError } from "./http.js";
 
 const SESSION_COOKIE = "aztexnogaz_editor";
-const SESSION_TTL_SECONDS = 365 * 24 * 60 * 60;
+const SESSION_TTL_SECONDS = 10 * 365 * 24 * 60 * 60;
 const PASSWORD_ITERATIONS = 210_000;
 const PASSWORD_HMAC_VERSION = 0;
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
@@ -48,9 +48,6 @@ async function derivePasswordHash(password, salt, iterations) {
 }
 
 async function derivePepperedPasswordHash(password, salt, pepper) {
-  if (!pepper || String(pepper).length < 32) {
-    throw new ApiError(503, "Editor login is not configured.", "auth_not_configured");
-  }
   const key = await crypto.subtle.importKey(
     "raw",
     encoder.encode(pepper),
@@ -64,6 +61,10 @@ async function derivePepperedPasswordHash(password, salt, pepper) {
     encoder.encode(`${bytesToBase64Url(salt)}.${password}`),
   );
   return derivePasswordHash(bytesToBase64Url(new Uint8Array(digest)), salt, PASSWORD_ITERATIONS);
+}
+
+function hasPasswordPepper(pepper) {
+  return String(pepper || "").length >= 32;
 }
 
 function equalBytes(left, right) {
@@ -115,11 +116,14 @@ export function validatePassword(password) {
 export async function createPasswordRecord(password, pepper) {
   const value = validatePassword(password);
   const salt = crypto.getRandomValues(new Uint8Array(16));
-  const hash = await derivePepperedPasswordHash(value, salt, pepper);
+  const usePepper = hasPasswordPepper(pepper);
+  const hash = usePepper
+    ? await derivePepperedPasswordHash(value, salt, pepper)
+    : await derivePasswordHash(value, salt, PASSWORD_ITERATIONS);
   return {
     salt: bytesToBase64Url(salt),
     hash: bytesToBase64Url(hash),
-    iterations: PASSWORD_HMAC_VERSION,
+    iterations: usePepper ? PASSWORD_HMAC_VERSION : PASSWORD_ITERATIONS,
   };
 }
 
@@ -132,8 +136,11 @@ export async function verifyPassword(password, editor, pepper) {
     const iterations = Number(editor.password_iterations);
     const candidate =
       iterations === PASSWORD_HMAC_VERSION
-        ? await derivePepperedPasswordHash(value, salt, pepper)
+        ? hasPasswordPepper(pepper)
+          ? await derivePepperedPasswordHash(value, salt, pepper)
+          : null
         : await derivePasswordHash(value, salt, iterations || PASSWORD_ITERATIONS);
+    if (!candidate) return false;
     return equalBytes(candidate, base64UrlToBytes(editor.password_hash));
   } catch (error) {
     if (error instanceof ApiError) throw error;
