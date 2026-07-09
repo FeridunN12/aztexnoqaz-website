@@ -21,18 +21,28 @@ export async function onRequestGet({ env }) {
       .bind(INITIAL_OWNERS[0].email, INITIAL_OWNERS[1].email)
       .all();
 
+    const expectedByEmail = new Map(
+      INITIAL_OWNERS.map((owner) => [owner.email.toLowerCase(), owner.password]),
+    );
+
     return json({
       version: "2026-07-10-editor-diagnostics",
-      owners: result.results.map((owner) => ({
-        email: owner.email,
-        role: owner.role,
-        displayName: owner.displayName,
-        hasPassword: Boolean(owner.passwordHash),
-        saltLength: String(owner.passwordSalt || "").length,
-        hashLength: String(owner.passwordHash || "").length,
-        passwordIterations: owner.passwordIterations,
-        updatedAt: owner.updatedAt,
-      })),
+      owners: result.results.map((owner) => {
+        const expected = expectedByEmail.get(String(owner.email || "").toLowerCase());
+        return {
+          email: owner.email,
+          role: owner.role,
+          displayName: owner.displayName,
+          hasPassword: Boolean(owner.passwordHash),
+          saltLength: String(owner.passwordSalt || "").length,
+          hashLength: String(owner.passwordHash || "").length,
+          passwordIterations: owner.passwordIterations,
+          saltMatchesSeed: owner.passwordSalt === expected?.salt,
+          hashMatchesSeed: owner.passwordHash === expected?.hash,
+          iterationsMatchSeed: Number(owner.passwordIterations) === expected?.iterations,
+          updatedAt: owner.updatedAt,
+        };
+      }),
     });
   } catch (error) {
     return json(
