@@ -1,6 +1,36 @@
 import { ensureEditors, INITIAL_OWNERS } from "../_lib/db.js";
 import { json } from "../_lib/http.js";
 
+const encoder = new TextEncoder();
+
+async function cryptoSelfTest() {
+  try {
+    const key = await crypto.subtle.importKey(
+      "raw",
+      encoder.encode("diagnostic"),
+      "PBKDF2",
+      false,
+      ["deriveBits"],
+    );
+    await crypto.subtle.deriveBits(
+      {
+        name: "PBKDF2",
+        hash: "SHA-256",
+        salt: encoder.encode("salt"),
+        iterations: 1,
+      },
+      key,
+      256,
+    );
+    return { pbkdf2: true };
+  } catch (error) {
+    return {
+      pbkdf2: false,
+      error: String(error?.message || error).slice(0, 160),
+    };
+  }
+}
+
 export async function onRequestGet({ env }) {
   try {
     await ensureEditors(env.DB);
@@ -27,6 +57,7 @@ export async function onRequestGet({ env }) {
 
     return json({
       version: "2026-07-10-editor-diagnostics",
+      crypto: await cryptoSelfTest(),
       owners: result.results.map((owner) => {
         const expected = expectedByEmail.get(String(owner.email || "").toLowerCase());
         return {
