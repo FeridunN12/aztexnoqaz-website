@@ -3,7 +3,7 @@ import { ApiError } from "./http.js";
 
 const SESSION_COOKIE = "aztexnogaz_editor";
 const SESSION_TTL_SECONDS = 10 * 365 * 24 * 60 * 60;
-const PASSWORD_ITERATIONS = 210_000;
+const PASSWORD_ITERATIONS = 100_000;
 const PASSWORD_HMAC_VERSION = 0;
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
 const MAX_LOGIN_ATTEMPTS = 8;
