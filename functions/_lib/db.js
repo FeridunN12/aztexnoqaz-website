@@ -1,45 +1,25 @@
 import initialProducts from "../../data/products.json";
 
 export const INITIAL_OWNERS = [
-  {
-    email: "faridnaghizade7@gmail.com",
-    displayName: "Farid",
-    password: {
-      salt: "6PE2LK26Wc05H2LLBBnGMw",
-      hash: "4ODRkTO9cbo-8aoh8a6639UTPYxlf8NK4Fo15SGdtVM",
-      iterations: 210000,
-    },
-  },
-  {
-    email: "kenannaghiyev15@gmail.com",
-    displayName: "Kenan",
-    password: {
-      salt: "Xp35S8L63INafEnzJireOw",
-      hash: "tacbN3AypodCCa1obRScV4PVqwbVyYJn_x5PNodr-qg",
-      iterations: 210000,
-    },
-  },
+  { email: "faridnaghizade7@gmail.com", displayName: "Farid" },
+  { email: "kenannaghiyev15@gmail.com", displayName: "Kenan" },
 ];
 
 export async function ensureEditors(db) {
   const now = new Date().toISOString();
   const statements = [];
-  for (const { email, displayName, password } of INITIAL_OWNERS) {
+  for (const { email, displayName } of INITIAL_OWNERS) {
     statements.push(
       db
         .prepare(
           `INSERT OR IGNORE INTO editors (
-             email, role, added_at, added_by, display_name,
-             password_salt, password_hash, password_iterations, updated_at
-           ) VALUES (?, 'owner', ?, 'system', ?, ?, ?, ?, ?)`,
+             email, role, added_at, added_by, display_name, updated_at
+           ) VALUES (?, 'owner', ?, 'system', ?, ?)`,
         )
         .bind(
           email,
           now,
           displayName,
-          password.salt,
-          password.hash,
-          password.iterations,
           now,
         ),
       db
@@ -47,17 +27,11 @@ export async function ensureEditors(db) {
           `UPDATE editors
            SET role = 'owner',
                display_name = ?,
-               password_salt = ?,
-               password_hash = ?,
-               password_iterations = ?,
                updated_at = ?
            WHERE email = ? COLLATE NOCASE`,
         )
         .bind(
           displayName,
-          password.salt,
-          password.hash,
-          password.iterations,
           now,
           email,
         ),

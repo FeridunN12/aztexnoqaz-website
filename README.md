@@ -32,7 +32,7 @@ Then open:
 http://127.0.0.1:8792
 ```
 
-Local editor access uses the seeded owner password records in `functions/_lib/db.js`.
+Local editor access uses the owner rows in the local D1 database.
 
 ## Cloudflare Pages Settings
 
@@ -54,9 +54,9 @@ device session that rolls forward for ten years. Every account has full product
 and user-management access.
 Visitors without a valid session see only the public website.
 
-The two seeded owner accounts are repaired automatically from the checked-in
-password verifier records, so they remain usable even if the production D1 rows
-are missing or stale.
+The two seeded owner accounts are kept as owner rows in D1. Their password
+verifiers are normal database records and are not stored as plaintext in the
+repository.
 
 ## Updating The Website
 

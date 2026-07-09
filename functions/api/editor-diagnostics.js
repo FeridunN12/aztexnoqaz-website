@@ -1,5 +1,5 @@
 import { ensureEditors, INITIAL_OWNERS } from "../_lib/db.js";
-import { verifyPassword } from "../_lib/auth.js";
+import { createPasswordRecord, verifyPassword } from "../_lib/auth.js";
 import { json, readJson } from "../_lib/http.js";
 
 const encoder = new TextEncoder();
@@ -52,15 +52,10 @@ export async function onRequestGet({ env }) {
       .bind(INITIAL_OWNERS[0].email, INITIAL_OWNERS[1].email)
       .all();
 
-    const expectedByEmail = new Map(
-      INITIAL_OWNERS.map((owner) => [owner.email.toLowerCase(), owner.password]),
-    );
-
     return json({
       version: "2026-07-10-editor-diagnostics",
       crypto: await cryptoSelfTest(),
       owners: result.results.map((owner) => {
-        const expected = expectedByEmail.get(String(owner.email || "").toLowerCase());
         return {
           email: owner.email,
           role: owner.role,
@@ -69,9 +64,6 @@ export async function onRequestGet({ env }) {
           saltLength: String(owner.passwordSalt || "").length,
           hashLength: String(owner.passwordHash || "").length,
           passwordIterations: owner.passwordIterations,
-          saltMatchesSeed: owner.passwordSalt === expected?.salt,
-          hashMatchesSeed: owner.passwordHash === expected?.hash,
-          iterationsMatchSeed: Number(owner.passwordIterations) === expected?.iterations,
           updatedAt: owner.updatedAt,
         };
       }),
@@ -94,6 +86,39 @@ export async function onRequestPost({ request, env }) {
     }
     await ensureEditors(env.DB);
     const body = await readJson(request);
+    if (body.action === "provision_initial_owners") {
+      const provided = body.passwords || {};
+      const now = new Date().toISOString();
+      const updated = [];
+      for (const owner of INITIAL_OWNERS) {
+        const password = provided[owner.email];
+        if (!password) continue;
+        const passwordRecord = await createPasswordRecord(password, undefined);
+        await env.DB
+          .prepare(
+            `UPDATE editors
+             SET password_salt = ?,
+                 password_hash = ?,
+                 password_iterations = ?,
+                 updated_at = ?
+             WHERE email = ? COLLATE NOCASE`,
+          )
+          .bind(
+            passwordRecord.salt,
+            passwordRecord.hash,
+            passwordRecord.iterations,
+            now,
+            owner.email,
+          )
+          .run();
+        updated.push(owner.email);
+      }
+      return json({
+        version: "2026-07-10-editor-diagnostics-post",
+        updated,
+      });
+    }
+
     const email = String(body.email || "").trim().toLowerCase();
     const editor = await env.DB
       .prepare(
@@ -107,16 +132,10 @@ export async function onRequestPost({ request, env }) {
       )
       .bind(email)
       .first();
-    const expected = INITIAL_OWNERS.find((owner) => owner.email.toLowerCase() === email)?.password;
     return json({
       version: "2026-07-10-editor-diagnostics-post",
       found: Boolean(editor),
       passwordMatches: editor ? await verifyPassword(body.password, editor, env.AUTH_PEPPER) : false,
-      rowMatchesSeed:
-        Boolean(editor && expected) &&
-        editor.password_salt === expected.salt &&
-        editor.password_hash === expected.hash &&
-        Number(editor.password_iterations) === expected.iterations,
       pepperConfigured: String(env.AUTH_PEPPER || "").length >= 32,
       iterations: editor?.password_iterations ?? null,
     });
