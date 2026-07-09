@@ -55,9 +55,9 @@ creates a revocable, `HttpOnly`, same-site device session that rolls forward
 for one year. Every account has full product and user-management access.
 Visitors without a valid session see only the public website.
 
-The seeded owner accounts can use `INITIAL_EDITOR_PASSWORD` only until their
-first successful login creates a stored password verifier. After the first
-owner login works, remove `INITIAL_EDITOR_PASSWORD` from Cloudflare Pages.
+The seeded owner accounts can use `INITIAL_EDITOR_PASSWORD` to create or repair
+their stored password verifier. After the owner login works, remove
+`INITIAL_EDITOR_PASSWORD` from Cloudflare Pages.
 
 ## Updating The Website
 

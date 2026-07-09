@@ -127,13 +127,19 @@ export async function verifyPassword(password, editor, pepper) {
   if (!editor?.password_salt || !editor?.password_hash) return false;
   const value = String(password || "");
   if (!value || value.length > 128) return false;
-  const salt = base64UrlToBytes(editor.password_salt);
-  const iterations = Number(editor.password_iterations);
-  const candidate =
-    iterations === PASSWORD_HMAC_VERSION
-      ? await derivePepperedPasswordHash(value, salt, pepper)
-      : await derivePasswordHash(value, salt, iterations || PASSWORD_ITERATIONS);
-  return equalBytes(candidate, base64UrlToBytes(editor.password_hash));
+  try {
+    const salt = base64UrlToBytes(editor.password_salt);
+    const iterations = Number(editor.password_iterations);
+    const candidate =
+      iterations === PASSWORD_HMAC_VERSION
+        ? await derivePepperedPasswordHash(value, salt, pepper)
+        : await derivePasswordHash(value, salt, iterations || PASSWORD_ITERATIONS);
+    return equalBytes(candidate, base64UrlToBytes(editor.password_hash));
+  } catch (error) {
+    if (error instanceof ApiError) throw error;
+    console.error("Could not verify editor password", error);
+    return false;
+  }
 }
 
 function isInitialOwner(email) {
@@ -142,7 +148,7 @@ function isInitialOwner(email) {
 }
 
 export async function bootstrapInitialOwnerPassword(db, editor, password, env) {
-  if (!editor?.email || editor.password_hash || !isInitialOwner(editor.email)) return false;
+  if (!editor?.email || !isInitialOwner(editor.email)) return false;
   const bootstrapPassword = String(env.INITIAL_EDITOR_PASSWORD || "");
   const value = String(password || "");
   if (
@@ -159,7 +165,7 @@ export async function bootstrapInitialOwnerPassword(db, editor, password, env) {
     .prepare(
       `UPDATE editors
        SET password_salt = ?, password_hash = ?, password_iterations = ?, updated_at = ?
-       WHERE email = ? COLLATE NOCASE AND password_hash IS NULL`,
+       WHERE email = ? COLLATE NOCASE`,
     )
     .bind(
       passwordRecord.salt,
