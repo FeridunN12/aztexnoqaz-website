@@ -4,6 +4,7 @@ import { ApiError } from "./http.js";
 const SESSION_COOKIE = "aztexnogaz_editor";
 const SESSION_TTL_SECONDS = 365 * 24 * 60 * 60;
 const PASSWORD_ITERATIONS = 210_000;
+const PASSWORD_HMAC_VERSION = 0;
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
 const MAX_LOGIN_ATTEMPTS = 8;
 const encoder = new TextEncoder();
@@ -44,6 +45,25 @@ async function derivePasswordHash(password, salt, iterations) {
     256,
   );
   return new Uint8Array(bits);
+}
+
+async function derivePepperedPasswordHash(password, salt, pepper) {
+  if (!pepper || String(pepper).length < 32) {
+    throw new ApiError(503, "Editor login is not configured.", "auth_not_configured");
+  }
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(pepper),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const digest = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    encoder.encode(`${bytesToBase64Url(salt)}.${password}`),
+  );
+  return derivePasswordHash(bytesToBase64Url(new Uint8Array(digest)), salt, PASSWORD_ITERATIONS);
 }
 
 function equalBytes(left, right) {
@@ -92,26 +112,27 @@ export function validatePassword(password) {
   return value;
 }
 
-export async function createPasswordRecord(password) {
+export async function createPasswordRecord(password, pepper) {
   const value = validatePassword(password);
   const salt = crypto.getRandomValues(new Uint8Array(16));
-  const hash = await derivePasswordHash(value, salt, PASSWORD_ITERATIONS);
+  const hash = await derivePepperedPasswordHash(value, salt, pepper);
   return {
     salt: bytesToBase64Url(salt),
     hash: bytesToBase64Url(hash),
-    iterations: PASSWORD_ITERATIONS,
+    iterations: PASSWORD_HMAC_VERSION,
   };
 }
 
-export async function verifyPassword(password, editor) {
+export async function verifyPassword(password, editor, pepper) {
   if (!editor?.password_salt || !editor?.password_hash) return false;
   const value = String(password || "");
   if (!value || value.length > 128) return false;
-  const candidate = await derivePasswordHash(
-    value,
-    base64UrlToBytes(editor.password_salt),
-    Number(editor.password_iterations || PASSWORD_ITERATIONS),
-  );
+  const salt = base64UrlToBytes(editor.password_salt);
+  const iterations = Number(editor.password_iterations);
+  const candidate =
+    iterations === PASSWORD_HMAC_VERSION
+      ? await derivePepperedPasswordHash(value, salt, pepper)
+      : await derivePasswordHash(value, salt, iterations || PASSWORD_ITERATIONS);
   return equalBytes(candidate, base64UrlToBytes(editor.password_hash));
 }
 

@@ -27,7 +27,7 @@ export async function onRequestPost({ request, env }) {
       .bind(email)
       .first();
 
-    if (!editor || !(await verifyPassword(body.password, editor))) {
+    if (!editor || !(await verifyPassword(body.password, editor, env.AUTH_PEPPER))) {
       await recordLoginFailure(env.DB, attemptKey);
       throw new ApiError(401, "The email or password is incorrect.", "invalid_credentials");
     }

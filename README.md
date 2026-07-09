@@ -44,10 +44,12 @@ Use Cloudflare Pages with GitHub integration.
 - Build command: leave empty
 - Build output directory: `/`
 - D1 binding: `DB` -> `aztexnogaz-catalog`
+- Secret: `AUTH_PEPPER` -> at least 32 random characters
 
 Every push to the `main` branch should trigger a new Cloudflare Pages production deployment.
 
-Editor accounts and salted password hashes are stored in D1. Successful login
+Editor accounts and peppered password verifiers are stored in D1. Keep
+`AUTH_PEPPER` private and never commit the production value. Successful login
 creates a revocable, `HttpOnly`, same-site device session that rolls forward
 for one year. Every account has full product and user-management access.
 Visitors without a valid session see only the public website.

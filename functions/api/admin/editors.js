@@ -76,7 +76,7 @@ export async function onRequestPost({ request, env, data }) {
     }
 
     const now = new Date().toISOString();
-    const password = await createPasswordRecord(body.password);
+    const password = await createPasswordRecord(body.password, env.AUTH_PEPPER);
     await env.DB
       .prepare(
         `INSERT INTO editors (
