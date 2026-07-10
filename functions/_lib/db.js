@@ -72,12 +72,15 @@ export async function ensureCatalog(db) {
 }
 
 export function rowToProduct(row) {
+  const imageUrl = String(row.image_url || "");
   return {
     id: row.id,
     name: row.name,
     brand: row.brand,
     category: row.category,
-    image: row.image_url,
+    image: imageUrl.startsWith("/media/")
+      ? `${imageUrl}?v=${encodeURIComponent(row.version)}`
+      : imageUrl,
     summary: row.summary,
     specs: JSON.parse(row.specs_json || "[]"),
     tags: JSON.parse(row.tags_json || "[]"),

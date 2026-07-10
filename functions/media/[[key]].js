@@ -16,5 +16,5 @@ export async function onRequestGet({ env, params }) {
   });
   headers.set("Cache-Control", "public, max-age=31536000, immutable");
   headers.set("X-Content-Type-Options", "nosniff");
-  return new Response(image.body, { headers });
+  return new Response(new Uint8Array(image.body), { headers });
 }
