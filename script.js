@@ -384,20 +384,28 @@ async function optimizeProductImage(file) {
   if (file.size > 8 * 1024 * 1024) {
     throw new Error("Choose a product photo smaller than 8 MB.");
   }
-  if (file.size <= 1_400_000) return file;
 
   const bitmap = await createImageBitmap(file);
-  const maxDimension = 1600;
-  const initialScale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height));
-  let width = Math.max(1, Math.round(bitmap.width * initialScale));
-  let height = Math.max(1, Math.round(bitmap.height * initialScale));
-  let quality = 0.84;
+  let size = 1200;
+  let quality = 0.88;
 
-  for (let attempt = 0; attempt < 5; attempt += 1) {
+  for (let attempt = 0; attempt < 6; attempt += 1) {
     const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-    canvas.getContext("2d").drawImage(bitmap, 0, 0, width, height);
+    canvas.width = size;
+    canvas.height = size;
+    const context = canvas.getContext("2d");
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, size, size);
+
+    const padding = Math.round(size * 0.05);
+    const availableSize = size - padding * 2;
+    const scale = Math.min(availableSize / bitmap.width, availableSize / bitmap.height);
+    const width = Math.max(1, Math.round(bitmap.width * scale));
+    const height = Math.max(1, Math.round(bitmap.height * scale));
+    const x = Math.round((size - width) / 2);
+    const y = Math.round((size - height) / 2);
+    context.drawImage(bitmap, x, y, width, height);
+
     const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", quality));
     if (blob && blob.size <= 1_400_000) {
       bitmap.close();
@@ -405,9 +413,8 @@ async function optimizeProductImage(file) {
         type: "image/webp",
       });
     }
-    width = Math.max(1, Math.round(width * 0.82));
-    height = Math.max(1, Math.round(height * 0.82));
-    quality = Math.max(0.58, quality - 0.07);
+    quality = Math.max(0.56, quality - 0.07);
+    if (attempt >= 3) size = Math.max(900, Math.round(size * 0.9));
   }
 
   bitmap.close();
