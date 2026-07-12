@@ -81,11 +81,6 @@ export async function storeImage(db, file, productId) {
     throw new ApiError(413, "The optimized product photo must be smaller than 1.5 MB.", "image_too_large");
   }
 
-  const extension = IMAGE_TYPES.get(file.type);
-  if (!extension) {
-    throw new ApiError(415, "Use a JPG, PNG, or WebP product photo.", "invalid_image_type");
-  }
-
   const contents = await file.arrayBuffer();
   const bytes = new Uint8Array(contents.slice(0, 12));
   const isJpeg = bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
@@ -97,13 +92,17 @@ export async function storeImage(db, file, productId) {
   const isWebp =
     String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" &&
     String.fromCharCode(...bytes.slice(8, 12)) === "WEBP";
-  const contentMatchesType =
-    (file.type === "image/jpeg" && isJpeg) ||
-    (file.type === "image/png" && isPng) ||
-    (file.type === "image/webp" && isWebp);
-  if (!contentMatchesType) {
+  const contentType = isJpeg
+    ? "image/jpeg"
+    : isPng
+      ? "image/png"
+      : isWebp
+        ? "image/webp"
+        : null;
+  if (!contentType) {
     throw new ApiError(415, "The selected file is not a valid product photo.", "invalid_image");
   }
+  const extension = IMAGE_TYPES.get(contentType);
 
   const key = `${productId}-${crypto.randomUUID()}.${extension}`;
   await db
@@ -112,7 +111,7 @@ export async function storeImage(db, file, productId) {
          image_key, content_type, body, byte_size, product_id, created_at
        ) VALUES (?, ?, ?, ?, ?, ?)`,
     )
-    .bind(key, file.type, contents, file.size, productId, new Date().toISOString())
+    .bind(key, contentType, contents, file.size, productId, new Date().toISOString())
     .run();
   return { key, url: `/media/${key}` };
 }
