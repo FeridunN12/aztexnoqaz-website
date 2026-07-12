@@ -1388,7 +1388,9 @@ button {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 360px;
+  width: 100%;
+  min-height: 0;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   border: 1px dashed #9eb4ce;
   border-radius: 8px;
@@ -1396,6 +1398,24 @@ button {
   background: #f4f8fd;
   cursor: pointer;
   transition: border-color 160ms ease, background 160ms ease;
+}
+
+.image-drop-zone::before {
+  position: absolute;
+  inset: -24px;
+  content: "";
+  pointer-events: none;
+  opacity: 0;
+  background-image: var(--preview-image);
+  background-position: center;
+  background-size: cover;
+  filter: blur(18px) brightness(0.82) saturate(0.9);
+  transform: scale(1.06);
+  transition: opacity 160ms ease;
+}
+
+.image-drop-zone.has-preview::before {
+  opacity: 0.72;
 }
 
 .image-drop-zone:hover,
@@ -1406,20 +1426,26 @@ button {
 
 .image-drop-zone input {
   position: absolute;
+  z-index: 2;
   width: 1px;
   height: 1px;
   opacity: 0;
 }
 
 .image-drop-zone > img {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
-  min-height: 360px;
+  min-height: 0;
+  aspect-ratio: 1 / 1;
   object-fit: contain;
-  background: #f4f8fd;
+  background: transparent;
 }
 
 .image-drop-prompt {
+  position: relative;
+  z-index: 1;
   display: grid;
   justify-items: center;
   gap: 8px;
@@ -1963,8 +1989,8 @@ button {
 
   .image-drop-zone,
   .image-drop-zone > img {
-    min-height: 280px;
-    max-height: 380px;
+    min-height: 0;
+    max-height: none;
   }
 }
 
@@ -2117,8 +2143,8 @@ button {
 
   .image-drop-zone,
   .image-drop-zone > img {
-    min-height: 210px;
-    max-height: 280px;
+    min-height: 0;
+    max-height: none;
   }
 
   .editor-modal-footer {

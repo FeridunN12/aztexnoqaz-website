@@ -367,6 +367,8 @@ function clearImagePreview() {
   previewObjectUrl = null;
   droppedImageFile = null;
   editorImage.value = "";
+  imageDropZone.classList.remove("has-preview");
+  imageDropZone.style.removeProperty("--preview-image");
   editorImagePreview.src = "";
   editorImagePreview.hidden = true;
   imageDropPrompt.hidden = false;
@@ -375,7 +377,10 @@ function clearImagePreview() {
 function showImagePreview(fileOrUrl) {
   if (previewObjectUrl) URL.revokeObjectURL(previewObjectUrl);
   previewObjectUrl = typeof fileOrUrl === "string" ? null : URL.createObjectURL(fileOrUrl);
-  editorImagePreview.src = typeof fileOrUrl === "string" ? fileOrUrl : previewObjectUrl;
+  const source = typeof fileOrUrl === "string" ? fileOrUrl : previewObjectUrl;
+  editorImagePreview.src = source;
+  imageDropZone.style.setProperty("--preview-image", `url("${source.replace(/["\\]/g, "\\$&")}")`);
+  imageDropZone.classList.add("has-preview");
   editorImagePreview.hidden = false;
   imageDropPrompt.hidden = true;
 }
@@ -394,11 +399,26 @@ async function optimizeProductImage(file) {
     canvas.width = size;
     canvas.height = size;
     const context = canvas.getContext("2d");
-    context.fillStyle = "#ffffff";
+    context.fillStyle = "#e8f0f8";
     context.fillRect(0, 0, size, size);
 
-    const padding = Math.round(size * 0.05);
-    const availableSize = size - padding * 2;
+    const backgroundScale = Math.max((size + 80) / bitmap.width, (size + 80) / bitmap.height);
+    const backgroundWidth = Math.round(bitmap.width * backgroundScale);
+    const backgroundHeight = Math.round(bitmap.height * backgroundScale);
+    context.save();
+    context.filter = `blur(${Math.round(size * 0.025)}px) brightness(0.82) saturate(0.88)`;
+    context.drawImage(
+      bitmap,
+      Math.round((size - backgroundWidth) / 2),
+      Math.round((size - backgroundHeight) / 2),
+      backgroundWidth,
+      backgroundHeight,
+    );
+    context.restore();
+    context.fillStyle = "rgba(255, 255, 255, 0.18)";
+    context.fillRect(0, 0, size, size);
+
+    const availableSize = size;
     const scale = Math.min(availableSize / bitmap.width, availableSize / bitmap.height);
     const width = Math.max(1, Math.round(bitmap.width * scale));
     const height = Math.max(1, Math.round(bitmap.height * scale));
@@ -406,11 +426,11 @@ async function optimizeProductImage(file) {
     const y = Math.round((size - height) / 2);
     context.drawImage(bitmap, x, y, width, height);
 
-    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", quality));
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
     if (blob && blob.size <= 1_400_000) {
       bitmap.close();
-      return new File([blob], `${file.name.replace(/\.[^.]+$/, "") || "product"}.webp`, {
-        type: "image/webp",
+      return new File([blob], `${file.name.replace(/\.[^.]+$/, "") || "product"}.jpg`, {
+        type: "image/jpeg",
       });
     }
     quality = Math.max(0.56, quality - 0.07);
