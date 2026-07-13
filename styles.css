@@ -2162,6 +2162,22 @@ button {
 }
 
 @media (max-width: 620px) {
+  .editor-language-tabs {
+    gap: 4px;
+    padding: 4px;
+  }
+
+  .editor-language-tabs button {
+    gap: 4px;
+    height: 38px;
+    padding: 0 4px;
+  }
+
+  .editor-language-tabs img {
+    width: 20px;
+    height: 14px;
+  }
+
   .contact-rail {
     flex-wrap: wrap;
     justify-content: center;
