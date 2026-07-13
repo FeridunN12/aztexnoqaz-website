@@ -1,10 +1,17 @@
-import { ensureCatalog, rowToProduct, writeAudit } from "../../_lib/db.js";
+import {
+  ensureCatalog,
+  ensureProductTranslations,
+  getProduct,
+  productTranslationStatements,
+  writeAudit,
+} from "../../_lib/db.js";
 import { errorResponse, json, requireSameOrigin } from "../../_lib/http.js";
 import {
   parseProductForm,
   storeImage,
   uniqueProductId,
 } from "../../_lib/products.js";
+import { translateProduct } from "../../_lib/translate.js";
 
 export async function onRequestPost({ request, env, data }) {
   let storedImage = null;
@@ -13,6 +20,7 @@ export async function onRequestPost({ request, env, data }) {
     await ensureCatalog(env.DB);
     const formData = await request.formData();
     const product = parseProductForm(formData);
+    const translatedProduct = await translateProduct(product);
     const id = await uniqueProductId(env.DB, product.name);
     storedImage = await storeImage(env.DB, formData.get("image"), id);
     const orderRow = await env.DB
@@ -20,7 +28,8 @@ export async function onRequestPost({ request, env, data }) {
       .first();
     const now = new Date().toISOString();
 
-    await env.DB
+    await ensureProductTranslations(env.DB);
+    const insertProduct = env.DB
       .prepare(
         `INSERT INTO products (
            id, name, brand, category, image_url, summary, specs_json, tags_json,
@@ -40,14 +49,16 @@ export async function onRequestPost({ request, env, data }) {
         now,
         now,
         data.editor.email,
-      )
-      .run();
+      );
+    await env.DB.batch([
+      insertProduct,
+      ...productTranslationStatements(env.DB, id, translatedProduct, now),
+    ]);
 
     await writeAudit(env.DB, data.editor.email, "create", "product", id, {
       name: product.name,
     });
-    const row = await env.DB.prepare("SELECT * FROM products WHERE id = ?").bind(id).first();
-    return json({ product: rowToProduct(row) }, 201);
+    return json({ product: await getProduct(env.DB, id) }, 201);
   } catch (error) {
     if (storedImage?.key && env.DB) {
       await env.DB

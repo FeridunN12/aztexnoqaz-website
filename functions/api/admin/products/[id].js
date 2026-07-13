@@ -1,4 +1,9 @@
-import { rowToProduct, writeAudit } from "../../../_lib/db.js";
+import {
+  ensureProductTranslations,
+  getProduct,
+  productTranslationStatements,
+  writeAudit,
+} from "../../../_lib/db.js";
 import {
   ApiError,
   errorResponse,
@@ -7,6 +12,7 @@ import {
   requireSameOrigin,
 } from "../../../_lib/http.js";
 import { mediaKeyFromUrl, parseProductForm, storeImage } from "../../../_lib/products.js";
+import { translateProduct } from "../../../_lib/translate.js";
 
 export async function onRequestPut({ request, env, data, params }) {
   let storedImage = null;
@@ -23,6 +29,7 @@ export async function onRequestPut({ request, env, data, params }) {
     }
 
     const product = parseProductForm(formData);
+    const translatedProduct = await translateProduct(product);
     const image = formData.get("image");
     let imageUrl = existing.image_url;
     if (image && typeof image.arrayBuffer === "function" && image.size) {
@@ -31,7 +38,8 @@ export async function onRequestPut({ request, env, data, params }) {
     }
 
     const now = new Date().toISOString();
-    const result = await env.DB
+    await ensureProductTranslations(env.DB);
+    const updateProduct = env.DB
       .prepare(
         `UPDATE products
          SET name = ?, brand = ?, category = ?, image_url = ?, summary = ?,
@@ -51,8 +59,11 @@ export async function onRequestPut({ request, env, data, params }) {
         data.editor.email,
         id,
         revision,
-      )
-      .run();
+      );
+    const [result] = await env.DB.batch([
+      updateProduct,
+      ...productTranslationStatements(env.DB, id, translatedProduct, now),
+    ]);
 
     if (!result.meta.changes) {
       throw new ApiError(409, "This product changed in another session. Refresh and try again.", "conflict");
@@ -71,8 +82,7 @@ export async function onRequestPut({ request, env, data, params }) {
       name: product.name,
       imageChanged: Boolean(storedImage),
     });
-    const row = await env.DB.prepare("SELECT * FROM products WHERE id = ?").bind(id).first();
-    return json({ product: rowToProduct(row) });
+    return json({ product: await getProduct(env.DB, id) });
   } catch (error) {
     if (storedImage?.key && env.DB) {
       await env.DB
@@ -97,10 +107,15 @@ export async function onRequestDelete({ request, env, data, params }) {
       throw new ApiError(409, "This product changed in another session. Refresh and try again.", "conflict");
     }
 
-    const result = await env.DB
-      .prepare("DELETE FROM products WHERE id = ? AND version = ?")
-      .bind(id, revision)
-      .run();
+    await ensureProductTranslations(env.DB);
+    const [result] = await env.DB.batch([
+      env.DB
+        .prepare("DELETE FROM products WHERE id = ? AND version = ?")
+        .bind(id, revision),
+      env.DB
+        .prepare("DELETE FROM product_translations WHERE product_id = ?")
+        .bind(id),
+    ]);
     if (!result.meta.changes) {
       throw new ApiError(409, "This product changed in another session. Refresh and try again.", "conflict");
     }

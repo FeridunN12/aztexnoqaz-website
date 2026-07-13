@@ -18,6 +18,11 @@ function categoryLabel(category) {
   return t(categoryTranslationKeys[category] || category);
 }
 
+function localizedProduct(product) {
+  const translation = product.translations?.[i18n?.language];
+  return translation ? { ...product, ...translation } : product;
+}
+
 let products = [];
 
 const grid = document.querySelector("#product-grid");
@@ -91,21 +96,31 @@ function refreshIcons() {
 }
 
 function productMatches(product, query) {
-  const haystack = [product.name, product.brand, product.summary, product.category, categoryLabel(product.category), ...product.tags]
+  const displayProduct = localizedProduct(product);
+  const haystack = [
+    displayProduct.name,
+    product.name,
+    product.brand,
+    displayProduct.summary,
+    product.category,
+    categoryLabel(product.category),
+    ...displayProduct.tags,
+  ]
     .join(" ")
     .toLowerCase();
   return haystack.includes(query.trim().toLowerCase());
 }
 
 function productCard(product) {
-  const tagMarkup = product.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("");
+  const displayProduct = localizedProduct(product);
+  const tagMarkup = displayProduct.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("");
   const editorActions = editorSession
     ? `
       <div class="product-admin-actions">
-        <button type="button" data-edit="${escapeHtml(product.id)}" aria-label="${escapeHtml(t("Edit {name}", { name: product.name }))}" title="${escapeHtml(t("Edit product"))}">
+        <button type="button" data-edit="${escapeHtml(product.id)}" aria-label="${escapeHtml(t("Edit {name}", { name: displayProduct.name }))}" title="${escapeHtml(t("Edit product"))}">
           <i data-lucide="pencil"></i>
         </button>
-        <button class="delete" type="button" data-delete="${escapeHtml(product.id)}" aria-label="${escapeHtml(t("Delete {name}", { name: product.name }))}" title="${escapeHtml(t("Delete product"))}">
+        <button class="delete" type="button" data-delete="${escapeHtml(product.id)}" aria-label="${escapeHtml(t("Delete {name}", { name: displayProduct.name }))}" title="${escapeHtml(t("Delete product"))}">
           <i data-lucide="trash-2"></i>
         </button>
       </div>
@@ -114,16 +129,16 @@ function productCard(product) {
   return `
     <article class="product-card" data-id="${escapeHtml(product.id)}">
       ${editorActions}
-      <button class="product-image-button" type="button" data-detail="${escapeHtml(product.id)}" aria-label="${escapeHtml(t("View details for {name}", { name: product.name }))}">
-        <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" />
+      <button class="product-image-button" type="button" data-detail="${escapeHtml(product.id)}" aria-label="${escapeHtml(t("View details for {name}", { name: displayProduct.name }))}">
+        <img src="${escapeHtml(product.image)}" alt="${escapeHtml(displayProduct.name)}" loading="lazy" decoding="async" />
       </button>
       <div class="product-body">
         <div class="product-meta">
           <span>${escapeHtml(categoryLabel(product.category))}</span>
           <span>${escapeHtml(product.brand)}</span>
         </div>
-        <h3>${escapeHtml(product.name)}</h3>
-        <p>${escapeHtml(product.summary)}</p>
+        <h3>${escapeHtml(displayProduct.name)}</h3>
+        <p>${escapeHtml(displayProduct.summary)}</p>
         <div class="product-tags">${tagMarkup}</div>
         <div class="product-actions">
           <button class="quote-button" type="button" data-quote="${escapeHtml(product.id)}">
@@ -176,22 +191,36 @@ function renderProducts() {
 function populateQuoteProducts() {
   const selectedProduct = quoteProduct.value;
   const productOptions = products
-    .map((product) => `<option value="${escapeHtml(product.name)}">${escapeHtml(product.name)}</option>`)
+    .map((product) => `<option value="${escapeHtml(product.id)}">${escapeHtml(localizedProduct(product).name)}</option>`)
     .join("");
   quoteProduct.innerHTML = `<option value="">${escapeHtml(t("Select a product"))}</option>${productOptions}`;
-  if (products.some((product) => product.name === selectedProduct)) quoteProduct.value = selectedProduct;
+  if (products.some((product) => product.id === selectedProduct)) quoteProduct.value = selectedProduct;
 }
 
 function requestProductQuote(productId) {
   const product = products.find((item) => item.id === productId);
   if (!product) return;
+  const displayProduct = localizedProduct(product);
 
-  quoteProduct.value = product.name;
+  quoteProduct.value = product.id;
   quoteMessage.value = t("I am interested in {name}. Please send price, availability and technical options.", {
-    name: product.name,
+    name: displayProduct.name,
   });
   document.querySelector("#buy").scrollIntoView({ behavior: "smooth", block: "start" });
   setTimeout(() => quoteMessage.focus({ preventScroll: true }), 450);
+}
+
+function renderProductModalContent(product) {
+  const displayProduct = localizedProduct(product);
+  modalImage.src = product.image;
+  modalImage.alt = displayProduct.name;
+  modalCategory.textContent = `${categoryLabel(product.category)} | ${product.brand}`;
+  modalTitle.textContent = displayProduct.name;
+  modalDescription.textContent = displayProduct.summary;
+  modalSpecs.innerHTML = displayProduct.specs.map((spec) => `<li>${escapeHtml(spec)}</li>`).join("");
+  modalWhatsapp.href = `${whatsappBase}?text=${encodeURIComponent(
+    t("Hello AzTexnoQaz, I want to request a quote for {name}.", { name: displayProduct.name }),
+  )}`;
 }
 
 function openProductModal(productId) {
@@ -199,15 +228,7 @@ function openProductModal(productId) {
   if (!product) return;
 
   activeModalProduct = product;
-  modalImage.src = product.image;
-  modalImage.alt = product.name;
-  modalCategory.textContent = `${categoryLabel(product.category)} | ${product.brand}`;
-  modalTitle.textContent = product.name;
-  modalDescription.textContent = product.summary;
-  modalSpecs.innerHTML = product.specs.map((spec) => `<li>${escapeHtml(spec)}</li>`).join("");
-  modalWhatsapp.href = `${whatsappBase}?text=${encodeURIComponent(
-    t("Hello AzTexnoQaz, I want to request a quote for {name}.", { name: product.name }),
-  )}`;
+  renderProductModalContent(product);
   document.body.classList.add("modal-open");
   modal.showModal();
   refreshIcons();
@@ -224,7 +245,8 @@ function closeModal() {
 function submitQuoteForm(event) {
   event.preventDefault();
   const formData = new FormData(quoteForm);
-  const product = formData.get("product") || t("General product request");
+  const selectedProduct = products.find((item) => item.id === formData.get("product"));
+  const product = selectedProduct ? localizedProduct(selectedProduct).name : t("General product request");
   const name = formData.get("name") || "";
   const contact = formData.get("contact") || "";
   const message = formData.get("message") || "";
@@ -255,7 +277,7 @@ async function readApiResponse(response) {
     body = {};
   }
   if (!response.ok) {
-    const error = new Error(body.error || t("The request could not be completed."));
+    const error = new Error(body.error ? t(body.error) : t("The request could not be completed."));
     error.code = body.code;
     error.status = response.status;
     throw error;
@@ -504,6 +526,7 @@ async function saveProduct(event) {
     }
   }
   if (editingProduct) formData.set("revision", String(editingProduct.revision));
+  setFormMessage(productEditorMessage, t("Detecting language and translating product text..."));
 
   productEditorSave.disabled = true;
   productEditorSave.classList.add("loading");
@@ -537,7 +560,9 @@ async function saveProduct(event) {
 function openDeleteConfirmation(productId) {
   pendingDelete = products.find((product) => product.id === productId);
   if (!pendingDelete) return;
-  confirmMessage.textContent = t("“{name}” will be removed from the public catalog.", { name: pendingDelete.name });
+  confirmMessage.textContent = t("“{name}” will be removed from the public catalog.", {
+    name: localizedProduct(pendingDelete).name,
+  });
   confirmModal.showModal();
   refreshIcons();
 }
@@ -810,10 +835,7 @@ window.addEventListener("aztexnogaz:languagechange", () => {
   renderProducts();
 
   if (activeModalProduct && modal.open) {
-    modalCategory.textContent = `${categoryLabel(activeModalProduct.category)} | ${activeModalProduct.brand}`;
-    modalWhatsapp.href = `${whatsappBase}?text=${encodeURIComponent(
-      t("Hello AzTexnoQaz, I want to request a quote for {name}.", { name: activeModalProduct.name }),
-    )}`;
+    renderProductModalContent(activeModalProduct);
   }
 
   if (productEditorModal.open) {
