@@ -1,8 +1,10 @@
 const phonePrimary = "+994505728966";
 const whatsappBase = "https://wa.me/994505728966";
 const salesEmail = "aztexnogaz@gmail.com";
+const i18n = window.AzTexnoI18n;
+const t = (key, variables = {}) => i18n?.t(key, variables) || key.replace(/\{(\w+)\}/g, (match, name) => variables[name] ?? match);
 
-const categoryLabels = {
+const categoryTranslationKeys = {
   metering: "Metering",
   regulators: "Regulators",
   conversion: "Conversion",
@@ -11,6 +13,10 @@ const categoryLabels = {
   accessories: "Accessories",
   cabinets: "Cabinets",
 };
+
+function categoryLabel(category) {
+  return t(categoryTranslationKeys[category] || category);
+}
 
 let products = [];
 
@@ -85,7 +91,9 @@ function refreshIcons() {
 }
 
 function productMatches(product, query) {
-  const haystack = [product.name, product.brand, product.summary, product.category, ...product.tags].join(" ").toLowerCase();
+  const haystack = [product.name, product.brand, product.summary, product.category, categoryLabel(product.category), ...product.tags]
+    .join(" ")
+    .toLowerCase();
   return haystack.includes(query.trim().toLowerCase());
 }
 
@@ -94,10 +102,10 @@ function productCard(product) {
   const editorActions = editorSession
     ? `
       <div class="product-admin-actions">
-        <button type="button" data-edit="${escapeHtml(product.id)}" aria-label="Edit ${escapeHtml(product.name)}" title="Edit product">
+        <button type="button" data-edit="${escapeHtml(product.id)}" aria-label="${escapeHtml(t("Edit {name}", { name: product.name }))}" title="${escapeHtml(t("Edit product"))}">
           <i data-lucide="pencil"></i>
         </button>
-        <button class="delete" type="button" data-delete="${escapeHtml(product.id)}" aria-label="Delete ${escapeHtml(product.name)}" title="Delete product">
+        <button class="delete" type="button" data-delete="${escapeHtml(product.id)}" aria-label="${escapeHtml(t("Delete {name}", { name: product.name }))}" title="${escapeHtml(t("Delete product"))}">
           <i data-lucide="trash-2"></i>
         </button>
       </div>
@@ -106,12 +114,12 @@ function productCard(product) {
   return `
     <article class="product-card" data-id="${escapeHtml(product.id)}">
       ${editorActions}
-      <button class="product-image-button" type="button" data-detail="${escapeHtml(product.id)}" aria-label="View details for ${escapeHtml(product.name)}">
+      <button class="product-image-button" type="button" data-detail="${escapeHtml(product.id)}" aria-label="${escapeHtml(t("View details for {name}", { name: product.name }))}">
         <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" />
       </button>
       <div class="product-body">
         <div class="product-meta">
-          <span>${escapeHtml(categoryLabels[product.category])}</span>
+          <span>${escapeHtml(categoryLabel(product.category))}</span>
           <span>${escapeHtml(product.brand)}</span>
         </div>
         <h3>${escapeHtml(product.name)}</h3>
@@ -120,9 +128,9 @@ function productCard(product) {
         <div class="product-actions">
           <button class="quote-button" type="button" data-quote="${escapeHtml(product.id)}">
             <i data-lucide="file-text"></i>
-            Request quote
+            ${escapeHtml(t("Request quote"))}
           </button>
-          <button class="details-button" type="button" data-detail="${escapeHtml(product.id)}" aria-label="View details">
+          <button class="details-button" type="button" data-detail="${escapeHtml(product.id)}" aria-label="${escapeHtml(t("View details"))}">
             <i data-lucide="eye"></i>
           </button>
         </div>
@@ -142,7 +150,9 @@ function getVisibleProducts() {
 function renderProducts() {
   const visibleProducts = getVisibleProducts();
   grid.innerHTML = visibleProducts.map(productCard).join("");
-  count.textContent = `${visibleProducts.length} product${visibleProducts.length === 1 ? "" : "s"}`;
+  count.textContent = t(visibleProducts.length === 1 ? "{count} product" : "{count} products", {
+    count: visibleProducts.length,
+  });
 
   grid.querySelectorAll("[data-detail]").forEach((button) => {
     button.addEventListener("click", () => openProductModal(button.dataset.detail));
@@ -164,10 +174,12 @@ function renderProducts() {
 }
 
 function populateQuoteProducts() {
+  const selectedProduct = quoteProduct.value;
   const productOptions = products
     .map((product) => `<option value="${escapeHtml(product.name)}">${escapeHtml(product.name)}</option>`)
     .join("");
-  quoteProduct.innerHTML = `<option value="">Select a product</option>${productOptions}`;
+  quoteProduct.innerHTML = `<option value="">${escapeHtml(t("Select a product"))}</option>${productOptions}`;
+  if (products.some((product) => product.name === selectedProduct)) quoteProduct.value = selectedProduct;
 }
 
 function requestProductQuote(productId) {
@@ -175,7 +187,9 @@ function requestProductQuote(productId) {
   if (!product) return;
 
   quoteProduct.value = product.name;
-  quoteMessage.value = `I am interested in ${product.name}. Please send price, availability and technical options.`;
+  quoteMessage.value = t("I am interested in {name}. Please send price, availability and technical options.", {
+    name: product.name,
+  });
   document.querySelector("#buy").scrollIntoView({ behavior: "smooth", block: "start" });
   setTimeout(() => quoteMessage.focus({ preventScroll: true }), 450);
 }
@@ -187,11 +201,13 @@ function openProductModal(productId) {
   activeModalProduct = product;
   modalImage.src = product.image;
   modalImage.alt = product.name;
-  modalCategory.textContent = `${categoryLabels[product.category]} | ${product.brand}`;
+  modalCategory.textContent = `${categoryLabel(product.category)} | ${product.brand}`;
   modalTitle.textContent = product.name;
   modalDescription.textContent = product.summary;
   modalSpecs.innerHTML = product.specs.map((spec) => `<li>${escapeHtml(spec)}</li>`).join("");
-  modalWhatsapp.href = `${whatsappBase}?text=${encodeURIComponent(`Hello AzTexnoQaz, I want to request a quote for ${product.name}.`)}`;
+  modalWhatsapp.href = `${whatsappBase}?text=${encodeURIComponent(
+    t("Hello AzTexnoQaz, I want to request a quote for {name}.", { name: product.name }),
+  )}`;
   document.body.classList.add("modal-open");
   modal.showModal();
   refreshIcons();
@@ -208,24 +224,24 @@ function closeModal() {
 function submitQuoteForm(event) {
   event.preventDefault();
   const formData = new FormData(quoteForm);
-  const product = formData.get("product") || "General product request";
+  const product = formData.get("product") || t("General product request");
   const name = formData.get("name") || "";
   const contact = formData.get("contact") || "";
   const message = formData.get("message") || "";
-  const subject = `Quote request: ${product}`;
+  const subject = t("Quote request: {product}", { product });
   const body = [
-    "Hello AzTexnoQaz,",
+    t("Hello AzTexnoQaz,"),
     "",
-    "I would like to request a quote.",
+    t("I would like to request a quote."),
     "",
-    `Product: ${product}`,
-    `Name/company: ${name}`,
-    `Phone/email: ${contact}`,
+    t("Product: {product}", { product }),
+    t("Name/company: {name}", { name }),
+    t("Phone/email: {contact}", { contact }),
     "",
-    "Details:",
+    `${t("Details")}:`,
     message,
     "",
-    "Please send price, availability and suitable technical options.",
+    t("Please send price, availability and suitable technical options."),
   ].join("\n");
 
   window.location.href = `mailto:${salesEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -239,7 +255,7 @@ async function readApiResponse(response) {
     body = {};
   }
   if (!response.ok) {
-    const error = new Error(body.error || "The request could not be completed.");
+    const error = new Error(body.error || t("The request could not be completed."));
     error.code = body.code;
     error.status = response.status;
     throw error;
@@ -271,7 +287,7 @@ async function loadProducts() {
     products = body.products;
   } catch {
     const response = await fetch("data/products.json", { cache: "no-store" });
-    if (!response.ok) throw new Error("The product catalog could not be loaded.");
+    if (!response.ok) throw new Error(t("The product catalog could not be loaded."));
     products = await response.json();
   }
 }
@@ -334,7 +350,7 @@ async function submitEditorLogin(event) {
     editorLoginForm.reset();
     closeEditorLogin();
     renderProducts();
-    showToast("Editor mode is active on this device.");
+    showToast(t("Editor mode is active on this device."));
   } catch (error) {
     setFormMessage(editorLoginMessage, error.message, true);
   } finally {
@@ -358,7 +374,7 @@ async function signOutEditor() {
     document.body.classList.remove("editor-mode");
     editorSignOut.disabled = false;
     renderProducts();
-    showToast("Signed out from this device.");
+    showToast(t("Signed out from this device."));
   }
 }
 
@@ -387,7 +403,7 @@ function showImagePreview(fileOrUrl) {
 
 async function optimizeProductImage(file) {
   if (file.size > 8 * 1024 * 1024) {
-    throw new Error("Choose a product photo smaller than 8 MB.");
+    throw new Error(t("Choose a product photo smaller than 8 MB."));
   }
 
   const bitmap = await createImageBitmap(file);
@@ -438,7 +454,7 @@ async function optimizeProductImage(file) {
   }
 
   bitmap.close();
-  throw new Error("This photo could not be optimized. Choose a smaller image.");
+  throw new Error(t("This photo could not be optimized. Choose a smaller image."));
 }
 
 function openProductEditor(productId = null) {
@@ -446,8 +462,8 @@ function openProductEditor(productId = null) {
   productEditorForm.reset();
   clearImagePreview();
   setFormMessage(productEditorMessage);
-  productEditorTitle.textContent = editingProduct ? "Edit product" : "Add new product";
-  productEditorSave.innerHTML = `<i data-lucide="upload-cloud"></i>${editingProduct ? "Publish changes" : "Publish product"}`;
+  productEditorTitle.textContent = t(editingProduct ? "Edit product" : "Add new product");
+  productEditorSave.innerHTML = `<i data-lucide="upload-cloud"></i>${escapeHtml(t(editingProduct ? "Publish changes" : "Publish product"))}`;
   editorImage.required = !editingProduct;
 
   if (editingProduct) {
@@ -479,7 +495,7 @@ async function saveProduct(event) {
   const formData = new FormData(productEditorForm);
   const selectedImage = droppedImageFile || editorImage.files[0];
   if (selectedImage) {
-    setFormMessage(productEditorMessage, "Optimizing product photo...");
+    setFormMessage(productEditorMessage, t("Optimizing product photo..."));
     try {
       formData.set("image", await optimizeProductImage(selectedImage));
     } catch (error) {
@@ -504,7 +520,7 @@ async function saveProduct(event) {
     const existingIndex = products.findIndex((product) => product.id === body.product.id);
     if (existingIndex >= 0) products.splice(existingIndex, 1, body.product);
     else products.push(body.product);
-    const message = editingProduct ? "Product changes are live." : "New product is live.";
+    const message = t(editingProduct ? "Product changes are live." : "New product is live.");
     closeProductEditor();
     populateQuoteProducts();
     renderProducts();
@@ -521,7 +537,7 @@ async function saveProduct(event) {
 function openDeleteConfirmation(productId) {
   pendingDelete = products.find((product) => product.id === productId);
   if (!pendingDelete) return;
-  confirmMessage.textContent = `“${pendingDelete.name}” will be removed from the public catalog.`;
+  confirmMessage.textContent = t("“{name}” will be removed from the public catalog.", { name: pendingDelete.name });
   confirmModal.showModal();
   refreshIcons();
 }
@@ -542,7 +558,7 @@ async function deletePendingProduct() {
     confirmModal.close();
     populateQuoteProducts();
     renderProducts();
-    showToast("Product deleted.");
+    showToast(t("Product deleted."));
   } catch (error) {
     confirmModal.close();
     showToast(error.message);
@@ -561,7 +577,7 @@ async function reloadCatalog() {
 function formatEditorActivity(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
-  return new Intl.DateTimeFormat(undefined, {
+  return new Intl.DateTimeFormat(i18n?.language || undefined, {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(date);
@@ -579,13 +595,13 @@ function renderEditors(editors, currentEditor) {
                   <i data-lucide="monitor-smartphone"></i>
                   <span>
                     <strong>${escapeHtml(device.deviceName)}</strong>
-                    <small>${escapeHtml(device.platform)} &middot; Active ${escapeHtml(formatEditorActivity(device.lastSeenAt))}</small>
+                    <small>${escapeHtml(device.platform)} &middot; ${escapeHtml(t("Active {date}", { date: formatEditorActivity(device.lastSeenAt) }))}</small>
                   </span>
                 </li>
               `,
             )
             .join("")
-        : '<li class="no-device"><i data-lucide="monitor-off"></i><span>No approved device sessions</span></li>';
+        : `<li class="no-device"><i data-lucide="monitor-off"></i><span>${escapeHtml(t("No approved device sessions"))}</span></li>`;
       return `
         <div class="editor-list-item">
           <div class="editor-account-header">
@@ -597,10 +613,10 @@ function renderEditors(editors, currentEditor) {
           </div>
           ${
             isCurrent
-              ? '<span class="owner-badge"><i data-lucide="shield-check"></i> Current</span>'
-              : `<button type="button" data-remove-editor="${escapeHtml(editor.email)}" aria-label="Remove ${escapeHtml(editor.email)}" title="Remove user"><i data-lucide="trash-2"></i></button>`
+              ? `<span class="owner-badge"><i data-lucide="shield-check"></i> ${escapeHtml(t("Current"))}</span>`
+              : `<button type="button" data-remove-editor="${escapeHtml(editor.email)}" aria-label="${escapeHtml(t("Remove {email}", { email: editor.email }))}" title="${escapeHtml(t("Remove user"))}"><i data-lucide="trash-2"></i></button>`
           }
-          <div class="editor-access-label"><i data-lucide="key-round"></i> Full administrator access</div>
+          <div class="editor-access-label"><i data-lucide="key-round"></i> ${escapeHtml(t("Full administrator access"))}</div>
           <ul class="editor-device-list">${devices}</ul>
         </div>
       `;
@@ -658,7 +674,7 @@ async function addEditor(event) {
     await readApiResponse(response);
     addEditorForm.reset();
     await loadEditors();
-    showToast("Administrator account added.");
+    showToast(t("Administrator account added."));
   } catch (error) {
     setFormMessage(accessMessage, error.message, true);
   }
@@ -673,7 +689,7 @@ async function removeEditor(email) {
     });
     await readApiResponse(response);
     await loadEditors();
-    showToast("Administrator account removed.");
+    showToast(t("Administrator account removed."));
   } catch (error) {
     setFormMessage(accessMessage, error.message, true);
   }
@@ -789,11 +805,31 @@ confirmModal.addEventListener("close", () => {
   pendingDelete = null;
 });
 
+window.addEventListener("aztexnogaz:languagechange", () => {
+  populateQuoteProducts();
+  renderProducts();
+
+  if (activeModalProduct && modal.open) {
+    modalCategory.textContent = `${categoryLabel(activeModalProduct.category)} | ${activeModalProduct.brand}`;
+    modalWhatsapp.href = `${whatsappBase}?text=${encodeURIComponent(
+      t("Hello AzTexnoQaz, I want to request a quote for {name}.", { name: activeModalProduct.name }),
+    )}`;
+  }
+
+  if (productEditorModal.open) {
+    productEditorTitle.textContent = t(editingProduct ? "Edit product" : "Add new product");
+    productEditorSave.innerHTML = `<i data-lucide="upload-cloud"></i>${escapeHtml(t(editingProduct ? "Publish changes" : "Publish product"))}`;
+  }
+
+  if (accessModal.open) loadEditors().catch((error) => setFormMessage(accessMessage, error.message, true));
+  refreshIcons();
+});
+
 async function initializeSite() {
   try {
     await Promise.all([loadProducts(), checkEditorSession()]);
   } catch (error) {
-    count.textContent = "Catalog unavailable";
+    count.textContent = t("Catalog unavailable");
     grid.innerHTML = `<p class="catalog-error">${escapeHtml(error.message)}</p>`;
     refreshIcons();
     return;

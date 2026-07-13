@@ -203,6 +203,113 @@ button {
   transform: scaleX(1);
 }
 
+.language-picker {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.language-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 68px;
+  height: 42px;
+  padding: 0 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--blue-dark);
+  background: #fff;
+  font-weight: 900;
+}
+
+.language-button:hover,
+.language-button:focus-visible,
+.language-picker.open .language-button {
+  border-color: #9ebce1;
+  background: #f3f8ff;
+}
+
+.language-current-flag,
+.language-menu button > span {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  font-size: 1.18rem;
+  line-height: 1;
+}
+
+.language-current-code {
+  font-size: 0.76rem;
+}
+
+.language-button svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.18s ease;
+}
+
+.language-picker.open .language-button svg {
+  transform: rotate(180deg);
+}
+
+.language-menu {
+  position: absolute;
+  top: calc(100% + 9px);
+  right: 0;
+  z-index: 60;
+  display: grid;
+  width: 216px;
+  padding: 7px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(5, 23, 48, 0.18);
+}
+
+.language-menu[hidden] {
+  display: none;
+}
+
+.language-menu button {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  color: var(--ink);
+  background: transparent;
+  text-align: left;
+}
+
+.language-menu button:hover,
+.language-menu button:focus-visible {
+  background: var(--paper);
+}
+
+.language-menu button.selected {
+  color: var(--blue-dark);
+  background: #eaf3ff;
+}
+
+.language-menu button strong {
+  overflow: hidden;
+  font-size: 0.92rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.language-menu button svg {
+  width: 17px;
+  height: 17px;
+  opacity: 0;
+}
+
+.language-menu button.selected svg {
+  opacity: 1;
+}
+
 .nav-toggle {
   display: none;
   align-items: center;
@@ -1813,7 +1920,21 @@ button {
 
   .nav-links {
     gap: 14px;
-    font-size: 0.94rem;
+    font-size: 0.9rem;
+  }
+
+  .language-button {
+    width: 48px;
+    padding: 0;
+  }
+
+  .language-current-code {
+    display: none;
+  }
+
+  .nav-cta {
+    padding: 0 12px;
+    font-size: 0.9rem;
   }
 
   .trust-grid,
@@ -1883,6 +2004,10 @@ button {
 
   .staff-access {
     order: 3;
+  }
+
+  .language-picker {
+    order: 2;
   }
 
   .nav-links {
@@ -2101,7 +2226,41 @@ button {
   }
 
   .nav-shell {
-    gap: 8px;
+    gap: 4px;
+  }
+
+  .brand {
+    min-width: 0;
+    flex: 1;
+    gap: 7px;
+  }
+
+  .brand img {
+    width: 36px;
+    height: 44px;
+  }
+
+  .brand strong {
+    font-size: 0.98rem;
+  }
+
+  .brand small {
+    font-size: 0.72rem;
+  }
+
+  .language-button,
+  .nav-toggle,
+  .staff-access {
+    width: 40px;
+    height: 40px;
+  }
+
+  .language-button {
+    gap: 0;
+  }
+
+  .language-button svg {
+    display: none;
   }
 
   .nav-toggle span {
@@ -2176,4 +2335,32 @@ button {
     bottom: 76px;
     max-width: calc(100% - 28px);
   }
+}
+
+html[dir="rtl"] .contact-rail,
+html[dir="rtl"] .brand,
+html[dir="rtl"] .footer-brand,
+html[dir="rtl"] .contact-cards strong,
+html[dir="rtl"] .product-meta,
+html[dir="rtl"] .editor-identity {
+  direction: ltr;
+}
+
+html[dir="rtl"] .language-menu {
+  right: auto;
+  left: 0;
+}
+
+html[dir="rtl"] .language-menu button {
+  text-align: right;
+}
+
+html[dir="rtl"] .search-wrap svg {
+  right: 14px;
+  left: auto;
+}
+
+html[dir="rtl"] .search-wrap input {
+  padding-right: 44px;
+  padding-left: 14px;
 }
