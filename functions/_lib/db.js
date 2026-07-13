@@ -3,7 +3,7 @@ import initialProductTranslations from "../../data/product-translations.json";
 import azerbaijaniProductCorrections from "../../data/product-az-corrections.json";
 
 const PRODUCT_TRANSLATION_SEED_KEY = "product_translation_seed_20260713_v1";
-const AZ_TRANSLATION_CORRECTION_SEED_KEY = "product_az_corrections_20260713_v1";
+const AZ_TRANSLATION_CORRECTION_SEED_KEY = "product_az_corrections_20260713_v2";
 
 export const INITIAL_OWNERS = [
   { email: "faridnaghizade7@gmail.com", displayName: "Farid" },

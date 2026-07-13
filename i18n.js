@@ -1,7 +1,7 @@
 (() => {
   const languages = [
     { id: "az", code: "AZ", flag: "assets/flags/az.svg", label: "Azərbaycan dili", direction: "ltr" },
-    { id: "en", code: "EN", flag: "assets/flags/gb.svg", label: "English", direction: "ltr" },
+    { id: "en", code: "EN", flag: "assets/flags/gb.svg", label: "EN", direction: "ltr" },
     { id: "tr", code: "TR", flag: "assets/flags/tr.svg", label: "Türkçe", direction: "ltr" },
     { id: "ru", code: "RU", flag: "assets/flags/ru.svg", label: "Русский", direction: "ltr" },
     { id: "ka", code: "KA", flag: "assets/flags/ge.svg", label: "ქართული", direction: "ltr" },
@@ -265,7 +265,10 @@
 
     const flag = document.querySelector("#language-current-flag");
     const code = document.querySelector("#language-current-code");
-    if (flag) flag.src = language.flag;
+    if (flag) {
+      flag.src = language.flag;
+      flag.hidden = language.id === "en";
+    }
     if (code) code.textContent = language.code;
     document.querySelectorAll("[data-language]").forEach((option) => {
       const selected = option.dataset.language === language.id;

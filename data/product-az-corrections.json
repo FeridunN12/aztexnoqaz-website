@@ -125,20 +125,20 @@
       "id": "fangaz-industrial-regulators",
       "revision": 1,
       "translation": {
-        "name": "FANGAZ Sənaye Tənzimləyiciləri",
+        "name": "FANGAZ Qaz Tənzimləyiciləri",
         "summary": "İri qaz xətləri və stansiyalar üçün yüksək buraxıcılıqlı FANGAZ tənzimləyiciləri.",
-        "specs": ["Sənaye tənzimləyiciləri", "Flanşlı birləşmə variantları", "Ölçü və təzyiq üzrə qiymət təklifi"],
-        "tags": ["Sənaye", "FANGAZ", "Tənzimləyici"]
+        "specs": ["Qaz tənzimləyiciləri", "Flanşlı birləşmə variantları", "Ölçü və təzyiq üzrə qiymət təklifi"],
+        "tags": ["Qaz", "FANGAZ", "Tənzimləyici"]
       }
     },
     {
       "id": "fangaz-red-regulator",
       "revision": 1,
       "translation": {
-        "name": "FANGAZ Qırmızı Tənzimləyici",
-        "summary": "Qaz təzyiqinin idarə olunması üçün qırmızı gövdəli FANGAZ tənzimləyicisi.",
+        "name": "FANGAZ Qaz Tənzimləyicisi",
+        "summary": "Qaz təzyiqinin idarə olunması üçün FANGAZ tənzimləyicisi.",
         "specs": ["Qaz təzyiq tənzimləyicisi", "FANGAZ markalı avadanlıq", "Mövcudluq sorğuya əsasən təsdiqlənir"],
-        "tags": ["Tənzimləyici", "FANGAZ", "Təzyiq"]
+        "tags": ["Tənzimləyici", "FANGAZ", "Qaz"]
       }
     },
     {

@@ -171,6 +171,12 @@ function normalizeAzerbaijaniProduct(product, translation) {
   } else if (sourceName.includes("fmg") && sourceName.includes("flow meter")) {
     normalized.name = "FMG Rotor Tipli Qaz Sayğacı";
     normalized.tags = ["Qaz sayğacı", "Rotor", "FMG"];
+  } else if (sourceName.includes("fangaz") && sourceName.includes("industrial regulator")) {
+    normalized.name = "FANGAZ Qaz Tənzimləyiciləri";
+    normalized.tags = ["Qaz", "FANGAZ", "Tənzimləyici"];
+  } else if (sourceName.includes("fangaz") && sourceName.includes("red") && sourceName.includes("regulator")) {
+    normalized.name = "FANGAZ Qaz Tənzimləyicisi";
+    normalized.tags = ["Tənzimləyici", "FANGAZ", "Qaz"];
   }
 
   return normalized;
