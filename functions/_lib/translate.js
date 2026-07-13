@@ -127,6 +127,55 @@ function productFromParts(parts, specCount, tagCount) {
   return { name, summary, specs, tags };
 }
 
+function normalizeAzerbaijaniText(value) {
+  return String(value)
+    .replace(/həcmi çeviricilər/gi, "korrektorlar")
+    .replace(/həcmi çevirici/gi, "korrektor")
+    .replace(/həcm çevirmə cihazları/gi, "həcm korrektorları")
+    .replace(/həcm çevirmə cihazı/gi, "həcm korrektoru")
+    .replace(/həcmin elektron çevrilməsi cihazı/gi, "elektron həcm korrektoru")
+    .replace(/konvertor/gi, "korrektor")
+    .replace(/qazlı su qızdırıcısı/gi, "kombi")
+    .replace(/qazlı su isitmə qurğusu/gi, "kombi")
+    .replace(/fırlanan qaz sayğacları/gi, "rotor tipli qaz sayğacları")
+    .replace(/\bdönər\b/gi, "rotor")
+    .replace(/\bsitat gətirin\b/gi, "qiymət təklifi hazırlayın")
+    .replace(/\bsitat\b/gi, "qiymət təklifi")
+    .replace(/\bkotirovka\b/gi, "qiymət təklifi");
+}
+
+function normalizeAzerbaijaniProduct(product, translation) {
+  const normalized = {
+    name: normalizeAzerbaijaniText(translation.name),
+    summary: normalizeAzerbaijaniText(translation.summary),
+    specs: translation.specs.map(normalizeAzerbaijaniText),
+    tags: translation.tags.map(normalizeAzerbaijaniText),
+  };
+  const sourceName = String(product.name || "").toLowerCase();
+
+  if (sourceName.includes("homeyway") && sourceName.includes("water heater")) {
+    normalized.name = "Homeyway Kombi";
+    normalized.tags = ["Kombi", "İsti su", "Homeyway"];
+  } else if (sourceName.includes("airfel") && sourceName.includes("daikin") && sourceName.includes("water heater")) {
+    normalized.name = "Airfel / Daikin Kombi";
+    normalized.tags = ["Kombi", "Daikin", "Airfel"];
+  } else if (sourceName.includes("macbat") && sourceName.includes("converter")) {
+    normalized.name = "Plum MacBAT 5 Korrektor";
+    normalized.tags = ["Korrektor", "Avtomatlaşdırma", "Plum GAS"];
+  } else if (sourceName.includes("honeywell") && sourceName.includes("volume converter")) {
+    normalized.name = "Elster Honeywell Korrektorları";
+    normalized.tags = ["Korrektor", "Honeywell", "Elster"];
+  } else if (sourceName.includes("rotary gas meter")) {
+    normalized.name = "Elster Rotor Tipli Qaz Sayğacları";
+    normalized.tags = ["Rotor", "Elster", "Qaz sayğacı"];
+  } else if (sourceName.includes("fmg") && sourceName.includes("flow meter")) {
+    normalized.name = "FMG Rotor Tipli Qaz Sayğacı";
+    normalized.tags = ["Qaz sayğacı", "Rotor", "FMG"];
+  }
+
+  return normalized;
+}
+
 export async function translateProduct(product) {
   const sourceParts = [product.name, product.summary, ...product.specs, ...product.tags];
   const { protectedParts, protectedValues } = protectTechnicalText(sourceParts, product.brand);
@@ -148,8 +197,11 @@ export async function translateProduct(product) {
     }),
   );
 
+  const translations = Object.fromEntries(translatedEntries);
+  translations.az = normalizeAzerbaijaniProduct(product, translations.az);
+
   return {
     sourceLanguage,
-    translations: Object.fromEntries(translatedEntries),
+    translations,
   };
 }

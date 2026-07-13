@@ -1,7 +1,9 @@
 import initialProducts from "../../data/products.json";
 import initialProductTranslations from "../../data/product-translations.json";
+import azerbaijaniProductCorrections from "../../data/product-az-corrections.json";
 
 const PRODUCT_TRANSLATION_SEED_KEY = "product_translation_seed_20260713_v1";
+const AZ_TRANSLATION_CORRECTION_SEED_KEY = "product_az_corrections_20260713_v1";
 
 export const INITIAL_OWNERS = [
   { email: "faridnaghizade7@gmail.com", displayName: "Farid" },
@@ -100,6 +102,63 @@ export async function ensureProductTranslations(db) {
        )`,
     )
     .run();
+
+  const correctionMarker = await db
+    .prepare("SELECT value FROM catalog_metadata WHERE key = ?")
+    .bind(AZ_TRANSLATION_CORRECTION_SEED_KEY)
+    .first();
+  if (!correctionMarker) {
+    const productResult = await db.prepare("SELECT id, version FROM products").all();
+    const productVersions = new Map(
+      productResult.results.map((product) => [product.id, Number(product.version)]),
+    );
+    const correctedAt = new Date().toISOString();
+    const correctionStatements = [];
+
+    azerbaijaniProductCorrections.products.forEach((product) => {
+      if (productVersions.get(product.id) !== Number(product.revision)) return;
+      const translation = product.translation;
+      correctionStatements.push(
+        db
+          .prepare(
+            `INSERT INTO product_translations (
+               product_id, language, source_language, name, summary,
+               specs_json, tags_json, updated_at
+             ) VALUES (?, 'az', 'en', ?, ?, ?, ?, ?)
+             ON CONFLICT(product_id, language) DO UPDATE SET
+               name = excluded.name,
+               summary = excluded.summary,
+               specs_json = excluded.specs_json,
+               tags_json = excluded.tags_json,
+               updated_at = excluded.updated_at`,
+          )
+          .bind(
+            product.id,
+            translation.name,
+            translation.summary,
+            JSON.stringify(translation.specs),
+            JSON.stringify(translation.tags),
+            correctedAt,
+          ),
+      );
+    });
+
+    if (correctionStatements.length) await db.batch(correctionStatements);
+    await db
+      .prepare(
+        `INSERT INTO catalog_metadata (key, value, updated_at)
+         VALUES (?, ?, ?)
+         ON CONFLICT(key) DO UPDATE SET
+           value = excluded.value,
+           updated_at = excluded.updated_at`,
+      )
+      .bind(
+        AZ_TRANSLATION_CORRECTION_SEED_KEY,
+        String(correctionStatements.length),
+        correctedAt,
+      )
+      .run();
+  }
 
   const seedMarker = await db
     .prepare("SELECT value FROM catalog_metadata WHERE key = ?")

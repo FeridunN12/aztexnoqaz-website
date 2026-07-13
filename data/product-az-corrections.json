@@ -1,0 +1,325 @@
+{
+  "version": 1,
+  "products": [
+    {
+      "id": "homeyway-water-heater",
+      "revision": 1,
+      "translation": {
+        "name": "Homeyway Kombi",
+        "summary": "Yaşayış və kommersiya isti su sistemləri üçün divara quraşdırılan Homeyway kombisi.",
+        "specs": ["Qazla işləyən isti su sistemi", "İsti su təchizatı üçün uyğundur", "Model və say üzrə qiymət təklifi"],
+        "tags": ["Kombi", "İsti su", "Homeyway"]
+      }
+    },
+    {
+      "id": "eska-regulators-set",
+      "revision": 1,
+      "translation": {
+        "name": "ESKA Qaz Tənzimləyiciləri",
+        "summary": "Təzyiqə nəzarət və sənaye layihələri üçün ESKA qaz tənzimləyiciləri.",
+        "specs": ["Qaz tənzimləyiciləri çeşidi", "Qaz təzyiqinə nəzarət üçün", "Texniki seçim dəstəyi mövcuddur"],
+        "tags": ["Təzyiq", "Sənaye", "ESKA"]
+      }
+    },
+    {
+      "id": "cem-water-meter-close",
+      "revision": 1,
+      "translation": {
+        "name": "CEM Su Sayğacı",
+        "summary": "Kommunal və obyektlərdə su sərfiyyatının ölçülməsi üçün CEM su sayğacı variantları.",
+        "specs": ["Suyun mexaniki ölçülməsi", "CEM markalı məhsul", "Model sorğuya əsasən təsdiqlənir"],
+        "tags": ["Su", "Sayğac", "CEM"]
+      }
+    },
+    {
+      "id": "elster-honeywell-station",
+      "revision": 1,
+      "translation": {
+        "name": "Elster Honeywell Qaz Ölçmə Stansiyası",
+        "summary": "Sayğac, korrektor və boru xətti montajı variantları ilə qaz ölçmə stansiyası komponentləri.",
+        "specs": ["Qaz ölçmə məntəqəsinin komponentləri", "Həcm korreksiyası variantları", "Texniki göstəricilər əsasında layihə təklifi"],
+        "tags": ["Stansiya", "Honeywell", "Elster"]
+      }
+    },
+    {
+      "id": "qw-cssc-diaphragm-gas-meter",
+      "revision": 1,
+      "translation": {
+        "name": "QW/CSSC Diafraqmalı Qaz Sayğacı",
+        "summary": "Qaz sərfiyyatının ölçülməsi üçün QW/CSSC diafraqmalı qaz sayğacları.",
+        "specs": ["Qaz sərfiyyatının ölçülməsi", "Qianwei sayğac ailəsi", "Uyğun model istifadə sahəsinə görə seçilir"],
+        "tags": ["Qaz sayğacı", "QW/CSSC", "Diafraqma"]
+      }
+    },
+    {
+      "id": "plum-macbat5-converter",
+      "revision": 1,
+      "translation": {
+        "name": "Plum MacBAT 5 Korrektor",
+        "summary": "Qaz ölçmə və monitorinq sistemləri üçün elektron həcm korrektoru.",
+        "specs": ["Elektron həcm korrektoru", "MacBAT 5 məhsul ailəsi", "Qaz ölçmə sistemləri üçün"],
+        "tags": ["Korrektor", "Avtomatlaşdırma", "Plum GAS"]
+      }
+    },
+    {
+      "id": "elster-rotary-meters",
+      "revision": 1,
+      "translation": {
+        "name": "Elster Rotor Tipli Qaz Sayğacları",
+        "summary": "Sənaye və kommersiya ölçmə məntəqələri üçün rotor tipli qaz sayğacları.",
+        "specs": ["Rotor tipli qaz sayğacları", "Sənaye və kommersiya ölçmə tətbiqləri", "Ölçü sorğuya əsasən seçilir"],
+        "tags": ["Rotor", "Elster", "Qaz sayğacı"]
+      }
+    },
+    {
+      "id": "eska-gas-technologies",
+      "revision": 1,
+      "translation": {
+        "name": "ESKA Qaz Tənzimləyiciləri",
+        "summary": "Boru xətləri və qaz stansiyaları üçün ESKA tənzimləyici avadanlıqları.",
+        "specs": ["Qaz tənzimləyiciləri çeşidi", "Boru xətləri üçün komponentlər", "Qiymət təklifi təzyiq və ölçüyə əsasən hazırlanır"],
+        "tags": ["ESKA", "Boru xətti", "Tənzimləyici"]
+      }
+    },
+    {
+      "id": "fmg-flow-meter",
+      "revision": 1,
+      "translation": {
+        "name": "FMG Rotor Tipli Qaz Sayğacı",
+        "summary": "Sənaye qaz sərfiyyatının ölçülməsi üçün FMG rotor tipli qaz sayğacı.",
+        "specs": ["Rotor tipli qaz sayğacı", "Sənaye qazının ölçülməsi", "Axın tələbinə uyğun seçim"],
+        "tags": ["Qaz sayğacı", "Rotor", "FMG"]
+      }
+    },
+    {
+      "id": "madas-gas-valves",
+      "revision": 1,
+      "translation": {
+        "name": "MADAS Qaz Təhlükəsizlik Klapanları",
+        "summary": "Qaz təhlükəsizliyi və boru xəttinin idarə olunması üçün MADAS klapan və nəzarət avadanlıqları.",
+        "specs": ["Qaz klapanları məhsul xətti", "Nəzarət və təhlükəsizlik tətbiqləri", "Konfiqurasiya sorğuya əsasən təsdiqlənir"],
+        "tags": ["Klapanlar", "Təhlükəsizlik", "MADAS"]
+      }
+    },
+    {
+      "id": "fangaz-regulators-pair",
+      "revision": 1,
+      "translation": {
+        "name": "FANGAZ Qaz Tənzimləyiciləri",
+        "summary": "Qaz təzyiqinin azaldılması və idarə olunması üçün FANGAZ tənzimləyiciləri.",
+        "specs": ["Təzyiq tənzimləyiciləri çeşidi", "Sənaye qaz avadanlığı", "Model quraşdırma şəraitinə uyğun seçilir"],
+        "tags": ["FANGAZ", "Təzyiq", "Qaz"]
+      }
+    },
+    {
+      "id": "elster-honeywell-volume-converters",
+      "revision": 1,
+      "translation": {
+        "name": "Elster Honeywell Korrektorları",
+        "summary": "Qaz ölçmə məntəqələrində ölçmə, hesabat və nəzarət üçün elektron həcm korrektorları.",
+        "specs": ["Elektron həcm korrektorları", "Elster və Honeywell məhsul ailəsi", "Qaz ölçmə məntəqələri üçün"],
+        "tags": ["Korrektor", "Honeywell", "Elster"]
+      }
+    },
+    {
+      "id": "fangaz-industrial-regulators",
+      "revision": 1,
+      "translation": {
+        "name": "FANGAZ Sənaye Tənzimləyiciləri",
+        "summary": "İri qaz xətləri və stansiyalar üçün yüksək buraxıcılıqlı FANGAZ tənzimləyiciləri.",
+        "specs": ["Sənaye tənzimləyiciləri", "Flanşlı birləşmə variantları", "Ölçü və təzyiq üzrə qiymət təklifi"],
+        "tags": ["Sənaye", "FANGAZ", "Tənzimləyici"]
+      }
+    },
+    {
+      "id": "fangaz-red-regulator",
+      "revision": 1,
+      "translation": {
+        "name": "FANGAZ Qırmızı Tənzimləyici",
+        "summary": "Qaz təzyiqinin idarə olunması üçün qırmızı gövdəli FANGAZ tənzimləyicisi.",
+        "specs": ["Qaz təzyiq tənzimləyicisi", "FANGAZ markalı avadanlıq", "Mövcudluq sorğuya əsasən təsdiqlənir"],
+        "tags": ["Tənzimləyici", "FANGAZ", "Təzyiq"]
+      }
+    },
+    {
+      "id": "baylan-electric-meter",
+      "revision": 1,
+      "translation": {
+        "name": "BAYLAN Elektrik Sayğacı",
+        "summary": "Elektrik enerjisinin ölçülməsi üçün BAYLAN elektron sayğacları.",
+        "specs": ["Elektrik sayğacları məhsul xətti", "BAYLAN markalı cihaz", "Model quraşdırma tələbinə uyğun seçilir"],
+        "tags": ["Elektrik", "Sayğac", "BAYLAN"]
+      }
+    },
+    {
+      "id": "cem-industrial-water-meter",
+      "revision": 1,
+      "translation": {
+        "name": "CEM Sənaye Su Sayğacı",
+        "summary": "İri boru xətləri və obyektlər üçün flanşlı CEM su sayğacı.",
+        "specs": ["Sənaye suyunun ölçülməsi", "Flanşlı su sayğacı", "Ölçü və say üzrə qiymət təklifi"],
+        "tags": ["Su", "Sənaye", "CEM"]
+      }
+    },
+    {
+      "id": "elster-spare-parts",
+      "revision": 1,
+      "translation": {
+        "name": "Elster Ehtiyat Hissələri",
+        "summary": "Qaz sayğaclarının texniki xidməti üçün ehtiyat hissələri və dəqiq komponentlər.",
+        "specs": ["Ehtiyat hissələri çeşidi", "Sayğac üçün servis komponentləri", "Hissələr foto və ya məhsul koduna görə seçilir"],
+        "tags": ["Ehtiyat hissələri", "Elster", "Servis"]
+      }
+    },
+    {
+      "id": "pressure-hose",
+      "revision": 1,
+      "translation": {
+        "name": "Elastik Təzyiq Şlanqı",
+        "summary": "Qaz və sənaye birləşmələri üçün paslanmayan poladdan elastik təzyiq şlanqları.",
+        "specs": ["Elastik şlanq qurğusu", "Paslanmayan polad hörük", "Uzunluq və birləşmə növü sifarişlə təsdiqlənir"],
+        "tags": ["Şlanq", "Birləşmə", "Paslanmayan polad"]
+      }
+    },
+    {
+      "id": "elster-yellow-turbine-meter",
+      "revision": 1,
+      "translation": {
+        "name": "Elster Honeywell Turbin Tipli Qaz Sayğacı",
+        "summary": "Yüksək qaz axınının ölçülməsi üçün turbin tipli qaz sayğacı.",
+        "specs": ["Turbin tipli qaz sayğacı", "Honeywell və Elster məhsul ailəsi", "Axın və təzyiqə uyğun seçim"],
+        "tags": ["Turbin", "Qaz sayğacı", "Honeywell"]
+      }
+    },
+    {
+      "id": "airfel-daikin-water-heater",
+      "revision": 1,
+      "translation": {
+        "name": "Airfel / Daikin Kombi",
+        "summary": "Airfel və Daikin məhsul xətlərindən divara quraşdırılan kombilər.",
+        "specs": ["Kombi", "İsitmə və isti su təchizatı", "Model və güc sorğuya əsasən seçilir"],
+        "tags": ["Kombi", "Daikin", "Airfel"]
+      }
+    },
+    {
+      "id": "multi-brand-systems",
+      "revision": 1,
+      "translation": {
+        "name": "Çoxbrendli Qaz Avadanlığı Paketi",
+        "summary": "Bir neçə qaz avadanlığı kateqoriyasını əhatə edən layihələr üçün komplekt məhsul paketi.",
+        "specs": ["Ölçmə, korreksiya və HVAC seçimləri", "Müxtəlif brendlərdən təchizat", "Layihə siyahısına əsasən qiymət təklifi"],
+        "tags": ["Paket", "Layihə", "Təchizat"]
+      }
+    },
+    {
+      "id": "airfel-daikin-ac",
+      "revision": 1,
+      "translation": {
+        "name": "Airfel / Daikin Kondisioner Dəsti",
+        "summary": "Daxili blok, xarici blok və idarəetmə pultundan ibarət kondisioner dəsti.",
+        "specs": ["Kondisioner məhsul xətti", "Airfel və Daikin məhsulları", "Güc sifarişdən əvvəl təsdiqlənir"],
+        "tags": ["Kondisioner", "Daikin", "Airfel"]
+      }
+    },
+    {
+      "id": "gas-regulation-cabinet",
+      "revision": 1,
+      "translation": {
+        "name": "Qaz Tənzimləmə Şkafı",
+        "summary": "Obyektlərdə qaz təzyiqinin tənzimlənməsi və boru xəttinin idarə olunması üçün şkaf tipli qurğu.",
+        "specs": ["Şkaf tipli montaj", "Tənzimləyicilər, klapanlar və sayğaclar", "Layihə üzrə qiymət təklifi"],
+        "tags": ["Şkaf", "Stansiya", "Qaz"]
+      }
+    },
+    {
+      "id": "pakkens-pressure-gauges",
+      "revision": 1,
+      "translation": {
+        "name": "Pakkens Manometrləri",
+        "summary": "Qaz, su və sənaye sistemlərində təzyiqə nəzarət üçün Pakkens manometrləri.",
+        "specs": ["Manometrlər məhsul xətti", "Müxtəlif ölçmə diapazonları", "Quraşdırma üçün aksesuarlar"],
+        "tags": ["Manometr", "Təzyiq", "Pakkens"]
+      }
+    },
+    {
+      "id": "broen-ball-valve",
+      "revision": 14,
+      "translation": {
+        "name": "BROEN Flanşlı Kürəvi Klapan",
+        "summary": "Təbii qaz boru xətlərinin bağlanması üçün BROEN flanşlı kürəvi klapan.",
+        "specs": ["Kürəvi klapan məhsul xətti", "Flanşlı qaz klapanı", "Ölçü və təzyiq sinfi sorğuya əsasən seçilir"],
+        "tags": ["Klapan", "BROEN", "Qaz"]
+      }
+    },
+    {
+      "id": "partner-components",
+      "revision": 1,
+      "translation": {
+        "name": "Dəqiq Qaz Komponentləri",
+        "summary": "Qaz avadanlıqları üçün xüsusi komponentlər, ucluqlar və tor filtr hissələri.",
+        "specs": ["Kiçik ölçülü dəqiq komponentlər", "Qaz avadanlığı aksesuarları", "Məhsul fotoşəkli və ya koduna görə seçilir"],
+        "tags": ["Komponentlər", "Filtrlər", "Hissələr"]
+      }
+    },
+    {
+      "id": "eska-valve-showcase",
+      "revision": 1,
+      "translation": {
+        "name": "ESKA Klapan Məhsulları",
+        "summary": "Qaz nəzarət qurğuları üçün ESKA klapan və tənzimləyiciləri.",
+        "specs": ["Klapan və tənzimləyici avadanlıqlar", "ESKA markalı məhsullar", "Tətbiq sahəsi təchizatdan əvvəl təsdiqlənir"],
+        "tags": ["Klapan", "ESKA", "Qaz"]
+      }
+    },
+    {
+      "id": "plum-gas-station",
+      "revision": 1,
+      "translation": {
+        "name": "Plum GAS Stansiya Qurğusu",
+        "summary": "Plum GAS korrektorunun qaz ölçmə stansiyasına və boru xəttinə inteqrasiyası.",
+        "specs": ["Elektron həcm korrektoru", "Qaz stansiyasına inteqrasiya", "Layihə üzrə texniki dəstək"],
+        "tags": ["Plum GAS", "Stansiya", "Korrektor"]
+      }
+    },
+    {
+      "id": "broen-ball-valve-2",
+      "revision": 1,
+      "translation": {
+        "name": "BROEN Flanşlı Kürəvi Klapan",
+        "summary": "Təbii qaz boru xətlərinin bağlanması üçün BROEN flanşlı kürəvi klapan.",
+        "specs": ["Kürəvi klapan məhsul xətti", "Flanşlı qaz klapanı", "Ölçü və təzyiq sinfi sorğuya əsasən seçilir"],
+        "tags": ["Klapan", "BROEN", "Qaz"]
+      }
+    },
+    {
+      "id": "broen-ball-valve-3",
+      "revision": 1,
+      "translation": {
+        "name": "BROEN Su Filtri",
+        "summary": "Su xətləri üçün BROEN filtr avadanlığı.",
+        "specs": [],
+        "tags": ["Filtr", "BROEN", "Su"]
+      }
+    },
+    {
+      "id": "airfel-wireless-room-thermostat",
+      "revision": 2,
+      "translation": {
+        "name": "Airfel Simsiz Otaq Termostatı",
+        "summary": "Airfel simsiz otaq termostatı kombi və isitmə sistemlərində temperaturun dəqiq idarə olunması üçün nəzərdə tutulub. Enerji səmərəliliyini artırmağa, qaz sərfiyyatını azaltmağa və rahat otaq temperaturunu qorumağa kömək edir.",
+        "specs": ["Simsiz otaq termostatı", "Airfel və uyğun Daikin kombiləri ilə işləyir", "Rəqəmsal LCD ekran", "Proqramlaşdırıla bilən temperatur parametrləri", "Simsiz qəbuledici daxildir", "Asan quraşdırma", "Enerjiyə qənaət rejimi", "Batareya ilə işləyən termostat", "Yaşayış evlərinin isitmə sistemləri üçün uyğundur"],
+        "tags": ["Airfel", "Termostat", "Simsiz", "Otaq termostatı", "İsitmə", "Kombi", "Temperatur nəzarəti", "Daikin", "Enerjiyə qənaət"]
+      }
+    },
+    {
+      "id": "elster-bk-gas-meter",
+      "revision": 2,
+      "translation": {
+        "name": "ELSTER BK Qaz Sayğacı",
+        "summary": "ELSTER BK yaşayış və kommersiya obyektlərində təbii qaz sərfiyyatının ölçülməsi üçün yüksək dəqiqlikli diafraqmalı qaz sayğacıdır. Etibarlı işləmə, uzun istismar müddəti və az texniki xidmət tələbi ilə seçilir.",
+        "specs": ["Diafraqmalı qaz sayğacı", "Təbii qazın ölçülməsi üçün", "Yüksək ölçmə dəqiqliyi", "Uzun istismar müddəti", "Az texniki xidmət tələbi", "Kompakt və davamlı konstruksiya", "Yaşayış və kommersiya tətbiqləri", "Etibarlı uzunmüddətli işləmə", "Beynəlxalq standartlara uyğundur"],
+        "tags": ["ELSTER", "BK qaz sayğacı", "Qaz sayğacı", "Təbii qaz", "Ölçmə", "Diafraqmalı sayğac", "Yaşayış", "Kommersiya", "Sənaye"]
+      }
+    }
+  ]
+}
