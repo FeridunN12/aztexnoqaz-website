@@ -1,0 +1,3038 @@
+{
+  "version": 1,
+  "generatedAt": "2026-07-13T10:28:18.781Z",
+  "products": [
+    {
+      "id": "homeyway-water-heater",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Homeyway Qazlı Su Qızdırıcısı",
+          "summary": "Yaşayış və kommersiya isti su layihələri üçün divara quraşdırılmış qazlı su isitmə qurğusu.",
+          "specs": [
+            "Qaz suyu isitmə həlli",
+            "İsti su tətbiqləri üçün uyğundur",
+            "Sitat model və kəmiyyətlə təsdiqlənir"
+          ],
+          "tags": [
+            "İstilik",
+            "Su",
+            "Qaz"
+          ]
+        },
+        "en": {
+          "name": "Homeyway Gas Water Heater",
+          "summary": "Wall-mounted gas water heating unit for residential and commercial hot-water projects.",
+          "specs": [
+            "Gas water heating solution",
+            "Suitable for hot-water applications",
+            "Quote confirmed by model and quantity"
+          ],
+          "tags": [
+            "Heating",
+            "Water",
+            "Gas"
+          ]
+        },
+        "tr": {
+          "name": "Homeyway Gazlı Su Isıtıcısı",
+          "summary": "Konut ve ticari sıcak su projeleri için duvara monte gazlı su ısıtma ünitesi.",
+          "specs": [
+            "Gazlı su ısıtma çözümü",
+            "Sıcak su uygulamalarına uygundur",
+            "Fiyat teklifi model ve miktara göre onaylandı"
+          ],
+          "tags": [
+            "Isıtma",
+            "Su",
+            "Gaz"
+          ]
+        },
+        "ru": {
+          "name": "Homeyway Газовый водонагреватель",
+          "summary": "Настенный газовый водонагреватель для отопления жилых и коммерческих помещений.",
+          "specs": [
+            "Решение для газового водонагревателя",
+            "Подходит для применения в системах горячего водоснабжения.",
+            "Цена подтверждена моделью и количеством"
+          ],
+          "tags": [
+            "Обогрев",
+            "Вода",
+            "Газ"
+          ]
+        },
+        "ka": {
+          "name": "Homeyway გაზის წყლის გამაცხელებელი",
+          "summary": "კედელზე დამონტაჟებული გაზის წყლის გათბობის ბლოკი საცხოვრებელი და კომერციული ცხელი წყლის პროექტებისთვის.",
+          "specs": [
+            "გაზის წყლის გამაცხელებელი ხსნარი",
+            "ვარგისია ცხელი წყლის გამოყენებისთვის",
+            "ციტატა დადასტურებულია მოდელით და რაოდენობით"
+          ],
+          "tags": [
+            "გათბობა",
+            "წყალი",
+            "გაზი"
+          ]
+        },
+        "fa": {
+          "name": "آبگرمکن گازی Homeyway",
+          "summary": "واحد آبگرمکن گازی دیواری برای پروژه های آبگرم مسکونی و تجاری.",
+          "specs": [
+            "محلول گرمایش آب گاز",
+            "مناسب برای کاربردهای آب گرم",
+            "نقل قول با مدل و مقدار تأیید شد"
+          ],
+          "tags": [
+            "گرمایش",
+            "آب",
+            "گاز"
+          ]
+        }
+      }
+    },
+    {
+      "id": "eska-regulators-set",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "ESKA Qaz Tənzimləyiciləri",
+          "summary": "Təzyiq nəzarəti və layihə qurğuları üçün sənaye qaz tənzimləyicisi çeşidi.",
+          "specs": [
+            "Tənzimləyici məhsul ailəsi",
+            "Qaz təzyiqinə nəzarət üçün",
+            "Texniki seçim dəstəyi mövcuddur"
+          ],
+          "tags": [
+            "Təzyiq",
+            "Sənaye",
+            "ESKA"
+          ]
+        },
+        "en": {
+          "name": "ESKA Gas Regulators",
+          "summary": "Industrial gas regulator range for pressure control and project installations.",
+          "specs": [
+            "Regulator product family",
+            "For gas pressure control",
+            "Technical selection support available"
+          ],
+          "tags": [
+            "Pressure",
+            "Industrial",
+            "ESKA"
+          ]
+        },
+        "tr": {
+          "name": "ESKA Gaz Regülatörleri",
+          "summary": "Basınç kontrolü ve proje kurulumları için endüstriyel gaz regülatör serisi.",
+          "specs": [
+            "Regülatör ürün ailesi",
+            "Gaz basıncı kontrolü için",
+            "Teknik seçim desteği mevcut"
+          ],
+          "tags": [
+            "Basınç",
+            "Endüstriyel",
+            "ESKA"
+          ]
+        },
+        "ru": {
+          "name": "ESKA Регуляторы газа",
+          "summary": "Серия промышленных газовых регуляторов для контроля давления и проектных установок.",
+          "specs": [
+            "Семейство регуляторов",
+            "Для контроля давления газа",
+            "Возможна техническая поддержка выбора"
+          ],
+          "tags": [
+            "Давление",
+            "Промышленный",
+            "ESKA"
+          ]
+        },
+        "ka": {
+          "name": "ESKA გაზის რეგულატორები",
+          "summary": "სამრეწველო გაზის რეგულატორის დიაპაზონი წნევის კონტროლისა და პროექტის ინსტალაციებისთვის.",
+          "specs": [
+            "მარეგულირებელი პროდუქტის ოჯახი",
+            "გაზის წნევის კონტროლისთვის",
+            "ხელმისაწვდომია ტექნიკური შერჩევის მხარდაჭერა"
+          ],
+          "tags": [
+            "წნევა",
+            "სამრეწველო",
+            "ESKA"
+          ]
+        },
+        "fa": {
+          "name": "رگلاتور گاز ESKA",
+          "summary": "محدوده تنظیم کننده گاز صنعتی برای کنترل فشار و تاسیسات پروژه.",
+          "specs": [
+            "خانواده محصولات رگولاتور",
+            "برای کنترل فشار گاز",
+            "پشتیبانی انتخاب فنی در دسترس است"
+          ],
+          "tags": [
+            "فشار",
+            "صنعتی",
+            "ESKA"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cem-water-meter-close",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "CEM Su Sayğacı",
+          "summary": "Kommunal və obyekt ölçmə ehtiyacları üçün CEM su sayğacı variantları.",
+          "specs": [
+            "Suyun mexaniki ölçülməsi",
+            "CEM markalı məhsul",
+            "Sorğu ilə modelin təsdiqi"
+          ],
+          "tags": [
+            "Su",
+            "Metr",
+            "CEM"
+          ]
+        },
+        "en": {
+          "name": "CEM Water Meter",
+          "summary": "CEM water meter options for utility and facility measurement needs.",
+          "specs": [
+            "Mechanical water metering",
+            "CEM branded product",
+            "Model confirmation by request"
+          ],
+          "tags": [
+            "Water",
+            "Meter",
+            "CEM"
+          ]
+        },
+        "tr": {
+          "name": "CEM Su Sayacı",
+          "summary": "Tesis ve tesis ölçüm ihtiyaçları için CEM su sayacı seçenekleri.",
+          "specs": [
+            "Mekanik su ölçümü",
+            "CEM markalı ürün",
+            "Talep üzerine model onayı"
+          ],
+          "tags": [
+            "Su",
+            "Metre",
+            "CEM"
+          ]
+        },
+        "ru": {
+          "name": "CEM Счетчик воды",
+          "summary": "Варианты счетчиков воды CEM для нужд коммунальных предприятий и объектов.",
+          "specs": [
+            "Механический учет воды",
+            "Товар под брендом CEM",
+            "Подтверждение модели по запросу"
+          ],
+          "tags": [
+            "Вода",
+            "Метр",
+            "CEM"
+          ]
+        },
+        "ka": {
+          "name": "CEM წყლის მრიცხველი",
+          "summary": "CEM წყლის მრიცხველის ვარიანტები კომუნალური და ობიექტების გაზომვის საჭიროებებისთვის.",
+          "specs": [
+            "მექანიკური წყლის გამრიცხველიანება",
+            "CEM ბრენდის პროდუქტი",
+            "მოდელის დადასტურება მოთხოვნით"
+          ],
+          "tags": [
+            "წყალი",
+            "მეტრი",
+            "CEM"
+          ]
+        },
+        "fa": {
+          "name": "کنتور آب CEM",
+          "summary": "گزینه های کنتور آب CEM برای نیازهای اندازه گیری تاسیسات و تاسیسات.",
+          "specs": [
+            "اندازه گیری مکانیکی آب",
+            "محصول با برند CEM",
+            "تایید مدل با درخواست"
+          ],
+          "tags": [
+            "آب",
+            "متر",
+            "CEM"
+          ]
+        }
+      }
+    },
+    {
+      "id": "elster-honeywell-station",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Elster Honeywell Qaz Ölçmə Stansiyası",
+          "summary": "Sayğac, korrektor və boru montaj variantları ilə qaz ölçmə stansiyası komponentləri.",
+          "specs": [
+            "Ölçmə məntəqəsinin komponentləri",
+            "Səs səviyyəsinin düzəldilməsi variantları",
+            "Spesifikasiyalardan sonra layihə təklifi"
+          ],
+          "tags": [
+            "stansiya",
+            "Honeywell",
+            "Elster"
+          ]
+        },
+        "en": {
+          "name": "Elster Honeywell Gas Measuring Station",
+          "summary": "Gas measurement station components with meter, corrector and pipe assembly options.",
+          "specs": [
+            "Metering station components",
+            "Volume correction options",
+            "Project quotation after specs"
+          ],
+          "tags": [
+            "Station",
+            "Honeywell",
+            "Elster"
+          ]
+        },
+        "tr": {
+          "name": "Elster Honeywell Gaz Ölçüm İstasyonu",
+          "summary": "Sayaç, düzeltici ve boru montaj seçeneklerine sahip gaz ölçüm istasyonu bileşenleri.",
+          "specs": [
+            "Ölçüm istasyonu bileşenleri",
+            "Ses düzeyi düzeltme seçenekleri",
+            "Spesifikasyonlardan sonra proje teklifi"
+          ],
+          "tags": [
+            "İstasyon",
+            "Honeywell'in",
+            "Elster"
+          ]
+        },
+        "ru": {
+          "name": "Elster Honeywell Газоизмерительная станция",
+          "summary": "Компоненты газоизмерительной станции со счетчиком, корректором и опциями сборки труб.",
+          "specs": [
+            "Компоненты дозирующей станции",
+            "Возможности коррекции объема",
+            "Стоимость проекта после спецификации"
+          ],
+          "tags": [
+            "Станция",
+            "Ханивелл",
+            "Эльстер"
+          ]
+        },
+        "ka": {
+          "name": "Elster Honeywell გაზსაზომი სადგური",
+          "summary": "გაზსაზომი სადგურის კომპონენტები მრიცხველის, კორექტორის და მილების შეკრების ვარიანტებით.",
+          "specs": [
+            "აღრიცხვის სადგურის კომპონენტები",
+            "ხმის კორექტირების ვარიანტები",
+            "პროექტის შეთავაზება სპეციფიკაციების შემდეგ"
+          ],
+          "tags": [
+            "სადგური",
+            "ჰანიველი",
+            "ელსტერი"
+          ]
+        },
+        "fa": {
+          "name": "ایستگاه اندازه گیری گاز Elster Honeywell",
+          "summary": "اجزای ایستگاه اندازه گیری گاز با گزینه های متر، تصحیح کننده و مونتاژ لوله.",
+          "specs": [
+            "اجزای ایستگاه اندازه گیری",
+            "گزینه های تصحیح حجم",
+            "نقل قول پروژه پس از مشخصات"
+          ],
+          "tags": [
+            "ایستگاه",
+            "هانیول",
+            "الستر"
+          ]
+        }
+      }
+    },
+    {
+      "id": "qw-cssc-diaphragm-gas-meter",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "QW/CSSC diafraqma qaz sayğacı",
+          "summary": "Qaz istehlakının ölçülməsi üçün diafraqma qaz sayğacı məhsul xətti.",
+          "specs": [
+            "Qaz istehlakının ölçülməsi",
+            "Qianwei metr ailəsi",
+            "Uyğun model istifadəyə görə seçilir"
+          ],
+          "tags": [
+            "Qaz sayğacı",
+            "QW/CSSC",
+            "Diafraqma"
+          ]
+        },
+        "en": {
+          "name": "QW/CSSC Diaphragm Gas Meter",
+          "summary": "Diaphragm gas meter product line for gas consumption measurement.",
+          "specs": [
+            "Gas consumption metering",
+            "Qianwei meter family",
+            "Suitable model selected by usage"
+          ],
+          "tags": [
+            "Gas meter",
+            "QW/CSSC",
+            "Diaphragm"
+          ]
+        },
+        "tr": {
+          "name": "QW/CSSC Diyaframlı Gaz Sayacı",
+          "summary": "Gaz tüketimi ölçümü için diyaframlı gaz sayacı ürün grubu.",
+          "specs": [
+            "Gaz tüketimi ölçümü",
+            "Qianwei ölçüm cihazı ailesi",
+            "Kullanıma göre seçilen uygun model"
+          ],
+          "tags": [
+            "Gaz sayacı",
+            "QW/CSSC",
+            "Diyafram"
+          ]
+        },
+        "ru": {
+          "name": "QW/CSSC Мембранный счетчик газа",
+          "summary": "Линия мембранных счетчиков газа для измерения расхода газа.",
+          "specs": [
+            "Учет потребления газа",
+            "Семейство счетчиков Qianwei",
+            "Подходящая модель, выбранная по использованию"
+          ],
+          "tags": [
+            "Газовый счетчик",
+            "QW/CSSC",
+            "Диафрагма"
+          ]
+        },
+        "ka": {
+          "name": "QW/CSSC დიაფრაგმის გაზის მრიცხველი",
+          "summary": "დიაფრაგმის გაზის მრიცხველის პროდუქტის ხაზი გაზის მოხმარების გაზომვისთვის.",
+          "specs": [
+            "გაზის მოხმარების გაზომვა",
+            "Qianwei მეტრის ოჯახი",
+            "გამოყენების მიხედვით შერჩეული შესაფერისი მოდელი"
+          ],
+          "tags": [
+            "გაზის მრიცხველი",
+            "QW/CSSC",
+            "დიაფრაგმა"
+          ]
+        },
+        "fa": {
+          "name": "کنتور گاز دیافراگمی QW/CSSC",
+          "summary": "خط تولید کنتور گاز دیافراگمی برای اندازه گیری مصرف گاز.",
+          "specs": [
+            "اندازه گیری مصرف گاز",
+            "خانواده کیانوی متر",
+            "مدل مناسب بر اساس استفاده انتخاب شده است"
+          ],
+          "tags": [
+            "کنتور گاز",
+            "QW/CSSC",
+            "دیافراگم"
+          ]
+        }
+      }
+    },
+    {
+      "id": "plum-macbat5-converter",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Plum MacBAT 5 Həcmi Çevirici",
+          "summary": "Qazın ölçülməsi və monitorinqi sistemləri üçün həcmin elektron çevrilməsi cihazı.",
+          "specs": [
+            "Həcmi çevirmə cihazı",
+            "MacBAT 5 məhsul ailəsi",
+            "Qaz ölçmə sistemləri üçün"
+          ],
+          "tags": [
+            "Konvertor",
+            "Avtomatlaşdırma",
+            "Plum GAS"
+          ]
+        },
+        "en": {
+          "name": "Plum MacBAT 5 Volume Converter",
+          "summary": "Electronic volume conversion device for gas metering and monitoring systems.",
+          "specs": [
+            "Volume conversion device",
+            "MacBAT 5 product family",
+            "For gas measurement systems"
+          ],
+          "tags": [
+            "Converter",
+            "Automation",
+            "Plum GAS"
+          ]
+        },
+        "tr": {
+          "name": "Plum MacBAT 5 Ses Dönüştürücü",
+          "summary": "Gaz ölçüm ve izleme sistemleri için elektronik hacim dönüştürme cihazı.",
+          "specs": [
+            "Hacim dönüştürme cihazı",
+            "MacBAT 5 ürün ailesi",
+            "Gaz ölçüm sistemleri için"
+          ],
+          "tags": [
+            "Dönüştürücü",
+            "Otomasyon",
+            "Plum GAS"
+          ]
+        },
+        "ru": {
+          "name": "Конвертер объема Plum MacBAT 5",
+          "summary": "Электронное устройство преобразования объема для систем учета и контроля газа.",
+          "specs": [
+            "Устройство преобразования объема",
+            "Семейство продуктов MacBAT 5",
+            "Для систем измерения газа"
+          ],
+          "tags": [
+            "Конвертер",
+            "Автоматизация",
+            "Plum GAS"
+          ]
+        },
+        "ka": {
+          "name": "Plum MacBAT 5 მოცულობის გადამყვანი",
+          "summary": "ელექტრონული მოცულობის გარდაქმნის მოწყობილობა გაზის აღრიცხვისა და მონიტორინგის სისტემებისთვის.",
+          "specs": [
+            "მოცულობის კონვერტაციის მოწყობილობა",
+            "MacBAT 5 პროდუქციის ოჯახი",
+            "გაზის საზომი სისტემებისთვის"
+          ],
+          "tags": [
+            "კონვერტორი",
+            "ავტომატიზაცია",
+            "Plum GAS"
+          ]
+        },
+        "fa": {
+          "name": "Plum MacBAT 5 Volume Converter",
+          "summary": "دستگاه تبدیل حجم الکترونیکی برای سیستم های اندازه گیری و مانیتورینگ گاز.",
+          "specs": [
+            "دستگاه تبدیل حجم",
+            "خانواده محصولات MacBAT 5",
+            "برای سیستم های اندازه گیری گاز"
+          ],
+          "tags": [
+            "مبدل",
+            "اتوماسیون",
+            "Plum GAS"
+          ]
+        }
+      }
+    },
+    {
+      "id": "elster-rotary-meters",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Elster fırlanan qaz sayğacları",
+          "summary": "Sənaye və ticarət ölçmə nöqtələri üçün fırlanan qaz sayğacları.",
+          "specs": [
+            "Dönər sayğac ailəsi",
+            "Sənaye ölçmə tətbiqləri",
+            "Ölçü sorğu ilə idarə olunur"
+          ],
+          "tags": [
+            "Dönər",
+            "Elster",
+            "Qaz"
+          ]
+        },
+        "en": {
+          "name": "Elster Rotary Gas Meters",
+          "summary": "Rotary gas meter products for industrial and commercial measurement points.",
+          "specs": [
+            "Rotary meter family",
+            "Industrial metering applications",
+            "Sizing handled by inquiry"
+          ],
+          "tags": [
+            "Rotary",
+            "Elster",
+            "Gas"
+          ]
+        },
+        "tr": {
+          "name": "Elster Döner Gaz Sayaçları",
+          "summary": "Endüstriyel ve ticari ölçüm noktalarına yönelik döner gaz sayacı ürünleri.",
+          "specs": [
+            "Döner sayaç ailesi",
+            "Endüstriyel ölçüm uygulamaları",
+            "Boyutlandırma sorgulamayla gerçekleştirilir"
+          ],
+          "tags": [
+            "Döner",
+            "Elster",
+            "Gaz"
+          ]
+        },
+        "ru": {
+          "name": "Elster Роторные счетчики газа",
+          "summary": "Ротационные счетчики газа для промышленных и коммерческих точек измерения.",
+          "specs": [
+            "Семейство ротационных счетчиков",
+            "Приложения для промышленных измерений",
+            "Размеры обрабатываются по запросу"
+          ],
+          "tags": [
+            "Роторный",
+            "Elster",
+            "Газ"
+          ]
+        },
+        "ka": {
+          "name": "Elster მბრუნავი გაზის მრიცხველები",
+          "summary": "მბრუნავი გაზის მრიცხველის პროდუქტები სამრეწველო და კომერციული საზომი წერტილებისთვის.",
+          "specs": [
+            "მბრუნავი მრიცხველის ოჯახი",
+            "სამრეწველო აღრიცხვის პროგრამები",
+            "ზომა დამუშავებულია გამოკითხვით"
+          ],
+          "tags": [
+            "მბრუნავი",
+            "Elster",
+            "გაზი"
+          ]
+        },
+        "fa": {
+          "name": "کنتورهای گاز روتاری Elster",
+          "summary": "محصولات کنتور گاز دوار برای نقاط اندازه گیری صنعتی و تجاری.",
+          "specs": [
+            "خانواده متر روتاری",
+            "کاربردهای اندازه گیری صنعتی",
+            "اندازه گیری توسط پرس و جو انجام می شود"
+          ],
+          "tags": [
+            "روتاری",
+            "Elster",
+            "گاز"
+          ]
+        }
+      }
+    },
+    {
+      "id": "eska-gas-technologies",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "ESKA Qaz Texnologiyaları Tənzimləyiciləri",
+          "summary": "ESKA boru kəməri və stansiya istifadəsi üçün tənzimləyici və qaz texnologiyası avadanlığı.",
+          "specs": [
+            "Qaz tənzimləyicisinin çeşidi",
+            "Boru kəmərinin dəstəkləyici komponentləri",
+            "Təzyiq və ölçü ilə sitat gətirin"
+          ],
+          "tags": [
+            "ESKA",
+            "Boru kəməri",
+            "Tənzimləyici"
+          ]
+        },
+        "en": {
+          "name": "ESKA Gas Technologies Regulators",
+          "summary": "ESKA regulator and gas technology equipment for pipeline and station use.",
+          "specs": [
+            "Gas regulator assortment",
+            "Pipeline support components",
+            "Quote by pressure and size"
+          ],
+          "tags": [
+            "ESKA",
+            "Pipeline",
+            "Regulator"
+          ]
+        },
+        "tr": {
+          "name": "ESKA Gaz Teknolojileri Düzenleyicileri",
+          "summary": "ESKA Boru hattı ve istasyon kullanımına yönelik regülatör ve gaz teknolojisi ekipmanı.",
+          "specs": [
+            "Gaz regülatörü çeşitleri",
+            "Boru hattı destek bileşenleri",
+            "Basınç ve boyuta göre fiyat teklifi"
+          ],
+          "tags": [
+            "ESKA",
+            "Boru hattı",
+            "Regülatör"
+          ]
+        },
+        "ru": {
+          "name": "ESKA Регуляторы газовых технологий",
+          "summary": "ESKA Регулятор и газотехнологическое оборудование для использования на трубопроводах и станциях.",
+          "specs": [
+            "Ассортимент газовых регуляторов",
+            "Компоненты опор трубопровода",
+            "Цитирование по давлению и размеру"
+          ],
+          "tags": [
+            "ESKA",
+            "Трубопровод",
+            "Регулятор"
+          ]
+        },
+        "ka": {
+          "name": "ESKA გაზის ტექნოლოგიების რეგულატორები",
+          "summary": "ESKA რეგულატორი და გაზის ტექნოლოგიის აღჭურვილობა მილსადენისა და სადგურის გამოყენებისთვის.",
+          "specs": [
+            "გაზის რეგულატორის ასორტიმენტი",
+            "მილსადენის დამხმარე კომპონენტები",
+            "ციტატა წნევისა და ზომის მიხედვით"
+          ],
+          "tags": [
+            "ESKA",
+            "მილსადენი",
+            "მარეგულირებელი"
+          ]
+        },
+        "fa": {
+          "name": "ESKA رگولاتورهای فناوری گاز",
+          "summary": "رگولاتور ESKA و تجهیزات فناوری گاز برای استفاده در خط لوله و ایستگاه.",
+          "specs": [
+            "مجموعه تنظیم کننده گاز",
+            "اجزای پشتیبانی خط لوله",
+            "نقل قول بر اساس فشار و اندازه"
+          ],
+          "tags": [
+            "ESKA",
+            "خط لوله",
+            "تنظیم کننده"
+          ]
+        }
+      }
+    },
+    {
+      "id": "fmg-flow-meter",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "FMG Axın Ölçer",
+          "summary": "FMG qaz axınının ölçülməsi və sənaye istifadəsi üçün axın ölçən avadanlıq.",
+          "specs": [
+            "Axın ölçən məhsul",
+            "Sənaye qazının ölçülməsi",
+            "Axın tələblərinə görə seçim"
+          ],
+          "tags": [
+            "Axın",
+            "Metr",
+            "FMG"
+          ]
+        },
+        "en": {
+          "name": "FMG Flow Meter",
+          "summary": "FMG flow meter equipment for gas flow measurement and industrial use.",
+          "specs": [
+            "Flow meter product",
+            "Industrial gas measurement",
+            "Selection by flow requirements"
+          ],
+          "tags": [
+            "Flow",
+            "Meter",
+            "FMG"
+          ]
+        },
+        "tr": {
+          "name": "FMG Akış Ölçer",
+          "summary": "Gaz akışı ölçümü ve endüstriyel kullanıma yönelik FMG akış ölçer ekipmanı.",
+          "specs": [
+            "Akış ölçer ürünü",
+            "Endüstriyel gaz ölçümü",
+            "Akış gereksinimlerine göre seçim"
+          ],
+          "tags": [
+            "Akış",
+            "Metre",
+            "FMG"
+          ]
+        },
+        "ru": {
+          "name": "FMG Расходомер",
+          "summary": "FMG Расходомерное оборудование для измерения расхода газа и промышленного использования.",
+          "specs": [
+            "Продукт расходомера",
+            "Измерение промышленного газа",
+            "Выбор по требованиям к потоку"
+          ],
+          "tags": [
+            "Поток",
+            "Метр",
+            "FMG"
+          ]
+        },
+        "ka": {
+          "name": "FMG ნაკადის მრიცხველი",
+          "summary": "FMG ნაკადის მრიცხველი მოწყობილობა გაზის ნაკადის გაზომვისა და სამრეწველო გამოყენებისათვის.",
+          "specs": [
+            "ნაკადის მრიცხველის პროდუქტი",
+            "სამრეწველო გაზის გაზომვა",
+            "შერჩევა ნაკადის მოთხოვნების მიხედვით"
+          ],
+          "tags": [
+            "ნაკადი",
+            "მეტრი",
+            "FMG"
+          ]
+        },
+        "fa": {
+          "name": "فلومتر FMG",
+          "summary": "تجهیزات اندازه گیری جریان گاز FMG برای اندازه گیری جریان گاز و استفاده صنعتی.",
+          "specs": [
+            "محصول فلومتر",
+            "اندازه گیری گاز صنعتی",
+            "انتخاب بر اساس الزامات جریان"
+          ],
+          "tags": [
+            "جریان",
+            "متر",
+            "FMG"
+          ]
+        }
+      }
+    },
+    {
+      "id": "madas-gas-valves",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "MADAS qaz təhlükəsizlik klapanları",
+          "summary": "MADAS qaz təhlükəsizliyi və xəttin idarə olunması üçün klapan və nəzarət məhsulları.",
+          "specs": [
+            "Qaz klapan məhsul xətti",
+            "Nəzarət və təhlükəsizlik proqramları",
+            "Konfiqurasiya sorğu ilə təsdiqlənir"
+          ],
+          "tags": [
+            "Vanalar",
+            "Təhlükəsizlik",
+            "MADAS"
+          ]
+        },
+        "en": {
+          "name": "MADAS Gas Safety Valves",
+          "summary": "MADAS valve and control products for gas safety and line management.",
+          "specs": [
+            "Gas valve product line",
+            "Control and safety applications",
+            "Configuration confirmed by request"
+          ],
+          "tags": [
+            "Valves",
+            "Safety",
+            "MADAS"
+          ]
+        },
+        "tr": {
+          "name": "MADAS Gaz Emniyet Valfleri",
+          "summary": "Gaz güvenliği ve hat yönetimi için MADAS vana ve kontrol ürünleri.",
+          "specs": [
+            "Gaz vanası ürün grubu",
+            "Kontrol ve güvenlik uygulamaları",
+            "Yapılandırma istek üzerine onaylandı"
+          ],
+          "tags": [
+            "Vanalar",
+            "Güvenlik",
+            "MADAS"
+          ]
+        },
+        "ru": {
+          "name": "MADAS Газовые предохранительные клапаны",
+          "summary": "MADAS клапаны и средства управления для газовой безопасности и управления линиями.",
+          "specs": [
+            "Линия продуктов газового клапана",
+            "Приложения управления и безопасности",
+            "Конфигурация подтверждена запросом"
+          ],
+          "tags": [
+            "Клапаны",
+            "Безопасность",
+            "MADAS"
+          ]
+        },
+        "ka": {
+          "name": "MADAS გაზის დამცავი სარქველები",
+          "summary": "MADAS სარქველი და კონტროლის პროდუქტები გაზის უსაფრთხოებისა და ხაზის მართვისთვის.",
+          "specs": [
+            "გაზის სარქვლის პროდუქტის ხაზი",
+            "კონტროლისა და უსაფრთხოების აპლიკაციები",
+            "კონფიგურაცია დადასტურებულია მოთხოვნით"
+          ],
+          "tags": [
+            "სარქველები",
+            "უსაფრთხოება",
+            "MADAS"
+          ]
+        },
+        "fa": {
+          "name": "شیرهای ایمنی گاز MADAS",
+          "summary": "شیر MADAS و محصولات کنترل برای ایمنی گاز و مدیریت خط.",
+          "specs": [
+            "خط تولید شیر گاز",
+            "برنامه های کنترل و ایمنی",
+            "پیکربندی با درخواست تأیید شد"
+          ],
+          "tags": [
+            "شیرآلات",
+            "ایمنی",
+            "MADAS"
+          ]
+        }
+      }
+    },
+    {
+      "id": "fangaz-regulators-pair",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "FANGAZ Qaz Tənzimləyiciləri",
+          "summary": "Qaz təzyiqinin azaldılması və idarə edilməsi üçün FANGAZ tənzimləyici variantları.",
+          "specs": [
+            "Təzyiq tənzimləyicisi ailəsi",
+            "Sənaye qaz avadanlıqları",
+            "Model quraşdırmaya uyğundur"
+          ],
+          "tags": [
+            "FANGAZ",
+            "Təzyiq",
+            "Qaz"
+          ]
+        },
+        "en": {
+          "name": "FANGAZ Gas Regulators",
+          "summary": "FANGAZ regulator options for gas pressure reduction and control.",
+          "specs": [
+            "Pressure regulator family",
+            "Industrial gas equipment",
+            "Model matched to installation"
+          ],
+          "tags": [
+            "FANGAZ",
+            "Pressure",
+            "Gas"
+          ]
+        },
+        "tr": {
+          "name": "FANGAZ Gaz Regülatörleri",
+          "summary": "Gaz basıncının azaltılması ve kontrolü için FANGAZ regülatör seçenekleri.",
+          "specs": [
+            "Basınç regülatörü ailesi",
+            "Endüstriyel gaz ekipmanları",
+            "Kurulumla eşleşen model"
+          ],
+          "tags": [
+            "FANGAZ",
+            "Basınç",
+            "Gaz"
+          ]
+        },
+        "ru": {
+          "name": "FANGAZ Регуляторы газа",
+          "summary": "Варианты регулятора FANGAZ для снижения и контроля давления газа.",
+          "specs": [
+            "Семейство регуляторов давления",
+            "Промышленное газовое оборудование",
+            "Модель соответствует установке"
+          ],
+          "tags": [
+            "FANGAZ",
+            "Давление",
+            "Газ"
+          ]
+        },
+        "ka": {
+          "name": "FANGAZ გაზის რეგულატორები",
+          "summary": "FANGAZ რეგულატორის ვარიანტები გაზის წნევის შემცირებისა და კონტროლისთვის.",
+          "specs": [
+            "წნევის რეგულატორის ოჯახი",
+            "სამრეწველო გაზის აღჭურვილობა",
+            "მოდელი შეესაბამება ინსტალაციას"
+          ],
+          "tags": [
+            "FANGAZ",
+            "წნევა",
+            "გაზი"
+          ]
+        },
+        "fa": {
+          "name": "رگلاتور گاز FANGAZ",
+          "summary": "گزینه های تنظیم کننده FANGAZ برای کاهش و کنترل فشار گاز.",
+          "specs": [
+            "خانواده تنظیم کننده فشار",
+            "تجهیزات گاز صنعتی",
+            "مدل مطابق با نصب"
+          ],
+          "tags": [
+            "FANGAZ",
+            "فشار",
+            "گاز"
+          ]
+        }
+      }
+    },
+    {
+      "id": "elster-honeywell-volume-converters",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Elster Honeywell Həcmi Çeviricilər",
+          "summary": "Ölçmə, hesabat və yanacaqdoldurma məntəqəsinə nəzarət üçün elektron həcm çevirmə cihazları.",
+          "specs": [
+            "Həcmi çevirmə cihazları",
+            "Elster və Honeywell məhsul ailəsi",
+            "Ölçmə məntəqələri üçün"
+          ],
+          "tags": [
+            "Konvertor",
+            "Honeywell",
+            "Elster"
+          ]
+        },
+        "en": {
+          "name": "Elster Honeywell Volume Converters",
+          "summary": "Electronic volume conversion devices for measurement, reporting and gas station control.",
+          "specs": [
+            "Volume conversion devices",
+            "Elster and Honeywell product family",
+            "For metering stations"
+          ],
+          "tags": [
+            "Converter",
+            "Honeywell",
+            "Elster"
+          ]
+        },
+        "tr": {
+          "name": "Elster Honeywell Ses Düzeyi Dönüştürücüleri",
+          "summary": "Ölçüm, raporlama ve benzin istasyonu kontrolü için elektronik hacim dönüştürme cihazları.",
+          "specs": [
+            "Hacim dönüştürme cihazları",
+            "Elster ve Honeywell ürün ailesi",
+            "Ölçüm istasyonları için"
+          ],
+          "tags": [
+            "Dönüştürücü",
+            "Honeywell'in",
+            "Elster"
+          ]
+        },
+        "ru": {
+          "name": "Elster Honeywell Преобразователи объема",
+          "summary": "Электронные устройства преобразования объема для измерения, отчетности и управления заправочной станцией.",
+          "specs": [
+            "Устройства преобразования объема",
+            "Семейство продуктов Elster и Honeywell",
+            "Для узлов учета"
+          ],
+          "tags": [
+            "Конвертер",
+            "Ханивелл",
+            "Эльстер"
+          ]
+        },
+        "ka": {
+          "name": "Elster Honeywell მოცულობის გადამყვანები",
+          "summary": "ელექტრონული მოცულობის კონვერტაციის მოწყობილობები გაზომვის, მოხსენებისა და ბენზინგასამართი სადგურის კონტროლისთვის.",
+          "specs": [
+            "მოცულობის კონვერტაციის მოწყობილობები",
+            "Elster და Honeywell-ის პროდუქტების ოჯახი",
+            "აღრიცხვის სადგურებისთვის"
+          ],
+          "tags": [
+            "კონვერტორი",
+            "ჰანიველი",
+            "ელსტერი"
+          ]
+        },
+        "fa": {
+          "name": "مبدل های حجم Elster Honeywell",
+          "summary": "دستگاه های تبدیل حجم الکترونیکی برای اندازه گیری، گزارش گیری و کنترل پمپ بنزین.",
+          "specs": [
+            "دستگاه های تبدیل حجم",
+            "خانواده محصولات الستر و هانیول",
+            "برای ایستگاه های اندازه گیری"
+          ],
+          "tags": [
+            "مبدل",
+            "هانیول",
+            "الستر"
+          ]
+        }
+      }
+    },
+    {
+      "id": "fangaz-industrial-regulators",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "FANGAZ Sənaye Tənzimləyiciləri",
+          "summary": "Daha böyük qaz xətti və stansiya tələbləri üçün ağır FANGAZ tənzimləyiciləri.",
+          "specs": [
+            "Sənaye tənzimləyici variantları",
+            "Flanşlı əlaqə məhsul xətti",
+            "Ölçü və təzyiqə görə sitat gətirin"
+          ],
+          "tags": [
+            "Sənaye",
+            "FANGAZ",
+            "Tənzimləyici"
+          ]
+        },
+        "en": {
+          "name": "FANGAZ Industrial Regulators",
+          "summary": "Heavy-duty FANGAZ regulators for larger gas line and station requirements.",
+          "specs": [
+            "Industrial regulator options",
+            "Flanged connection product line",
+            "Quote by size and pressure"
+          ],
+          "tags": [
+            "Industrial",
+            "FANGAZ",
+            "Regulator"
+          ]
+        },
+        "tr": {
+          "name": "FANGAZ Endüstriyel Regülatörler",
+          "summary": "Daha büyük gaz hattı ve istasyon gereksinimleri için ağır hizmet tipi FANGAZ regülatörler.",
+          "specs": [
+            "Endüstriyel regülatör seçenekleri",
+            "Flanşlı bağlantı ürün grubu",
+            "Boyut ve basınca göre fiyat teklifi"
+          ],
+          "tags": [
+            "Endüstriyel",
+            "FANGAZ",
+            "Regülatör"
+          ]
+        },
+        "ru": {
+          "name": "FANGAZ Промышленные регуляторы",
+          "summary": "Регуляторы FANGAZ для тяжелых условий эксплуатации, отвечающие требованиям крупных газопроводов и станций.",
+          "specs": [
+            "Варианты промышленных регуляторов",
+            "Линия продуктов фланцевых соединений",
+            "Цитирование по размеру и давлению"
+          ],
+          "tags": [
+            "Промышленный",
+            "FANGAZ",
+            "Регулятор"
+          ]
+        },
+        "ka": {
+          "name": "FANGAZ სამრეწველო რეგულატორები",
+          "summary": "მძიმე FANGAZ რეგულატორები უფრო დიდი გაზსადენისა და სადგურის მოთხოვნებისთვის.",
+          "specs": [
+            "სამრეწველო რეგულატორის ვარიანტები",
+            "Flanged კავშირი პროდუქტის ხაზი",
+            "ციტატა ზომისა და წნევის მიხედვით"
+          ],
+          "tags": [
+            "სამრეწველო",
+            "FANGAZ",
+            "მარეგულირებელი"
+          ]
+        },
+        "fa": {
+          "name": "رگولاتورهای صنعتی FANGAZ",
+          "summary": "رگولاتورهای سنگین FANGAZ برای نیازهای خطوط گاز و ایستگاه های بزرگتر.",
+          "specs": [
+            "گزینه های تنظیم کننده صنعتی",
+            "خط محصول اتصال فلنجی",
+            "نقل قول بر اساس اندازه و فشار"
+          ],
+          "tags": [
+            "صنعتی",
+            "FANGAZ",
+            "تنظیم کننده"
+          ]
+        }
+      }
+    },
+    {
+      "id": "fangaz-red-regulator",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "FANGAZ Qırmızı Xətt Tənzimləyicisi",
+          "summary": "Təzyiq idarəetmə tətbiqləri üçün qırmızı gövdəli FANGAZ tənzimləyici məhsul.",
+          "specs": [
+            "Qaz təzyiqini tənzimləyən qurğu",
+            "FANGAZ markalı avadanlıq",
+            "Mövcudluq sorğu əsasında təsdiqlənir"
+          ],
+          "tags": [
+            "Tənzimləyici",
+            "FANGAZ",
+            "Təzyiq"
+          ]
+        },
+        "en": {
+          "name": "FANGAZ Red Line Regulator",
+          "summary": "Red-body FANGAZ regulator product for pressure management applications.",
+          "specs": [
+            "Gas pressure regulating unit",
+            "FANGAZ branded equipment",
+            "Availability confirmed on request"
+          ],
+          "tags": [
+            "Regulator",
+            "FANGAZ",
+            "Pressure"
+          ]
+        },
+        "tr": {
+          "name": "FANGAZ Kırmızı Hat Regülatörü",
+          "summary": "Basınç yönetimi uygulamaları için kırmızı gövdeli FANGAZ regülatör ürünü.",
+          "specs": [
+            "Gaz basıncı düzenleme ünitesi",
+            "FANGAZ markalı ekipman",
+            "Stok durumu istek üzerine onaylandı"
+          ],
+          "tags": [
+            "Regülatör",
+            "FANGAZ",
+            "Basınç"
+          ]
+        },
+        "ru": {
+          "name": "FANGAZ Регулятор красной линии",
+          "summary": "Регулятор FANGAZ с красным корпусом для приложений управления давлением.",
+          "specs": [
+            "Блок регулирования давления газа",
+            "Фирменное оборудование FANGAZ",
+            "Наличие подтверждается по запросу"
+          ],
+          "tags": [
+            "Регулятор",
+            "FANGAZ",
+            "Давление"
+          ]
+        },
+        "ka": {
+          "name": "FANGAZ წითელი ხაზის რეგულატორი",
+          "summary": "წითელი სხეულის FANGAZ მარეგულირებელი პროდუქტი წნევის მართვის აპლიკაციებისთვის.",
+          "specs": [
+            "გაზის წნევის მარეგულირებელი ერთეული",
+            "FANGAZ ბრენდის აღჭურვილობა",
+            "ხელმისაწვდომობა დადასტურებულია მოთხოვნით"
+          ],
+          "tags": [
+            "მარეგულირებელი",
+            "FANGAZ",
+            "წნევა"
+          ]
+        },
+        "fa": {
+          "name": "رگلاتور خط قرمز FANGAZ",
+          "summary": "محصول تنظیم کننده بدنه قرمز FANGAZ برای کاربردهای مدیریت فشار.",
+          "specs": [
+            "واحد تنظیم فشار گاز",
+            "تجهیزات مارک FANGAZ",
+            "در صورت درخواست در دسترس بودن تایید شد"
+          ],
+          "tags": [
+            "تنظیم کننده",
+            "FANGAZ",
+            "فشار"
+          ]
+        }
+      }
+    },
+    {
+      "id": "baylan-electric-meter",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "BAYLAN Elektrik Sayğacı",
+          "summary": "Ölçmə tətbiqləri üçün BAYLAN elektron elektrik sayğacı variantları.",
+          "specs": [
+            "Elektrik sayğacı məhsul xətti",
+            "BAYLAN markalı cihaz",
+            "Quraşdırma ehtiyacı ilə seçilən model"
+          ],
+          "tags": [
+            "Elektrik",
+            "Metr",
+            "BAYLAN"
+          ]
+        },
+        "en": {
+          "name": "BAYLAN Electric Meter",
+          "summary": "BAYLAN electronic electricity meter options for measurement applications.",
+          "specs": [
+            "Electric meter product line",
+            "BAYLAN branded device",
+            "Model selected by installation need"
+          ],
+          "tags": [
+            "Electric",
+            "Meter",
+            "BAYLAN"
+          ]
+        },
+        "tr": {
+          "name": "BAYLAN Elektrik Sayacı",
+          "summary": "Ölçüm uygulamaları için BAYLAN elektronik elektrik sayacı seçenekleri.",
+          "specs": [
+            "Elektrik sayacı ürün grubu",
+            "BAYLAN markalı cihaz",
+            "Kurulum ihtiyacına göre seçilen model"
+          ],
+          "tags": [
+            "Elektrik",
+            "Metre",
+            "BAYLAN"
+          ]
+        },
+        "ru": {
+          "name": "BAYLAN Электрический счетчик",
+          "summary": "Варианты электронного счетчика электроэнергии BAYLAN для измерительных задач.",
+          "specs": [
+            "Линия продуктов электросчетчиков",
+            "Фирменное устройство BAYLAN",
+            "Модель выбирается в зависимости от необходимости установки"
+          ],
+          "tags": [
+            "Электрический",
+            "Метр",
+            "BAYLAN"
+          ]
+        },
+        "ka": {
+          "name": "BAYLAN ელექტრო მრიცხველი",
+          "summary": "BAYLAN ელექტროენერგიის ელექტრონული მრიცხველის ვარიანტები გაზომვის აპლიკაციებისთვის.",
+          "specs": [
+            "ელექტრო მრიცხველის პროდუქტის ხაზი",
+            "BAYLAN ბრენდირებული მოწყობილობა",
+            "ინსტალაციის საჭიროების მიხედვით შერჩეული მოდელი"
+          ],
+          "tags": [
+            "ელექტრო",
+            "მეტრი",
+            "BAYLAN"
+          ]
+        },
+        "fa": {
+          "name": "کنتور برق BAYLAN",
+          "summary": "گزینه های کنتور برق الکترونیکی BAYLAN برای کاربردهای اندازه گیری.",
+          "specs": [
+            "خط تولید کنتور برق",
+            "دستگاه با برند BAYLAN",
+            "انتخاب مدل بر اساس نیاز نصب"
+          ],
+          "tags": [
+            "برقی",
+            "متر",
+            "BAYLAN"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cem-industrial-water-meter",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "CEM Sənaye Su Sayğacı",
+          "summary": "Daha böyük boru və qurğu tələbləri üçün flanşlı CEM su sayğacı məhsulu.",
+          "specs": [
+            "Sənaye suyunun ölçülməsi",
+            "Flanşlı sayğac məhsulu",
+            "Ölçü və kəmiyyətə görə sitat gətirin"
+          ],
+          "tags": [
+            "Su",
+            "Sənaye",
+            "CEM"
+          ]
+        },
+        "en": {
+          "name": "CEM Industrial Water Meter",
+          "summary": "Flanged CEM water meter product for larger pipe and facility requirements.",
+          "specs": [
+            "Industrial water metering",
+            "Flanged meter product",
+            "Quote by size and quantity"
+          ],
+          "tags": [
+            "Water",
+            "Industrial",
+            "CEM"
+          ]
+        },
+        "tr": {
+          "name": "CEM Endüstriyel Su Sayacı",
+          "summary": "Daha büyük boru ve tesis gereksinimleri için flanşlı CEM su sayacı ürünü.",
+          "specs": [
+            "Endüstriyel su ölçümü",
+            "Flanşlı sayaç ürünü",
+            "Boyut ve miktara göre teklif verin"
+          ],
+          "tags": [
+            "Su",
+            "Endüstriyel",
+            "CEM"
+          ]
+        },
+        "ru": {
+          "name": "CEM Промышленный счетчик воды",
+          "summary": "Фланцевый водомер CEM для более крупных труб и объектов.",
+          "specs": [
+            "Промышленный учет воды",
+            "Фланцевый счетчик",
+            "Ценовое предложение по размеру и количеству"
+          ],
+          "tags": [
+            "Вода",
+            "Промышленный",
+            "CEM"
+          ]
+        },
+        "ka": {
+          "name": "CEM სამრეწველო წყლის მრიცხველი",
+          "summary": "ფლანგიანი CEM წყლის მრიცხველის პროდუქტი უფრო დიდი მილისა და ნაგებობის მოთხოვნებისთვის.",
+          "specs": [
+            "სამრეწველო წყლის გამრიცხველიანება",
+            "ფლანგიანი მრიცხველის პროდუქტი",
+            "ციტატა ზომისა და რაოდენობის მიხედვით"
+          ],
+          "tags": [
+            "წყალი",
+            "სამრეწველო",
+            "CEM"
+          ]
+        },
+        "fa": {
+          "name": "کنتور آب صنعتی CEM",
+          "summary": "محصول کنتور آب فلنج دار CEM برای نیازهای لوله و تاسیسات بزرگتر.",
+          "specs": [
+            "کنتور آب صنعتی",
+            "محصول متر فلنج دار",
+            "نقل قول بر اساس اندازه و مقدار"
+          ],
+          "tags": [
+            "آب",
+            "صنعتی",
+            "CEM"
+          ]
+        }
+      }
+    },
+    {
+      "id": "elster-spare-parts",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Elster ehtiyat hissələri",
+          "summary": "Qaz sayğacına xidmət və dəstək üçün ehtiyat hissələri və dəqiq komponentlər.",
+          "specs": [
+            "Ehtiyat hissələrinin çeşidi",
+            "Sayğacın xidmət komponentləri",
+            "Foto və ya kodla uyğun gələn hissə"
+          ],
+          "tags": [
+            "Hissələr",
+            "Elster",
+            "Xidmət"
+          ]
+        },
+        "en": {
+          "name": "Elster Spare Parts",
+          "summary": "Replacement parts and precision components for gas meter service and support.",
+          "specs": [
+            "Spare part assortment",
+            "Meter service components",
+            "Part matching by photo or code"
+          ],
+          "tags": [
+            "Parts",
+            "Elster",
+            "Service"
+          ]
+        },
+        "tr": {
+          "name": "Elster Yedek Parçalar",
+          "summary": "Gaz sayacı servisi ve desteği için yedek parçalar ve hassas bileşenler.",
+          "specs": [
+            "Yedek parça çeşitleri",
+            "Sayaç servis bileşenleri",
+            "Fotoğrafa veya koda göre parça eşleştirme"
+          ],
+          "tags": [
+            "Parçalar",
+            "Elster",
+            "Hizmet"
+          ]
+        },
+        "ru": {
+          "name": "Elster Запасные части",
+          "summary": "Запасные части и прецизионные компоненты для обслуживания и поддержки газовых счетчиков.",
+          "specs": [
+            "Ассортимент запасных частей",
+            "Компоненты обслуживания счетчика",
+            "Сопоставление деталей по фото или коду"
+          ],
+          "tags": [
+            "Части",
+            "Elster",
+            "Услуга"
+          ]
+        },
+        "ka": {
+          "name": "Elster სათადარიგო ნაწილები",
+          "summary": "შემცვლელი ნაწილები და ზუსტი კომპონენტები გაზის მრიცხველის მომსახურებისა და მხარდაჭერისთვის.",
+          "specs": [
+            "სათადარიგო ნაწილების ასორტიმენტი",
+            "მრიცხველის მომსახურების კომპონენტები",
+            "ნაწილის შესაბამისი ფოტო ან კოდი"
+          ],
+          "tags": [
+            "ნაწილები",
+            "Elster",
+            "სერვისი"
+          ]
+        },
+        "fa": {
+          "name": "لوازم یدکی Elster",
+          "summary": "قطعات جایگزین و قطعات دقیق برای سرویس و پشتیبانی کنتور گاز.",
+          "specs": [
+            "مجموعه قطعات یدکی",
+            "اجزای سرویس کنتور",
+            "مطابقت بخش با عکس یا کد"
+          ],
+          "tags": [
+            "قطعات",
+            "Elster",
+            "خدمات"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pressure-hose",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Çevik təzyiq hortumu",
+          "summary": "Davamlı qaz və sənaye əlaqələri üçün paslanmayan çevik təzyiq şlanqları.",
+          "specs": [
+            "Çevik şlanq montajı",
+            "Paslanmayan hörülmüş xarici",
+            "Uzunluq və uyğunluq sifarişlə təsdiqlənir"
+          ],
+          "tags": [
+            "Şlanq",
+            "Əlaqə",
+            "Polad"
+          ]
+        },
+        "en": {
+          "name": "Flexible Pressure Hose",
+          "summary": "Stainless flexible pressure hoses for durable gas and industrial connections.",
+          "specs": [
+            "Flexible hose assembly",
+            "Stainless braided exterior",
+            "Length and fitting confirmed by order"
+          ],
+          "tags": [
+            "Hose",
+            "Connection",
+            "Steel"
+          ]
+        },
+        "tr": {
+          "name": "Esnek Basınç Hortumu",
+          "summary": "Dayanıklı gaz ve endüstriyel bağlantılar için paslanmaz esnek basınç hortumları.",
+          "specs": [
+            "Esnek hortum tertibatı",
+            "Paslanmaz örgülü dış yüzey",
+            "Uzunluk ve montaj siparişle onaylandı"
+          ],
+          "tags": [
+            "Hortum",
+            "Bağlantı",
+            "Çelik"
+          ]
+        },
+        "ru": {
+          "name": "Гибкий напорный шланг",
+          "summary": "Гибкие напорные шланги из нержавеющей стали для надежного газового и промышленного подключения.",
+          "specs": [
+            "Гибкий шланг в сборе",
+            "Нержавеющая оплетка снаружи",
+            "Длина и комплектация подтверждены заказом."
+          ],
+          "tags": [
+            "Шланг",
+            "Связь",
+            "Сталь"
+          ]
+        },
+        "ka": {
+          "name": "მოქნილი წნევის შლანგი",
+          "summary": "უჟანგავი მოქნილი წნევის შლანგები გამძლე გაზისა და სამრეწველო კავშირებისთვის.",
+          "specs": [
+            "მოქნილი შლანგის შეკრება",
+            "უჟანგავი ნაწნავი ექსტერიერი",
+            "სიგრძე და მორგება დადასტურებულია შეკვეთით"
+          ],
+          "tags": [
+            "შლანგი",
+            "კავშირი",
+            "ფოლადი"
+          ]
+        },
+        "fa": {
+          "name": "شیلنگ فشار انعطاف پذیر",
+          "summary": "شیلنگ های فشار انعطاف پذیر ضد زنگ برای اتصالات گازی و صنعتی بادوام.",
+          "specs": [
+            "مجموعه شلنگ انعطاف پذیر",
+            "نمای بیرونی بافته شده ضد زنگ",
+            "طول و نصب با سفارش تایید شده است"
+          ],
+          "tags": [
+            "شلنگ",
+            "اتصال",
+            "فولاد"
+          ]
+        }
+      }
+    },
+    {
+      "id": "elster-yellow-turbine-meter",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Elster Honeywell Turbin Sayğacı",
+          "summary": "Daha yüksək axın ölçmə nöqtələri üçün sarı turbin tipli qaz sayğacları.",
+          "specs": [
+            "Qaz turbinlərinin ölçü avadanlığı",
+            "Honeywell və Elster məhsul ailəsi",
+            "Axın və təzyiqə görə seçim"
+          ],
+          "tags": [
+            "Turbin",
+            "Qaz",
+            "Honeywell"
+          ]
+        },
+        "en": {
+          "name": "Elster Honeywell Turbine Meter",
+          "summary": "Yellow turbine-style gas meter assembly for higher-flow measurement points.",
+          "specs": [
+            "Gas turbine metering equipment",
+            "Honeywell and Elster product family",
+            "Selection by flow and pressure"
+          ],
+          "tags": [
+            "Turbine",
+            "Gas",
+            "Honeywell"
+          ]
+        },
+        "tr": {
+          "name": "Elster Honeywell Türbin Ölçer",
+          "summary": "Daha yüksek akışlı ölçüm noktaları için sarı türbin tarzı gaz sayacı tertibatı.",
+          "specs": [
+            "Gaz türbini ölçüm ekipmanı",
+            "Honeywell ve Elster ürün ailesi",
+            "Akış ve basınca göre seçim"
+          ],
+          "tags": [
+            "Türbin",
+            "Gaz",
+            "Honeywell'in"
+          ]
+        },
+        "ru": {
+          "name": "Elster Honeywell Турбинный счетчик",
+          "summary": "Желтый газосчетчик турбинного типа для точек измерения с более высоким расходом.",
+          "specs": [
+            "Газотурбинное измерительное оборудование",
+            "Семейство продуктов Honeywell и Elster",
+            "Выбор по расходу и давлению"
+          ],
+          "tags": [
+            "Турбина",
+            "Газ",
+            "Ханивелл"
+          ]
+        },
+        "ka": {
+          "name": "Elster Honeywell ტურბინის მრიცხველი",
+          "summary": "ყვითელი ტურბინის ტიპის გაზის მრიცხველი უფრო მაღალი ნაკადის საზომი წერტილებისთვის.",
+          "specs": [
+            "გაზის ტურბინის საზომი მოწყობილობა",
+            "Honeywell და Elster პროდუქციის ოჯახი",
+            "შერჩევა ნაკადის და წნევის მიხედვით"
+          ],
+          "tags": [
+            "ტურბინა",
+            "გაზი",
+            "ჰანიველი"
+          ]
+        },
+        "fa": {
+          "name": "توربین متر Elster Honeywell",
+          "summary": "مجموعه کنتور گاز به سبک توربین زرد برای نقاط اندازه گیری جریان بالاتر.",
+          "specs": [
+            "تجهیزات اندازه گیری توربین گاز",
+            "خانواده محصولات Honeywell و Elster",
+            "انتخاب بر اساس جریان و فشار"
+          ],
+          "tags": [
+            "توربین",
+            "گاز",
+            "هانیول"
+          ]
+        }
+      }
+    },
+    {
+      "id": "airfel-daikin-water-heater",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Airfel / Daikin Qazlı Su Qızdırıcısı",
+          "summary": "Airfel və Daikin məhsul xətlərindən divara quraşdırılmış qaz isitmə avadanlığı.",
+          "specs": [
+            "Qaz isitmə avadanlığı",
+            "Airfel və Daikin brendləri",
+            "Model və tutum istəyə görə"
+          ],
+          "tags": [
+            "İstilik",
+            "Daikin",
+            "Airfel"
+          ]
+        },
+        "en": {
+          "name": "Airfel / Daikin Gas Water Heater",
+          "summary": "Wall-mounted gas heating equipment from Airfel and Daikin product lines.",
+          "specs": [
+            "Gas heating equipment",
+            "Airfel and Daikin brands",
+            "Model and capacity by request"
+          ],
+          "tags": [
+            "Heating",
+            "Daikin",
+            "Airfel"
+          ]
+        },
+        "tr": {
+          "name": "Airfel / Daikin Gazlı Su Isıtıcısı",
+          "summary": "Airfel ve Daikin ürün gruplarından duvara monte gazlı ısıtma ekipmanları.",
+          "specs": [
+            "Gaz ısıtma ekipmanları",
+            "Airfel ve Daikin markaları",
+            "İsteğe göre model ve kapasite"
+          ],
+          "tags": [
+            "Isıtma",
+            "Daikin",
+            "Airfel"
+          ]
+        },
+        "ru": {
+          "name": "Airfel / Daikin Газовый водонагреватель",
+          "summary": "Настенное газовое отопительное оборудование линеек Airfel и Daikin.",
+          "specs": [
+            "Газовое отопительное оборудование",
+            "Бренды Airfel и Daikin",
+            "Модель и мощность по запросу"
+          ],
+          "tags": [
+            "Обогрев",
+            "Дайкин",
+            "Аэрфель"
+          ]
+        },
+        "ka": {
+          "name": "Airfel / Daikin გაზის წყლის გამაცხელებელი",
+          "summary": "კედელზე დამონტაჟებული გაზის გათბობის მოწყობილობა Airfel-ისა და Daikin-ის პროდუქციის ხაზებიდან.",
+          "specs": [
+            "გაზის გათბობის მოწყობილობა",
+            "Airfel და Daikin ბრენდები",
+            "მოდელი და მოცულობა მოთხოვნით"
+          ],
+          "tags": [
+            "გათბობა",
+            "Daikin",
+            "აირფელი"
+          ]
+        },
+        "fa": {
+          "name": "آبگرمکن گازی Airfel / Daikin",
+          "summary": "تجهیزات گرمایش گاز دیواری از خطوط تولید Airfel و Daikin.",
+          "specs": [
+            "تجهیزات گرمایش گاز",
+            "برندهای Airfel و Daikin",
+            "مدل و ظرفیت بنا به درخواست"
+          ],
+          "tags": [
+            "گرمایش",
+            "دایکین",
+            "ایرفل"
+          ]
+        }
+      }
+    },
+    {
+      "id": "multi-brand-systems",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Çox Brendli Qaz Avadanlıq Paketi",
+          "summary": "Bir neçə qaz avadanlığı kateqoriyasını tələb edən layihələr üçün birləşdirilmiş məhsul paketi.",
+          "specs": [
+            "Ölçmə, çevirmə və HVAC seçimləri",
+            "Çox brendli təchizat portfeli",
+            "Layihə siyahısından sonra sitat hazırlanmışdır"
+          ],
+          "tags": [
+            "Paket",
+            "Layihə",
+            "Təchizat"
+          ]
+        },
+        "en": {
+          "name": "Multi-Brand Gas Equipment Package",
+          "summary": "Combined product package for projects requiring several gas equipment categories.",
+          "specs": [
+            "Metering, conversion and HVAC options",
+            "Multi-brand supply portfolio",
+            "Quote prepared after project list"
+          ],
+          "tags": [
+            "Package",
+            "Project",
+            "Supply"
+          ]
+        },
+        "tr": {
+          "name": "Çok Markalı Gaz Ekipman Paketi",
+          "summary": "Çeşitli gaz ekipmanı kategorileri gerektiren projeler için birleşik ürün paketi.",
+          "specs": [
+            "Ölçüm, dönüştürme ve HVAC seçenekleri",
+            "Çok markalı tedarik portföyü",
+            "Proje listesinden sonra hazırlanan teklif"
+          ],
+          "tags": [
+            "Paket",
+            "Proje",
+            "Tedarik"
+          ]
+        },
+        "ru": {
+          "name": "Мультибрендовый комплекс газового оборудования",
+          "summary": "Комбинированный пакет продуктов для проектов, требующих несколько категорий газового оборудования.",
+          "specs": [
+            "Опции измерения, преобразования и HVAC",
+            "Мультибрендовый портфель поставок",
+            "Ценовое предложение подготовлено после списка проектов"
+          ],
+          "tags": [
+            "Упаковка",
+            "Проект",
+            "Поставлять"
+          ]
+        },
+        "ka": {
+          "name": "მრავალბრენდული გაზის აღჭურვილობის პაკეტი",
+          "summary": "კომბინირებული პროდუქტის პაკეტი პროექტებისთვის, რომლებიც საჭიროებენ გაზის აღჭურვილობის რამდენიმე კატეგორიას.",
+          "specs": [
+            "აღრიცხვის, კონვერტაციის და HVAC პარამეტრები",
+            "მრავალ ბრენდის მიწოდების პორტფელი",
+            "ციტატა მომზადებულია პროექტის სიის შემდეგ"
+          ],
+          "tags": [
+            "პაკეტი",
+            "პროექტი",
+            "მიწოდება"
+          ]
+        },
+        "fa": {
+          "name": "بسته تجهیزات گاز چند برند",
+          "summary": "بسته محصول ترکیبی برای پروژه هایی که به چندین دسته تجهیزات گازی نیاز دارند.",
+          "specs": [
+            "گزینه های اندازه گیری، تبدیل و HVAC",
+            "سبد عرضه چند برند",
+            "نقل قول پس از لیست پروژه آماده شد"
+          ],
+          "tags": [
+            "بسته",
+            "پروژه",
+            "عرضه کنید"
+          ]
+        }
+      }
+    },
+    {
+      "id": "airfel-daikin-ac",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Airfel / Daikin Kondisioner Dəsti",
+          "summary": "Daxili blok, xarici blok və pult ilə kondisioner avadanlığı.",
+          "specs": [
+            "HVAC məhsul xətti",
+            "Airfel və Daikin brendi",
+            "Sifarişdən əvvəl tutum təsdiqləndi"
+          ],
+          "tags": [
+            "AC",
+            "Daikin",
+            "Airfel"
+          ]
+        },
+        "en": {
+          "name": "Airfel / Daikin Air Conditioner Set",
+          "summary": "Air conditioning equipment set with indoor unit, outdoor unit and remote control.",
+          "specs": [
+            "HVAC product line",
+            "Airfel and Daikin branding",
+            "Capacity confirmed before order"
+          ],
+          "tags": [
+            "AC",
+            "Daikin",
+            "Airfel"
+          ]
+        },
+        "tr": {
+          "name": "Airfel / Daikin Klima Seti",
+          "summary": "İç ünite, dış ünite ve uzaktan kumandadan oluşan klima seti.",
+          "specs": [
+            "HVAC ürün grubu",
+            "Airfel ve Daikin markası",
+            "Kapasite siparişten önce onaylandı"
+          ],
+          "tags": [
+            "AC",
+            "Daikin",
+            "Airfel"
+          ]
+        },
+        "ru": {
+          "name": "Airfel / Daikin Комплект кондиционера",
+          "summary": "Комплект оборудования для кондиционирования воздуха с внутренним блоком, наружным блоком и пультом дистанционного управления.",
+          "specs": [
+            "Линия продуктов HVAC",
+            "Брендинг Airfel и Daikin",
+            "Емкость подтверждена перед заказом"
+          ],
+          "tags": [
+            "AC",
+            "Дайкин",
+            "Аэрфель"
+          ]
+        },
+        "ka": {
+          "name": "Airfel / Daikin კონდიციონერის კომპლექტი",
+          "summary": "კონდიცირების მოწყობილობების ნაკრები შიდა ბლოკით, გარე ბლოკით და დისტანციური მართვის პულტით.",
+          "specs": [
+            "HVAC პროდუქციის ხაზი",
+            "Airfel-ისა და Daikin-ის ბრენდინგი",
+            "ტევადობა დადასტურებულია შეკვეთამდე"
+          ],
+          "tags": [
+            "AC",
+            "Daikin",
+            "აირფელი"
+          ]
+        },
+        "fa": {
+          "name": "ست کولر گازی Airfel / Daikin",
+          "summary": "مجموعه تجهیزات تهویه مطبوع با یونیت داخلی، یونیت خارجی و کنترل از راه دور.",
+          "specs": [
+            "خط تولید HVAC",
+            "برند Airfel و Daikin",
+            "ظرفیت قبل از سفارش تایید شد"
+          ],
+          "tags": [
+            "AC",
+            "دایکین",
+            "ایرفل"
+          ]
+        }
+      }
+    },
+    {
+      "id": "gas-regulation-cabinet",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Qaz Tənzimləmə Kabineti",
+          "summary": "Sahənin quraşdırılması və idarə olunan xəttin istismarı üçün şkaf əsaslı qaz tənzimləmə qurğusu.",
+          "specs": [
+            "Şkaf montaj variantı",
+            "Tənzimləyicilər, klapanlar və sayğaclar",
+            "Layihə əsaslı kotirovka"
+          ],
+          "tags": [
+            "kabinet",
+            "stansiya",
+            "Qaz"
+          ]
+        },
+        "en": {
+          "name": "Gas Regulation Cabinet",
+          "summary": "Cabinet-based gas regulation assembly for site installations and controlled line operation.",
+          "specs": [
+            "Cabinet assembly option",
+            "Regulators, valves and meters",
+            "Project-based quotation"
+          ],
+          "tags": [
+            "Cabinet",
+            "Station",
+            "Gas"
+          ]
+        },
+        "tr": {
+          "name": "Gaz Düzenleme Dolabı",
+          "summary": "Saha kurulumları ve kontrollü hat işletimi için kabin bazlı gaz düzenleme tertibatı.",
+          "specs": [
+            "Dolap montaj seçeneği",
+            "Regülatörler, vanalar ve sayaçlar",
+            "Proje bazlı teklif"
+          ],
+          "tags": [
+            "Dolap",
+            "İstasyon",
+            "Gaz"
+          ]
+        },
+        "ru": {
+          "name": "Шкаф регулирования газа",
+          "summary": "Газорегулирующий узел в шкафу для установки на объекте и контролируемой эксплуатации линий.",
+          "specs": [
+            "Вариант сборки шкафа",
+            "Регуляторы, клапаны и счетчики",
+            "Проектное предложение"
+          ],
+          "tags": [
+            "Кабинет",
+            "Станция",
+            "Газ"
+          ]
+        },
+        "ka": {
+          "name": "გაზის რეგულირების კაბინეტი",
+          "summary": "კაბინეტზე დაფუძნებული გაზის რეგულირების ასამბლეა ადგილზე დამონტაჟებისა და კონტროლირებადი ხაზის მუშაობისთვის.",
+          "specs": [
+            "კაბინეტის შეკრების ვარიანტი",
+            "რეგულატორები, სარქველები და მრიცხველები",
+            "პროექტზე დაფუძნებული ციტატა"
+          ],
+          "tags": [
+            "კაბინეტი",
+            "სადგური",
+            "გაზი"
+          ]
+        },
+        "fa": {
+          "name": "کابینه تنظیم گاز",
+          "summary": "مجموعه تنظیم گاز مبتنی بر کابینت برای تاسیسات سایت و عملیات خط کنترل شده.",
+          "specs": [
+            "گزینه مونتاژ کابینت",
+            "رگولاتورها، شیرآلات و کنتورها",
+            "نقل قول مبتنی بر پروژه"
+          ],
+          "tags": [
+            "کابینه",
+            "ایستگاه",
+            "گاز"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pakkens-pressure-gauges",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Pakkens Təzyiq Ölçerləri",
+          "summary": "Qaz, su və sənaye sistemlərinin monitorinqi üçün təzyiqölçən variantları.",
+          "specs": [
+            "Təzyiq ölçən məhsul xətti",
+            "İstək əsasında müxtəlif diapazonlar mövcuddur",
+            "Quraşdırmalar üçün aksesuar təchizatı"
+          ],
+          "tags": [
+            "Ölçer",
+            "Təzyiq",
+            "Pakkens"
+          ]
+        },
+        "en": {
+          "name": "Pakkens Pressure Gauges",
+          "summary": "Pressure gauge options for monitoring gas, water and industrial systems.",
+          "specs": [
+            "Pressure gauge product line",
+            "Different ranges available by request",
+            "Accessory supply for installations"
+          ],
+          "tags": [
+            "Gauge",
+            "Pressure",
+            "Pakkens"
+          ]
+        },
+        "tr": {
+          "name": "Pakkens Basınç Göstergeleri",
+          "summary": "Gaz, su ve endüstriyel sistemlerin izlenmesi için basınç göstergesi seçenekleri.",
+          "specs": [
+            "Basınç göstergesi ürün grubu",
+            "İsteğe göre farklı aralıklar mevcuttur",
+            "Tesisatlar için aksesuar temini"
+          ],
+          "tags": [
+            "Ölçer",
+            "Basınç",
+            "Pakkens"
+          ]
+        },
+        "ru": {
+          "name": "Pakkens Манометры",
+          "summary": "Варианты манометров для контроля газа, воды и промышленных систем.",
+          "specs": [
+            "Линия продуктов для манометров",
+            "Различные диапазоны доступны по запросу",
+            "Поставка аксессуаров для установок"
+          ],
+          "tags": [
+            "Измерять",
+            "Давление",
+            "Pakkens"
+          ]
+        },
+        "ka": {
+          "name": "Pakkens წნევის მრიცხველები",
+          "summary": "წნევის მრიცხველის ვარიანტები გაზის, წყლის და სამრეწველო სისტემების მონიტორინგისთვის.",
+          "specs": [
+            "წნევის საზომი პროდუქტის ხაზი",
+            "მოთხოვნის მიხედვით ხელმისაწვდომია სხვადასხვა დიაპაზონი",
+            "ინსტალაციის აქსესუარების მიწოდება"
+          ],
+          "tags": [
+            "ლიანდაგი",
+            "წნევა",
+            "Pakkens"
+          ]
+        },
+        "fa": {
+          "name": "فشار سنج Pakkens",
+          "summary": "گزینه های فشار سنج برای نظارت بر گاز، آب و سیستم های صنعتی.",
+          "specs": [
+            "خط تولید گیج فشار",
+            "محدوده های مختلف بر اساس درخواست موجود است",
+            "تامین لوازم جانبی برای تاسیسات"
+          ],
+          "tags": [
+            "سنج",
+            "فشار",
+            "Pakkens"
+          ]
+        }
+      }
+    },
+    {
+      "id": "broen-ball-valve",
+      "revision": 14,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "BROEN top klapan",
+          "summary": "BROEN təbii qaz xəttinin bağlanması üçün flanşlı top klapan məhsulu.",
+          "specs": [
+            "Kürə klapan məhsul xətti",
+            "Flanşlı qaz klapanının dizaynı",
+            "İstəyə görə ölçü və təzyiq sinfi"
+          ],
+          "tags": [
+            "Vana",
+            "BROEN",
+            "Qaz"
+          ]
+        },
+        "en": {
+          "name": "BROEN Ball Valve",
+          "summary": "BROEN flanged ball valve product for natural gas line shut-off applications.",
+          "specs": [
+            "Ball valve product line",
+            "Flanged gas valve design",
+            "Size and pressure class by request"
+          ],
+          "tags": [
+            "Valve",
+            "BROEN",
+            "Gas"
+          ]
+        },
+        "tr": {
+          "name": "BROEN Küresel Vana",
+          "summary": "Doğal gaz hattı kapatma uygulamaları için BROEN flanşlı küresel vana ürünü.",
+          "specs": [
+            "Küresel vana ürün grubu",
+            "Flanşlı gaz vanası tasarımı",
+            "İsteğe göre boyut ve basınç sınıfı"
+          ],
+          "tags": [
+            "Vana",
+            "BROEN",
+            "Gaz"
+          ]
+        },
+        "ru": {
+          "name": "BROEN Шаровой кран",
+          "summary": "BROEN Фланцевый шаровой кран для перекрытия линий природного газа.",
+          "specs": [
+            "Линия шаровых кранов",
+            "Конструкция фланцевого газового клапана",
+            "Размер и класс давления по запросу"
+          ],
+          "tags": [
+            "Клапан",
+            "BROEN",
+            "Газ"
+          ]
+        },
+        "ka": {
+          "name": "BROEN ბურთიანი სარქველი",
+          "summary": "BROEN ფლანგიანი ბურთულიანი სარქველის პროდუქტი ბუნებრივი გაზის ხაზის გათიშვისთვის.",
+          "specs": [
+            "ბურთიანი სარქვლის პროდუქტის ხაზი",
+            "გაზის სარქველის დიზაინი",
+            "ზომისა და წნევის კლასი მოთხოვნით"
+          ],
+          "tags": [
+            "სარქველი",
+            "BROEN",
+            "გაზი"
+          ]
+        },
+        "fa": {
+          "name": "شیر توپی BROEN",
+          "summary": "محصول شیر توپی فلنج دار BROEN برای کاربردهای خاموش کردن خطوط گاز طبیعی.",
+          "specs": [
+            "خط تولید شیر توپی",
+            "طراحی شیر گاز فلنج دار",
+            "کلاس اندازه و فشار بنا به درخواست"
+          ],
+          "tags": [
+            "دریچه",
+            "BROEN",
+            "گاز"
+          ]
+        }
+      }
+    },
+    {
+      "id": "partner-components",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Həssas Qaz Komponentləri",
+          "summary": "Avadanlıq dəstəyi üçün xüsusi qaz komponentləri, başlıqlar və mesh filtr hissələri.",
+          "specs": [
+            "Kiçik dəqiqlikli komponentlər",
+            "Qaz avadanlıqlarının aksesuarları",
+            "Məhsul şəkli və ya kodu ilə uyğun gəlir"
+          ],
+          "tags": [
+            "Komponentlər",
+            "Filtrlər",
+            "Hissələr"
+          ]
+        },
+        "en": {
+          "name": "Precision Gas Components",
+          "summary": "Specialized gas components, nozzles and mesh filter parts for equipment support.",
+          "specs": [
+            "Small precision components",
+            "Gas equipment accessories",
+            "Matched by product photo or code"
+          ],
+          "tags": [
+            "Components",
+            "Filters",
+            "Parts"
+          ]
+        },
+        "tr": {
+          "name": "Hassas Gaz Bileşenleri",
+          "summary": "Ekipman desteği için özel gaz bileşenleri, nozullar ve ağ filtre parçaları.",
+          "specs": [
+            "Küçük hassas bileşenler",
+            "Gaz ekipmanı aksesuarları",
+            "Ürün fotoğrafına veya koduna göre eşleştirildi"
+          ],
+          "tags": [
+            "Bileşenler",
+            "Filtreler",
+            "Parçalar"
+          ]
+        },
+        "ru": {
+          "name": "Прецизионные газовые компоненты",
+          "summary": "Специализированные газовые компоненты, форсунки и детали сетчатых фильтров для поддержки оборудования.",
+          "specs": [
+            "Маленькие прецизионные компоненты",
+            "Аксессуары для газового оборудования",
+            "Соответствует фото или коду продукта"
+          ],
+          "tags": [
+            "Компоненты",
+            "Фильтры",
+            "Части"
+          ]
+        },
+        "ka": {
+          "name": "ზუსტი გაზის კომპონენტები",
+          "summary": "სპეციალიზებული გაზის კომპონენტები, საქშენები და ბადის ფილტრის ნაწილები აღჭურვილობის მხარდაჭერისთვის.",
+          "specs": [
+            "მცირე სიზუსტის კომპონენტები",
+            "გაზის აღჭურვილობის აქსესუარები",
+            "შეესაბამება პროდუქტის ფოტოს ან კოდს"
+          ],
+          "tags": [
+            "კომპონენტები",
+            "ფილტრები",
+            "ნაწილები"
+          ]
+        },
+        "fa": {
+          "name": "قطعات گازی دقیق",
+          "summary": "قطعات تخصصی گاز، نازل ها و قطعات فیلتر مش برای پشتیبانی تجهیزات.",
+          "specs": [
+            "اجزای دقیق کوچک",
+            "لوازم جانبی تجهیزات گاز",
+            "مطابق با عکس یا کد محصول"
+          ],
+          "tags": [
+            "اجزاء",
+            "فیلترها",
+            "قطعات"
+          ]
+        }
+      }
+    },
+    {
+      "id": "eska-valve-showcase",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "ESKA Valf Vitrini",
+          "summary": "ESKA qaz nəzarət qurğuları üçün klapan və tənzimləyici vitrin.",
+          "specs": [
+            "Valf və tənzimləyici avadanlıq",
+            "ESKA markalı məhsullar",
+            "Tətbiq tədarükdən əvvəl təsdiqləndi"
+          ],
+          "tags": [
+            "Vana",
+            "ESKA",
+            "Qaz"
+          ]
+        },
+        "en": {
+          "name": "ESKA Valve Showcase",
+          "summary": "ESKA valve and regulator showcase for gas control installations.",
+          "specs": [
+            "Valve and regulator equipment",
+            "ESKA branded products",
+            "Application confirmed before supply"
+          ],
+          "tags": [
+            "Valve",
+            "ESKA",
+            "Gas"
+          ]
+        },
+        "tr": {
+          "name": "ESKA Vana Vitrini",
+          "summary": "ESKA gaz kontrol tesisatları için vana ve regülatör vitrini.",
+          "specs": [
+            "Vana ve regülatör ekipmanları",
+            "ESKA markalı ürünler",
+            "Tedarikten önce başvuru onaylandı"
+          ],
+          "tags": [
+            "Vana",
+            "ESKA",
+            "Gaz"
+          ]
+        },
+        "ru": {
+          "name": "ESKA Демонстрация клапанов",
+          "summary": "ESKA Витрина клапанов и регуляторов для газорегуляторных установок.",
+          "specs": [
+            "Клапанное и регуляторное оборудование",
+            "Продукция под брендом ESKA",
+            "Заявка подтверждена перед поставкой"
+          ],
+          "tags": [
+            "Клапан",
+            "ESKA",
+            "Газ"
+          ]
+        },
+        "ka": {
+          "name": "ESKA სარქველის ვიტრინა",
+          "summary": "ESKA სარქველი და რეგულატორის ვიტრინა გაზის კონტროლის დანადგარებისთვის.",
+          "specs": [
+            "სარქველი და მარეგულირებელი მოწყობილობა",
+            "ESKA ბრენდის პროდუქცია",
+            "განაცხადი დადასტურებულია მიწოდებამდე"
+          ],
+          "tags": [
+            "სარქველი",
+            "ESKA",
+            "გაზი"
+          ]
+        },
+        "fa": {
+          "name": "ویترین شیر ESKA",
+          "summary": "ویترین شیر و رگولاتور ESKA برای تاسیسات کنترل گاز.",
+          "specs": [
+            "تجهیزات شیر و رگولاتور",
+            "محصولات با برند ESKA",
+            "درخواست قبل از عرضه تایید شد"
+          ],
+          "tags": [
+            "دریچه",
+            "ESKA",
+            "گاز"
+          ]
+        }
+      }
+    },
+    {
+      "id": "plum-gas-station",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Plum GAS Stansiya Yığıncağı",
+          "summary": "Plum GAS çevirici yanacaqdoldurma məntəqəsi və boru kəməri qurğusunda quraşdırılmışdır.",
+          "specs": [
+            "Həcmi çevirmə avadanlığı",
+            "Stansiya inteqrasiyası nümunəsi",
+            "Sorğu ilə layihə dəstəyi"
+          ],
+          "tags": [
+            "Plum GAS",
+            "stansiya",
+            "Konvertor"
+          ]
+        },
+        "en": {
+          "name": "Plum GAS Station Assembly",
+          "summary": "Plum GAS converter installed within a gas station and pipeline assembly.",
+          "specs": [
+            "Volume conversion equipment",
+            "Station integration example",
+            "Project support by inquiry"
+          ],
+          "tags": [
+            "Plum GAS",
+            "Station",
+            "Converter"
+          ]
+        },
+        "tr": {
+          "name": "Plum GAS İstasyon Düzeneği",
+          "summary": "Bir benzin istasyonu ve boru hattı tertibatına monte edilen Plum GAS dönüştürücü.",
+          "specs": [
+            "Hacim dönüştürme ekipmanı",
+            "İstasyon entegrasyonu örneği",
+            "Sorgulama yoluyla proje desteği"
+          ],
+          "tags": [
+            "Plum GAS",
+            "İstasyon",
+            "Dönüştürücü"
+          ]
+        },
+        "ru": {
+          "name": "Plum GAS Сборка станции",
+          "summary": "Преобразователь Plum GAS установлен на заправочной станции и в сборе трубопровода.",
+          "specs": [
+            "Оборудование для преобразования объема",
+            "Пример интеграции станции",
+            "Сопровождение проекта по запросу"
+          ],
+          "tags": [
+            "Plum GAS",
+            "Станция",
+            "Конвертер"
+          ]
+        },
+        "ka": {
+          "name": "Plum GAS სადგურის შეკრება",
+          "summary": "Plum GAS გადამყვანი დამონტაჟებულია ბენზინგასამართ სადგურზე და მილსადენის შეკრებაზე.",
+          "specs": [
+            "მოცულობის კონვერტაციის მოწყობილობა",
+            "სადგურის ინტეგრაციის მაგალითი",
+            "პროექტის მხარდაჭერა გამოკითხვით"
+          ],
+          "tags": [
+            "Plum GAS",
+            "სადგური",
+            "კონვერტორი"
+          ]
+        },
+        "fa": {
+          "name": "مونتاژ ایستگاه Plum GAS",
+          "summary": "مبدل Plum GAS نصب شده در پمپ بنزین و مجموعه خط لوله.",
+          "specs": [
+            "تجهیزات تبدیل حجم",
+            "مثال ادغام ایستگاه",
+            "پشتیبانی پروژه با استعلام"
+          ],
+          "tags": [
+            "Plum GAS",
+            "ایستگاه",
+            "مبدل"
+          ]
+        }
+      }
+    },
+    {
+      "id": "broen-ball-valve-2",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "BROEN top klapan",
+          "summary": "BROEN təbii qaz xəttinin bağlanması üçün flanşlı top klapan məhsulu.",
+          "specs": [
+            "Kürə klapan məhsul xətti",
+            "Flanşlı qaz klapanının dizaynı",
+            "İstəyə görə ölçü və təzyiq sinfi"
+          ],
+          "tags": [
+            "Vana",
+            "BROEN",
+            "Qaz"
+          ]
+        },
+        "en": {
+          "name": "BROEN Ball Valve",
+          "summary": "BROEN flanged ball valve product for natural gas line shut-off applications.",
+          "specs": [
+            "Ball valve product line",
+            "Flanged gas valve design",
+            "Size and pressure class by request"
+          ],
+          "tags": [
+            "Valve",
+            "BROEN",
+            "Gas"
+          ]
+        },
+        "tr": {
+          "name": "BROEN Küresel Vana",
+          "summary": "Doğal gaz hattı kapatma uygulamaları için BROEN flanşlı küresel vana ürünü.",
+          "specs": [
+            "Küresel vana ürün grubu",
+            "Flanşlı gaz vanası tasarımı",
+            "İsteğe göre boyut ve basınç sınıfı"
+          ],
+          "tags": [
+            "Vana",
+            "BROEN",
+            "Gaz"
+          ]
+        },
+        "ru": {
+          "name": "BROEN Шаровой кран",
+          "summary": "BROEN Фланцевый шаровой кран для перекрытия линий природного газа.",
+          "specs": [
+            "Линия шаровых кранов",
+            "Конструкция фланцевого газового клапана",
+            "Размер и класс давления по запросу"
+          ],
+          "tags": [
+            "Клапан",
+            "BROEN",
+            "Газ"
+          ]
+        },
+        "ka": {
+          "name": "BROEN ბურთიანი სარქველი",
+          "summary": "BROEN ფლანგიანი ბურთულიანი სარქველის პროდუქტი ბუნებრივი გაზის ხაზის გათიშვისთვის.",
+          "specs": [
+            "ბურთიანი სარქვლის პროდუქტის ხაზი",
+            "გაზის სარქველის დიზაინი",
+            "ზომისა და წნევის კლასი მოთხოვნით"
+          ],
+          "tags": [
+            "სარქველი",
+            "BROEN",
+            "გაზი"
+          ]
+        },
+        "fa": {
+          "name": "شیر توپی BROEN",
+          "summary": "محصول شیر توپی فلنج دار BROEN برای کاربردهای خاموش کردن خطوط گاز طبیعی.",
+          "specs": [
+            "خط تولید شیر توپی",
+            "طراحی شیر گاز فلنج دار",
+            "کلاس اندازه و فشار بنا به درخواست"
+          ],
+          "tags": [
+            "دریچه",
+            "BROEN",
+            "گاز"
+          ]
+        }
+      }
+    },
+    {
+      "id": "broen-ball-valve-3",
+      "revision": 1,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "BROEN top klapan",
+          "summary": "BROEN su üçün filtr",
+          "specs": [],
+          "tags": [
+            "Vana",
+            "BROEN",
+            "su"
+          ]
+        },
+        "en": {
+          "name": "BROEN Ball Valve",
+          "summary": "BROEN filter for water",
+          "specs": [],
+          "tags": [
+            "Valve",
+            "BROEN",
+            "water"
+          ]
+        },
+        "tr": {
+          "name": "BROEN Küresel Vana",
+          "summary": "BROEN su filtresi",
+          "specs": [],
+          "tags": [
+            "Vana",
+            "BROEN",
+            "su"
+          ]
+        },
+        "ru": {
+          "name": "BROEN Шаровой кран",
+          "summary": "BROEN фильтр для воды",
+          "specs": [],
+          "tags": [
+            "Клапан",
+            "BROEN",
+            "вода"
+          ]
+        },
+        "ka": {
+          "name": "BROEN ბურთიანი სარქველი",
+          "summary": "BROEN წყლის ფილტრი",
+          "specs": [],
+          "tags": [
+            "სარქველი",
+            "BROEN",
+            "წყალი"
+          ]
+        },
+        "fa": {
+          "name": "شیر توپی BROEN",
+          "summary": "فیلتر BROEN برای آب",
+          "specs": [],
+          "tags": [
+            "دریچه",
+            "BROEN",
+            "آب"
+          ]
+        }
+      }
+    },
+    {
+      "id": "airfel-wireless-room-thermostat",
+      "revision": 2,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "Airfel Simsiz Otaq Termostatı",
+          "summary": "Airfel Simsiz Otaq Termostatı qaz qazanları və istilik sistemləri üçün dəqiq temperatur nəzarətini təmin etmək üçün nəzərdə tutulmuşdur. Enerji səmərəliliyini artırarkən və qaz istehlakını azaldaraq, rahat daxili temperaturun saxlanmasına kömək edir. Simsiz dizayn asan quraşdırma və rahat işləməyə imkan verir",
+          "specs": [
+            "Simsiz otaq termostatı",
+            "Airfel və seçilmiş Daikin qazanları ilə uyğun gəlir",
+            "Rəqəmsal LCD displey",
+            "Proqramlaşdırıla bilən temperatur parametrləri",
+            "Simsiz qəbuledici daxildir",
+            "Asan quraşdırma",
+            "Enerjiyə qənaət əməliyyatı",
+            "Batareya ilə işləyən termostat",
+            "Yaşayış evlərinin istilik sistemləri üçün uyğundur"
+          ],
+          "tags": [
+            "Airfel",
+            "Termostat",
+            "Simsiz",
+            "Otaq termostatı",
+            "İstilik",
+            "Qaz Qazan",
+            "Temperatur nəzarəti",
+            "Daikin",
+            "Enerjiyə qənaət"
+          ]
+        },
+        "en": {
+          "name": "Airfel Wireless Room Thermostat",
+          "summary": "The Airfel Wireless Room Thermostat is designed to provide accurate temperature control for gas boilers and heating systems. It helps maintain a comfortable indoor temperature while improving energy efficiency and reducing gas consumption. The wireless design allows for easy installation and convenient operation",
+          "specs": [
+            "Wireless room thermostat",
+            "Compatible with Airfel and selected Daikin boilers",
+            "Digital LCD display",
+            "Programmable temperature settings",
+            "Wireless receiver included",
+            "Easy installation",
+            "Energy-saving operation",
+            "Battery powered thermostat",
+            "Suitable for residential heating systems"
+          ],
+          "tags": [
+            "Airfel",
+            "Thermostat",
+            "Wireless",
+            "Room Thermostat",
+            "Heating",
+            "Gas Boiler",
+            "Temperature Control",
+            "Daikin",
+            "Energy Saving"
+          ]
+        },
+        "tr": {
+          "name": "Airfel Kablosuz Oda Termostatı",
+          "summary": "Airfel Kablosuz Oda Termostatı, gaz kazanları ve ısıtma sistemleri için doğru sıcaklık kontrolü sağlamak üzere tasarlanmıştır. Enerji verimliliğini artırırken ve gaz tüketimini azaltırken konforlu bir iç mekan sıcaklığının korunmasına yardımcı olur. Kablosuz tasarım, kolay kurulum ve rahat kullanım sağlar",
+          "specs": [
+            "Kablosuz oda termostatı",
+            "Airfel ve seçilen Daikin kazanlarla uyumludur",
+            "Dijital LCD ekran",
+            "Programlanabilir sıcaklık ayarları",
+            "Kablosuz alıcı dahil",
+            "Kolay kurulum",
+            "Enerji tasarrufu sağlayan çalışma",
+            "Pille çalışan termostat",
+            "Konut ısıtma sistemleri için uygundur"
+          ],
+          "tags": [
+            "Airfel",
+            "Termostat",
+            "Kablosuz",
+            "Oda Termostatı",
+            "Isıtma",
+            "Gaz Kazanı",
+            "Sıcaklık Kontrolü",
+            "Daikin",
+            "Enerji Tasarrufu"
+          ]
+        },
+        "ru": {
+          "name": "Airfel Беспроводной комнатный термостат",
+          "summary": "Беспроводной комнатный термостат Airfel предназначен для обеспечения точного контроля температуры в газовых котлах и системах отопления. Это помогает поддерживать комфортную температуру в помещении, одновременно повышая энергоэффективность и снижая потребление газа. Беспроводная конструкция обеспечивает простую установку и удобную эксплуатацию.",
+          "specs": [
+            "Беспроводной комнатный термостат",
+            "Совместим с Airfel и некоторыми котлами Daikin.",
+            "Цифровой дисплей LCD",
+            "Программируемые настройки температуры",
+            "Беспроводной приемник в комплекте",
+            "Простая установка",
+            "Энергосберегающая работа",
+            "Термостат с батарейным питанием",
+            "Подходит для систем отопления жилых помещений."
+          ],
+          "tags": [
+            "Airfel",
+            "Термостат",
+            "Беспроводная связь",
+            "Комнатный термостат",
+            "Обогрев",
+            "Газовый котел",
+            "Контроль температуры",
+            "Дайкин",
+            "Энергосбережение"
+          ]
+        },
+        "ka": {
+          "name": "Airfel უსადენო ოთახის თერმოსტატი",
+          "summary": "Airfel უსადენო ოთახის თერმოსტატი შექმნილია გაზის ქვაბებისა და გათბობის სისტემების ზუსტი ტემპერატურის კონტროლის უზრუნველსაყოფად. ეს ხელს უწყობს კომფორტული შიდა ტემპერატურის შენარჩუნებას ენერგოეფექტურობის გაუმჯობესებისა და გაზის მოხმარების შემცირებაში. უკაბელო დიზაინი საშუალებას იძლევა მარტივი ინსტალაცია და მოსახერხებელი მუშაობა",
+          "specs": [
+            "ოთახის უკაბელო თერმოსტატი",
+            "თავსებადია Airfel და Daikin-ის შერჩეულ ქვაბებთან",
+            "ციფრული LCD დისპლეი",
+            "პროგრამირებადი ტემპერატურის პარამეტრები",
+            "მოყვება უკაბელო მიმღები",
+            "მარტივი ინსტალაცია",
+            "ენერგიის დაზოგვის ოპერაცია",
+            "ბატარეით მომუშავე თერმოსტატი",
+            "გამოდგება საცხოვრებელი სახლის გათბობის სისტემებისთვის"
+          ],
+          "tags": [
+            "Airfel",
+            "თერმოსტატი",
+            "უსადენო",
+            "ოთახის თერმოსტატი",
+            "გათბობა",
+            "გაზის ქვაბი",
+            "ტემპერატურის კონტროლი",
+            "Daikin",
+            "ენერგიის დაზოგვა"
+          ]
+        },
+        "fa": {
+          "name": "ترموستات اتاقی بی سیم Airfel",
+          "summary": "ترموستات اتاقی بی سیم Airfel برای کنترل دقیق دما برای دیگ های گاز و سیستم های گرمایشی طراحی شده است. این به حفظ دمای راحت داخل خانه کمک می کند و در عین حال بهره وری انرژی را بهبود می بخشد و مصرف گاز را کاهش می دهد. طراحی بی سیم امکان نصب آسان و عملکرد راحت را فراهم می کند",
+          "specs": [
+            "ترموستات اتاقی بی سیم",
+            "سازگار با بویلرهای Airfel و انتخابی دایکین",
+            "نمایشگر دیجیتال LCD",
+            "تنظیمات دمای قابل برنامه ریزی",
+            "گیرنده بی سیم گنجانده شده است",
+            "نصب آسان",
+            "عملیات صرفه جویی در انرژی",
+            "ترموستات با باتری",
+            "مناسب برای سیستم های گرمایشی منازل"
+          ],
+          "tags": [
+            "Airfel",
+            "ترموستات",
+            "بی سیم",
+            "ترموستات اتاق",
+            "گرمایش",
+            "دیگ گاز",
+            "کنترل دما",
+            "دایکین",
+            "صرفه جویی در انرژی"
+          ]
+        }
+      }
+    },
+    {
+      "id": "elster-bk-gas-meter",
+      "revision": 2,
+      "sourceLanguage": "en",
+      "translations": {
+        "az": {
+          "name": "ELSTER BK Qaz Sayğacı",
+          "summary": "ELSTER BK Qaz Sayğacı yaşayış və kommersiya təbii qazının ölçülməsi üçün nəzərdə tutulmuş yüksək dəqiqlikli diafraqma qaz sayğacıdır. Aşağı texniki xidmət tələbləri ilə etibarlı, dəqiq və uzunmüddətli performans təmin edir. Sayğac davamlılıq üçün tikilib və beynəlxalq keyfiyyət və təhlükəsizlik standartlarına uyğundur",
+          "specs": [
+            "Diafraqma qaz sayğacı",
+            "Təbii qazın ölçülməsi üçün uyğundur",
+            "Yüksək ölçmə dəqiqliyi",
+            "Uzun xidmət müddəti",
+            "Aşağı təmir",
+            "Kompakt və davamlı dizayn",
+            "Yaşayış və kommersiya tətbiqləri",
+            "Etibarlı uzunmüddətli performans",
+            "Beynəlxalq standartlara uyğundur"
+          ],
+          "tags": [
+            "ELSTER",
+            "BK qaz sayğacı",
+            "Qaz sayğacı",
+            "Təbii qaz",
+            "Ölçmə",
+            "Diafraqma sayğacı",
+            "Yaşayış",
+            "Kommersiya",
+            "Sənaye"
+          ]
+        },
+        "en": {
+          "name": "ELSTER BK Gas Meter",
+          "summary": "The ELSTER BK Gas Meter is a high-precision diaphragm gas meter designed for residential and commercial natural gas measurement. It provides reliable, accurate, and long-term performance with low maintenance requirements. The meter is built for durability and complies with international quality and safety standards",
+          "specs": [
+            "Diaphragm gas meter",
+            "Suitable for natural gas measurement",
+            "High measurement accuracy",
+            "Long service life",
+            "Low maintenance",
+            "Compact and durable design",
+            "Residential and commercial applications",
+            "Reliable long-term performance",
+            "Complies with international standards"
+          ],
+          "tags": [
+            "ELSTER",
+            "BK Gas Meter",
+            "Gas Meter",
+            "Natural Gas",
+            "Metering",
+            "Diaphragm Meter",
+            "Residential",
+            "Commercial",
+            "Industrial"
+          ]
+        },
+        "tr": {
+          "name": "ELSTER BK Gaz Sayacı",
+          "summary": "ELSTER BK Gaz Sayacı, konut ve ticari doğal gaz ölçümü için tasarlanmış yüksek hassasiyetli bir diyaframlı gaz sayacıdır. Düşük bakım gereksinimleriyle güvenilir, doğru ve uzun vadeli performans sağlar. Sayaç dayanıklılık için üretilmiştir ve uluslararası kalite ve güvenlik standartlarına uygundur",
+          "specs": [
+            "Diyaframlı gaz sayacı",
+            "Doğalgaz ölçümüne uygun",
+            "Yüksek ölçüm doğruluğu",
+            "Uzun servis ömrü",
+            "Düşük bakım",
+            "Kompakt ve dayanıklı tasarım",
+            "Konut ve ticari uygulamalar",
+            "Güvenilir uzun vadeli performans",
+            "Uluslararası standartlara uygundur"
+          ],
+          "tags": [
+            "ELSTER",
+            "BK Gaz Sayacı",
+            "Gaz Sayacı",
+            "Doğal Gaz",
+            "Ölçüm",
+            "Diyafram Ölçer",
+            "Konut",
+            "Ticari",
+            "Endüstriyel"
+          ]
+        },
+        "ru": {
+          "name": "ELSTER BK Газовый счетчик",
+          "summary": "Газовый счетчик ELSTER BK — это высокоточный мембранный счетчик газа, предназначенный для измерения природного газа в жилых и коммерческих помещениях. Он обеспечивает надежную, точную и долгосрочную работу при низких требованиях к техническому обслуживанию. Счетчик рассчитан на долговечность и соответствует международным стандартам качества и безопасности.",
+          "specs": [
+            "Мембранный счетчик газа",
+            "Подходит для измерения природного газа",
+            "Высокая точность измерения",
+            "Длительный срок службы",
+            "Низкие эксплуатационные расходы",
+            "Компактный и прочный дизайн",
+            "Жилое и коммерческое применение",
+            "Надежная долгосрочная работа",
+            "Соответствует международным стандартам"
+          ],
+          "tags": [
+            "ELSTER",
+            "BK Газовый счетчик",
+            "Газовый счетчик",
+            "Природный газ",
+            "Измерение",
+            "Мембранный измеритель",
+            "Жилой",
+            "Коммерческий",
+            "Промышленный"
+          ]
+        },
+        "ka": {
+          "name": "ELSTER BK გაზის მრიცხველი",
+          "summary": "ELSTER BK გაზის მრიცხველი არის მაღალი სიზუსტის დიაფრაგმის გაზის მრიცხველი, რომელიც შექმნილია საცხოვრებელი და კომერციული ბუნებრივი აირის გაზომვისთვის. ის უზრუნველყოფს საიმედო, ზუსტ და გრძელვადიან შესრულებას დაბალი ტექნიკური მოთხოვნებით. მრიცხველი შექმნილია გამძლეობისთვის და შეესაბამება ხარისხისა და უსაფრთხოების საერთაშორისო სტანდარტებს",
+          "specs": [
+            "დიაფრაგმის გაზის მრიცხველი",
+            "გამოდგება ბუნებრივი აირის გაზომვისთვის",
+            "გაზომვის მაღალი სიზუსტე",
+            "ხანგრძლივი მომსახურების ვადა",
+            "დაბალი მოვლა",
+            "კომპაქტური და გამძლე დიზაინი",
+            "საცხოვრებელი და კომერციული აპლიკაციები",
+            "საიმედო გრძელვადიანი შესრულება",
+            "შეესაბამება საერთაშორისო სტანდარტებს"
+          ],
+          "tags": [
+            "ELSTER",
+            "BK გაზის მრიცხველი",
+            "გაზის მრიცხველი",
+            "ბუნებრივი აირი",
+            "გაზომვა",
+            "დიაფრაგმის მეტრი",
+            "საცხოვრებელი",
+            "კომერციული",
+            "სამრეწველო"
+          ]
+        },
+        "fa": {
+          "name": "کنتور گاز ELSTER BK",
+          "summary": "کنتور گاز ELSTER BK یک کنتور گاز دیافراگمی با دقت بالا است که برای اندازه گیری گاز طبیعی مسکونی و تجاری طراحی شده است. این عملکرد قابل اعتماد، دقیق و طولانی مدت با نیازهای تعمیر و نگهداری کم را ارائه می دهد. این متر برای دوام ساخته شده و مطابق با استانداردهای بین المللی کیفیت و ایمنی است",
+          "specs": [
+            "کنتور گاز دیافراگمی",
+            "مناسب برای اندازه گیری گاز طبیعی",
+            "دقت اندازه گیری بالا",
+            "عمر طولانی",
+            "تعمیر و نگهداری کم",
+            "طراحی فشرده و بادوام",
+            "کاربردهای مسکونی و تجاری",
+            "عملکرد بلند مدت قابل اعتماد",
+            "مطابق با استانداردهای بین المللی است"
+          ],
+          "tags": [
+            "ELSTER",
+            "کنتور گاز BK",
+            "کنتور گاز",
+            "گاز طبیعی",
+            "اندازه گیری",
+            "دیافراگم متر",
+            "مسکونی",
+            "تجاری",
+            "صنعتی"
+          ]
+        }
+      }
+    }
+  ]
+}

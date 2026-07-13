@@ -1,4 +1,7 @@
 import initialProducts from "../../data/products.json";
+import initialProductTranslations from "../../data/product-translations.json";
+
+const PRODUCT_TRANSLATION_SEED_KEY = "product_translation_seed_20260713_v1";
 
 export const INITIAL_OWNERS = [
   { email: "faridnaghizade7@gmail.com", displayName: "Farid" },
@@ -86,6 +89,69 @@ export async function ensureProductTranslations(db) {
          PRIMARY KEY (product_id, language)
        )`,
     )
+    .run();
+
+  await db
+    .prepare(
+      `CREATE TABLE IF NOT EXISTS catalog_metadata (
+         key TEXT PRIMARY KEY,
+         value TEXT NOT NULL,
+         updated_at TEXT NOT NULL
+       )`,
+    )
+    .run();
+
+  const seedMarker = await db
+    .prepare("SELECT value FROM catalog_metadata WHERE key = ?")
+    .bind(PRODUCT_TRANSLATION_SEED_KEY)
+    .first();
+  if (seedMarker) return;
+
+  const productResult = await db.prepare("SELECT id, version FROM products").all();
+  const productVersions = new Map(
+    productResult.results.map((product) => [product.id, Number(product.version)]),
+  );
+  const seededAt = new Date().toISOString();
+  const statements = [];
+
+  initialProductTranslations.products.forEach((product) => {
+    if (productVersions.get(product.id) !== Number(product.revision)) return;
+    Object.entries(product.translations).forEach(([language, translation]) => {
+      statements.push(
+        db
+          .prepare(
+            `INSERT OR IGNORE INTO product_translations (
+               product_id, language, source_language, name, summary,
+               specs_json, tags_json, updated_at
+             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          )
+          .bind(
+            product.id,
+            language,
+            product.sourceLanguage,
+            translation.name,
+            translation.summary,
+            JSON.stringify(translation.specs),
+            JSON.stringify(translation.tags),
+            seededAt,
+          ),
+      );
+    });
+  });
+
+  for (let index = 0; index < statements.length; index += 75) {
+    await db.batch(statements.slice(index, index + 75));
+  }
+
+  await db
+    .prepare(
+      `INSERT INTO catalog_metadata (key, value, updated_at)
+       VALUES (?, ?, ?)
+       ON CONFLICT(key) DO UPDATE SET
+         value = excluded.value,
+         updated_at = excluded.updated_at`,
+    )
+    .bind(PRODUCT_TRANSLATION_SEED_KEY, String(statements.length), seededAt)
     .run();
 }
 

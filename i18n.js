@@ -8,6 +8,15 @@
     { id: "fa", code: "FA", flag: "assets/flags/ir.svg", label: "فارسی", direction: "rtl" },
   ];
 
+  const aboutImages = {
+    az: "assets/about-aztexnogaz.jpeg",
+    en: "assets/about/about-en.png",
+    tr: "assets/about/about-tr.png",
+    ru: "assets/about/about-ru.png",
+    ka: "assets/about/about-ka.png",
+    fa: "assets/about/about-fa.png",
+  };
+
   // Values are ordered as Azerbaijani, English, Turkish, Russian, Georgian, Persian.
   const rows = {
     "_pageTitle": ["AzTexnoQaz MMC | Qaz avadanlığı, sayğaclar və sənaye həlləri", "AzTexnoQaz LLC | Gas Equipment, Meters and Industrial Solutions", "AzTexnoQaz LLC | Gaz Ekipmanları, Sayaçlar ve Endüstriyel Çözümler", "AzTexnoQaz LLC | Газовое оборудование, счетчики и промышленные решения", "AzTexnoQaz LLC | გაზის მოწყობილობები, მრიცხველები და სამრეწველო გადაწყვეტილებები", "AzTexnoQaz LLC | تجهیزات گاز، کنتورها و راهکارهای صنعتی"],
@@ -243,6 +252,9 @@
     document.documentElement.dataset.language = language.id;
     document.title = translate("_pageTitle");
     document.querySelector('meta[name="description"]')?.setAttribute("content", translate("_pageDescription"));
+
+    const aboutImage = document.querySelector("#about-language-image");
+    if (aboutImage) aboutImage.src = aboutImages[language.id] || aboutImages.az;
 
     textRecords.forEach(({ node, key, leading, trailing }) => {
       node.data = `${leading}${translate(key)}${trailing}`;
