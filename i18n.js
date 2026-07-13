@@ -265,7 +265,7 @@
     const code = document.querySelector("#language-current-code");
     if (flag) {
       flag.src = language.flag;
-      flag.hidden = language.id === "en";
+      flag.hidden = false;
     }
     if (code) code.textContent = language.code;
     document.querySelectorAll("[data-language]").forEach((option) => {
