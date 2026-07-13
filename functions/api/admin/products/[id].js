@@ -11,7 +11,12 @@ import {
   readJson,
   requireSameOrigin,
 } from "../../../_lib/http.js";
-import { mediaKeyFromUrl, parseProductForm, storeImage } from "../../../_lib/products.js";
+import {
+  mediaKeyFromUrl,
+  parseProductForm,
+  parseTranslationOverrides,
+  storeImage,
+} from "../../../_lib/products.js";
 import { translateProduct } from "../../../_lib/translate.js";
 
 export async function onRequestPut({ request, env, data, params }) {
@@ -29,7 +34,9 @@ export async function onRequestPut({ request, env, data, params }) {
     }
 
     const product = parseProductForm(formData);
+    const translationOverrides = parseTranslationOverrides(formData);
     const translatedProduct = await translateProduct(product);
+    Object.assign(translatedProduct.translations, translationOverrides);
     const image = formData.get("image");
     let imageUrl = existing.image_url;
     if (image && typeof image.arrayBuffer === "function" && image.size) {

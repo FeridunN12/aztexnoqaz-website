@@ -553,10 +553,6 @@ button {
     transform 160ms ease;
 }
 
-.brand-strip > .brand-logo:nth-last-child(3) {
-  grid-column: 2;
-}
-
 .brand-strip > .brand-logo::after {
   position: absolute;
   content: "↗";
@@ -617,6 +613,10 @@ button {
 
 .brand-image--honeywell {
   max-height: 52px;
+}
+
+.brand-image--inno {
+  max-height: 58px;
 }
 
 .brand-image--elster {
@@ -1578,6 +1578,60 @@ button {
   gap: 15px;
 }
 
+.editor-language-tabs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  padding: 5px;
+  border: 1px solid #cbd7e5;
+  border-radius: 7px;
+  background: #f4f8fd;
+}
+
+.editor-language-tabs button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+  height: 40px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  color: #35516f;
+  background: transparent;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.editor-language-tabs button:hover {
+  background: #e7f1fd;
+}
+
+.editor-language-tabs button[aria-selected="true"] {
+  border-color: #9fc2e8;
+  color: #073d81;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(7, 61, 129, 0.1);
+}
+
+.editor-language-tabs button[data-edited="true"]::after {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  content: "";
+  background: #08a9c2;
+}
+
+.editor-language-tabs img {
+  width: 22px;
+  height: 15px;
+  object-fit: cover;
+  border: 1px solid rgba(7, 28, 55, 0.12);
+}
+
 .editor-field-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1949,16 +2003,6 @@ button {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .brand-strip > .brand-logo:nth-last-child(3) {
-    grid-column: auto;
-  }
-
-  .brand-strip > .brand-logo:last-child {
-    grid-column: 2 / span 2;
-    justify-self: center;
-    width: calc(50% - 8px);
-  }
-
   .catalog-toolbar {
     grid-template-columns: 1fr;
   }
@@ -2086,11 +2130,6 @@ button {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .brand-strip > .brand-logo:last-child {
-    grid-column: 2;
-    width: 100%;
-  }
-
   .solution-layout,
   .about-layout,
   .buy-layout,
@@ -2143,12 +2182,6 @@ button {
   .brand-strip > .brand-logo {
     height: 108px;
     padding: 15px;
-  }
-
-  .brand-strip > .brand-logo:last-child {
-    grid-column: 1 / -1;
-    justify-self: center;
-    width: calc(50% - 6px);
   }
 
   .partners,

@@ -52,6 +52,40 @@ export function parseProductForm(formData) {
   };
 }
 
+const PRODUCT_LANGUAGES = new Set(["az", "en", "tr", "ru", "ka"]);
+
+export function parseTranslationOverrides(formData) {
+  const raw = String(formData.get("translationOverrides") || "").trim();
+  if (!raw) return {};
+
+  let values;
+  try {
+    values = JSON.parse(raw);
+  } catch {
+    throw new ApiError(400, "Product translations are invalid.", "validation_error");
+  }
+  if (!values || Array.isArray(values) || typeof values !== "object") {
+    throw new ApiError(400, "Product translations are invalid.", "validation_error");
+  }
+
+  return Object.fromEntries(
+    Object.entries(values).map(([language, translation]) => {
+      if (!PRODUCT_LANGUAGES.has(language) || !translation || typeof translation !== "object") {
+        throw new ApiError(400, "Product translations are invalid.", "validation_error");
+      }
+      return [
+        language,
+        {
+          name: cleanText(translation.name, "Translated product name", 120),
+          summary: cleanText(translation.summary, "Translated description", 600),
+          specs: splitList(Array.isArray(translation.specs) ? translation.specs.join("\n") : translation.specs, 12, 180),
+          tags: splitList(Array.isArray(translation.tags) ? translation.tags.join("\n") : translation.tags, 10, 50),
+        },
+      ];
+    }),
+  );
+}
+
 export function slugify(value) {
   return String(value)
     .normalize("NFKD")

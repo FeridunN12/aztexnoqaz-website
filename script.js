@@ -58,6 +58,8 @@ const editorImage = document.querySelector("#editor-image");
 const editorImagePreview = document.querySelector("#editor-image-preview");
 const imageDropZone = document.querySelector("#image-drop-zone");
 const imageDropPrompt = document.querySelector("#image-drop-prompt");
+const editorLanguageTabs = document.querySelector("#editor-language-tabs");
+const editorLanguageButtons = [...editorLanguageTabs.querySelectorAll("[data-editor-language]")];
 const editorLoginModal = document.querySelector("#editor-login-modal");
 const editorLoginForm = document.querySelector("#editor-login-form");
 const editorLoginMessage = document.querySelector("#editor-login-message");
@@ -79,6 +81,12 @@ let editingProduct = null;
 let pendingDelete = null;
 let previewObjectUrl = null;
 let droppedImageFile = null;
+const productLanguages = ["az", "en", "tr", "ru", "ka"];
+const localizedEditorFields = ["name", "summary", "specs", "tags"];
+let activeEditorLanguage = "az";
+let editorTranslationDrafts = {};
+let editedTranslationLanguages = new Set();
+let editorTranslationsNeedRefresh = false;
 
 function escapeHtml(value) {
   return String(value)
@@ -423,6 +431,96 @@ function showImagePreview(fileOrUrl) {
   imageDropPrompt.hidden = true;
 }
 
+function emptyTranslationDraft() {
+  return { name: "", summary: "", specs: [], tags: [] };
+}
+
+function normalizeTranslationDraft(translation = {}) {
+  return {
+    name: String(translation.name || ""),
+    summary: String(translation.summary || ""),
+    specs: Array.isArray(translation.specs) ? [...translation.specs] : [],
+    tags: Array.isArray(translation.tags) ? [...translation.tags] : [],
+  };
+}
+
+function readEditorTranslationDraft() {
+  return {
+    name: productEditorForm.querySelector('[name="name"]').value.trim(),
+    summary: productEditorForm.querySelector('[name="summary"]').value.trim(),
+    specs: productEditorForm.querySelector('[name="specs"]').value.split(/\r?\n/).map((value) => value.trim()).filter(Boolean),
+    tags: productEditorForm.querySelector('[name="tags"]').value.split(",").map((value) => value.trim()).filter(Boolean),
+  };
+}
+
+function storeEditorTranslationDraft() {
+  editorTranslationDrafts[activeEditorLanguage] = readEditorTranslationDraft();
+}
+
+function loadEditorTranslationDraft(language) {
+  const draft = editorTranslationDrafts[language] || emptyTranslationDraft();
+  productEditorForm.querySelector('[name="name"]').value = draft.name;
+  productEditorForm.querySelector('[name="summary"]').value = draft.summary;
+  productEditorForm.querySelector('[name="specs"]').value = draft.specs.join("\n");
+  productEditorForm.querySelector('[name="tags"]').value = draft.tags.join(", ");
+  activeEditorLanguage = language;
+  editorLanguageButtons.forEach((button) => {
+    const isActive = button.dataset.editorLanguage === language;
+    button.setAttribute("aria-selected", String(isActive));
+    button.tabIndex = isActive ? 0 : -1;
+    button.dataset.edited = String(editedTranslationLanguages.has(button.dataset.editorLanguage));
+  });
+}
+
+function draftCanTranslate(draft) {
+  return Boolean(draft?.name && draft?.summary);
+}
+
+async function refreshEditorTranslations() {
+  storeEditorTranslationDraft();
+  const sourceDraft = editorTranslationDrafts[activeEditorLanguage];
+  if (!editorTranslationsNeedRefresh || !draftCanTranslate(sourceDraft)) return;
+
+  const formData = new FormData();
+  formData.set("name", sourceDraft.name);
+  formData.set("brand", productEditorForm.querySelector('[name="brand"]').value.trim());
+  formData.set("category", productEditorForm.querySelector('[name="category"]').value);
+  formData.set("summary", sourceDraft.summary);
+  formData.set("specs", sourceDraft.specs.join("\n"));
+  formData.set("tags", sourceDraft.tags.join(", "));
+  setFormMessage(productEditorMessage, t("Detecting language and translating product text..."));
+  editorLanguageButtons.forEach((button) => { button.disabled = true; });
+
+  try {
+    const response = await fetch("/api/admin/translations", {
+      method: "POST",
+      body: formData,
+      credentials: "same-origin",
+    });
+    const body = await readApiResponse(response);
+    productLanguages.forEach((language) => {
+      if (!editedTranslationLanguages.has(language) && body.translations?.[language]) {
+        editorTranslationDrafts[language] = normalizeTranslationDraft(body.translations[language]);
+      }
+    });
+    editorTranslationsNeedRefresh = false;
+    setFormMessage(productEditorMessage);
+  } finally {
+    editorLanguageButtons.forEach((button) => { button.disabled = false; });
+  }
+}
+
+async function selectEditorLanguage(language) {
+  if (!productLanguages.includes(language) || language === activeEditorLanguage) return;
+  try {
+    await refreshEditorTranslations();
+    loadEditorTranslationDraft(language);
+    productEditorForm.querySelector('[name="name"]').focus();
+  } catch (error) {
+    setFormMessage(productEditorMessage, error.message, true);
+  }
+}
+
 async function optimizeProductImage(file) {
   if (file.size > 8 * 1024 * 1024) {
     throw new Error(t("Choose a product photo smaller than 8 MB."));
@@ -487,16 +585,24 @@ function openProductEditor(productId = null) {
   productEditorTitle.textContent = t(editingProduct ? "Edit product" : "Add new product");
   productEditorSave.innerHTML = `<i data-lucide="upload-cloud"></i>${escapeHtml(t(editingProduct ? "Publish changes" : "Publish product"))}`;
   editorImage.required = !editingProduct;
+  activeEditorLanguage = productLanguages.includes(i18n?.language) ? i18n.language : "az";
+  editedTranslationLanguages = new Set();
+  editorTranslationsNeedRefresh = false;
+  editorTranslationDrafts = Object.fromEntries(
+    productLanguages.map((language) => [
+      language,
+      editingProduct?.translations?.[language]
+        ? normalizeTranslationDraft(editingProduct.translations[language])
+        : emptyTranslationDraft(),
+    ]),
+  );
 
   if (editingProduct) {
-    productEditorForm.querySelector('[name="name"]').value = editingProduct.name;
     productEditorForm.querySelector('[name="brand"]').value = editingProduct.brand;
     productEditorForm.querySelector('[name="category"]').value = editingProduct.category;
-    productEditorForm.querySelector('[name="summary"]').value = editingProduct.summary;
-    productEditorForm.querySelector('[name="specs"]').value = editingProduct.specs.join("\n");
-    productEditorForm.querySelector('[name="tags"]').value = editingProduct.tags.join(", ");
     showImagePreview(editingProduct.image);
   }
+  loadEditorTranslationDraft(activeEditorLanguage);
 
   document.body.classList.add("modal-open");
   productEditorModal.showModal();
@@ -515,6 +621,13 @@ async function saveProduct(event) {
   event.preventDefault();
   setFormMessage(productEditorMessage);
   const formData = new FormData(productEditorForm);
+  storeEditorTranslationDraft();
+  const translationOverrides = Object.fromEntries(
+    [...editedTranslationLanguages]
+      .filter((language) => language !== activeEditorLanguage)
+      .map((language) => [language, editorTranslationDrafts[language]]),
+  );
+  formData.set("translationOverrides", JSON.stringify(translationOverrides));
   const selectedImage = droppedImageFile || editorImage.files[0];
   if (selectedImage) {
     setFormMessage(productEditorMessage, t("Optimizing product photo..."));
@@ -779,6 +892,22 @@ editorLoginModal.addEventListener("close", () => {
   document.body.classList.remove("modal-open");
 });
 productEditorForm.addEventListener("submit", saveProduct);
+editorLanguageButtons.forEach((button) => {
+  button.addEventListener("click", () => selectEditorLanguage(button.dataset.editorLanguage));
+});
+localizedEditorFields.forEach((name) => {
+  productEditorForm.querySelector(`[name="${name}"]`).addEventListener("input", () => {
+    editedTranslationLanguages.add(activeEditorLanguage);
+    editorTranslationsNeedRefresh = true;
+    const activeButton = editorLanguageButtons.find(
+      (button) => button.dataset.editorLanguage === activeEditorLanguage,
+    );
+    if (activeButton) activeButton.dataset.edited = "true";
+  });
+});
+productEditorForm.querySelector('[name="brand"]').addEventListener("input", () => {
+  editorTranslationsNeedRefresh = true;
+});
 productEditorModal.querySelectorAll(".editor-dialog-close").forEach((button) => {
   button.addEventListener("click", closeProductEditor);
 });
