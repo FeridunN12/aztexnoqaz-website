@@ -231,10 +231,13 @@ button {
 }
 
 .language-current-flag,
-.language-menu button > span {
-  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
-  font-size: 1.18rem;
-  line-height: 1;
+.language-menu button > img {
+  width: 22px;
+  height: 16px;
+  border: 1px solid rgba(8, 33, 69, 0.16);
+  border-radius: 2px;
+  object-fit: cover;
+  box-shadow: 0 1px 2px rgba(5, 23, 48, 0.12);
 }
 
 .language-current-code {

@@ -1,11 +1,11 @@
 (() => {
   const languages = [
-    { id: "az", code: "AZ", flag: "🇦🇿", label: "Azərbaycan dili", direction: "ltr" },
-    { id: "en", code: "EN", flag: "🇬🇧", label: "English", direction: "ltr" },
-    { id: "tr", code: "TR", flag: "🇹🇷", label: "Türkçe", direction: "ltr" },
-    { id: "ru", code: "RU", flag: "🇷🇺", label: "Русский", direction: "ltr" },
-    { id: "ka", code: "KA", flag: "🇬🇪", label: "ქართული", direction: "ltr" },
-    { id: "fa", code: "FA", flag: "🇮🇷", label: "فارسی", direction: "rtl" },
+    { id: "az", code: "AZ", flag: "assets/flags/az.svg", label: "Azərbaycan dili", direction: "ltr" },
+    { id: "en", code: "EN", flag: "assets/flags/gb.svg", label: "English", direction: "ltr" },
+    { id: "tr", code: "TR", flag: "assets/flags/tr.svg", label: "Türkçe", direction: "ltr" },
+    { id: "ru", code: "RU", flag: "assets/flags/ru.svg", label: "Русский", direction: "ltr" },
+    { id: "ka", code: "KA", flag: "assets/flags/ge.svg", label: "ქართული", direction: "ltr" },
+    { id: "fa", code: "FA", flag: "assets/flags/ir.svg", label: "فارسی", direction: "rtl" },
   ];
 
   // Values are ordered as Azerbaijani, English, Turkish, Russian, Georgian, Persian.
@@ -253,7 +253,7 @@
 
     const flag = document.querySelector("#language-current-flag");
     const code = document.querySelector("#language-current-code");
-    if (flag) flag.textContent = language.flag;
+    if (flag) flag.src = language.flag;
     if (code) code.textContent = language.code;
     document.querySelectorAll("[data-language]").forEach((option) => {
       const selected = option.dataset.language === language.id;
