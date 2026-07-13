@@ -3,7 +3,8 @@ import initialProductTranslations from "../../data/product-translations.json";
 import azerbaijaniProductCorrections from "../../data/product-az-corrections.json";
 
 const PRODUCT_TRANSLATION_SEED_KEY = "product_translation_seed_20260713_v1";
-const AZ_TRANSLATION_CORRECTION_SEED_KEY = "product_az_corrections_20260713_v2";
+const AZ_TRANSLATION_CORRECTION_SEED_KEY = "product_az_corrections_20260713_v3";
+const REMOVED_LANGUAGE_CLEANUP_KEY = "removed_product_language_fa_20260713_v1";
 
 export const INITIAL_OWNERS = [
   { email: "faridnaghizade7@gmail.com", displayName: "Farid" },
@@ -103,6 +104,31 @@ export async function ensureProductTranslations(db) {
     )
     .run();
 
+  const removedLanguageMarker = await db
+    .prepare("SELECT value FROM catalog_metadata WHERE key = ?")
+    .bind(REMOVED_LANGUAGE_CLEANUP_KEY)
+    .first();
+  if (!removedLanguageMarker) {
+    const deleted = await db
+      .prepare("DELETE FROM product_translations WHERE language = 'fa'")
+      .run();
+    const cleanedAt = new Date().toISOString();
+    await db
+      .prepare(
+        `INSERT INTO catalog_metadata (key, value, updated_at)
+         VALUES (?, ?, ?)
+         ON CONFLICT(key) DO UPDATE SET
+           value = excluded.value,
+           updated_at = excluded.updated_at`,
+      )
+      .bind(
+        REMOVED_LANGUAGE_CLEANUP_KEY,
+        String(deleted.meta?.changes || 0),
+        cleanedAt,
+      )
+      .run();
+  }
+
   const correctionMarker = await db
     .prepare("SELECT value FROM catalog_metadata WHERE key = ?")
     .bind(AZ_TRANSLATION_CORRECTION_SEED_KEY)
@@ -176,6 +202,7 @@ export async function ensureProductTranslations(db) {
   initialProductTranslations.products.forEach((product) => {
     if (productVersions.get(product.id) !== Number(product.revision)) return;
     Object.entries(product.translations).forEach(([language, translation]) => {
+      if (language === "fa") return;
       statements.push(
         db
           .prepare(

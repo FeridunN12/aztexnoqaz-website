@@ -5,7 +5,6 @@
     { id: "tr", code: "TR", flag: "assets/flags/tr.svg", label: "Türkçe", direction: "ltr" },
     { id: "ru", code: "RU", flag: "assets/flags/ru.svg", label: "Русский", direction: "ltr" },
     { id: "ka", code: "KA", flag: "assets/flags/ge.svg", label: "ქართული", direction: "ltr" },
-    { id: "fa", code: "FA", flag: "assets/flags/ir.svg", label: "فارسی", direction: "rtl" },
   ];
 
   const aboutImages = {
@@ -14,10 +13,9 @@
     tr: "assets/about/about-tr.png",
     ru: "assets/about/about-ru.png",
     ka: "assets/about/about-ka.png",
-    fa: "assets/about/about-fa.png",
   };
 
-  // Values are ordered as Azerbaijani, English, Turkish, Russian, Georgian, Persian.
+  // Active values are ordered as Azerbaijani, English, Turkish, Russian, Georgian.
   const rows = {
     "_pageTitle": ["AzTexnoQaz MMC | Qaz avadanlığı, sayğaclar və sənaye həlləri", "AzTexnoQaz LLC | Gas Equipment, Meters and Industrial Solutions", "AzTexnoQaz LLC | Gaz Ekipmanları, Sayaçlar ve Endüstriyel Çözümler", "AzTexnoQaz LLC | Газовое оборудование, счетчики и промышленные решения", "AzTexnoQaz LLC | გაზის მოწყობილობები, მრიცხველები და სამრეწველო გადაწყვეტილებები", "AzTexnoQaz LLC | تجهیزات گاز، کنتورها و راهکارهای صنعتی"],
     "_pageDescription": ["AzTexnoQaz MMC Azərbaycanda qaz sayğacları, tənzimləyicilər, klapanlar, həcm korrektorları, təzyiq şlanqları, HVAC avadanlığı və sənaye qaz şkafları təchiz edir.", "AzTexnoQaz LLC supplies gas meters, regulators, valves, volume converters, pressure hoses, HVAC equipment and industrial gas cabinets in Azerbaijan.", "AzTexnoQaz LLC, Azerbaycan'da gaz sayaçları, regülatörler, vanalar, hacim dönüştürücüler, basınç hortumları, HVAC ekipmanları ve endüstriyel gaz kabinleri tedarik eder.", "AzTexnoQaz LLC поставляет в Азербайджане газовые счетчики, регуляторы, клапаны, корректоры объема, напорные шланги, HVAC-оборудование и промышленные газовые шкафы.", "AzTexnoQaz LLC აზერბაიჯანში აწვდის გაზის მრიცხველებს, რეგულატორებს, სარქველებს, მოცულობის კონვერტორებს, წნევის შლანგებს, HVAC მოწყობილობებსა და სამრეწველო გაზის კარადებს.", "AzTexnoQaz LLC در آذربایجان کنتور گاز، رگلاتور، شیر، مبدل حجم، شیلنگ فشار، تجهیزات HVAC و کابینت‌های صنعتی گاز عرضه می‌کند."],

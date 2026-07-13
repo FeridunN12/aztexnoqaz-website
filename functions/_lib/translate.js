@@ -1,6 +1,6 @@
 import { ApiError } from "./http.js";
 
-export const PRODUCT_LANGUAGES = ["az", "en", "tr", "ru", "ka", "fa"];
+export const PRODUCT_LANGUAGES = ["az", "en", "tr", "ru", "ka"];
 
 const TRANSLATE_ENDPOINT = "https://translate.googleapis.com/translate_a/single";
 const FIELD_SEPARATOR = "ZXQFIELDSEPARATORQXZ";
@@ -177,6 +177,9 @@ function normalizeAzerbaijaniProduct(product, translation) {
   } else if (sourceName.includes("fangaz") && sourceName.includes("red") && sourceName.includes("regulator")) {
     normalized.name = "FANGAZ Qaz Tənzimləyicisi";
     normalized.tags = ["Tənzimləyici", "FANGAZ", "Qaz"];
+  } else if (sourceName.includes("eska") && sourceName.includes("valve showcase")) {
+    normalized.name = "ESKA Elektromaqnit Klapan";
+    normalized.tags = ["Elektromaqnit klapan", "ESKA", "Qaz"];
   }
 
   return normalized;

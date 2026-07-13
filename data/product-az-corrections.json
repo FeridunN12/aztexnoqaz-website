@@ -265,10 +265,10 @@
       "id": "eska-valve-showcase",
       "revision": 1,
       "translation": {
-        "name": "ESKA Klapan Məhsulları",
-        "summary": "Qaz nəzarət qurğuları üçün ESKA klapan və tənzimləyiciləri.",
-        "specs": ["Klapan və tənzimləyici avadanlıqlar", "ESKA markalı məhsullar", "Tətbiq sahəsi təchizatdan əvvəl təsdiqlənir"],
-        "tags": ["Klapan", "ESKA", "Qaz"]
+        "name": "ESKA Elektromaqnit Klapan",
+        "summary": "Qaz nəzarət sistemləri üçün ESKA elektromaqnit klapanı.",
+        "specs": ["Elektromaqnit qaz klapanı", "ESKA markalı məhsul", "Tətbiq sahəsi təchizatdan əvvəl təsdiqlənir"],
+        "tags": ["Elektromaqnit klapan", "ESKA", "Qaz"]
       }
     },
     {
