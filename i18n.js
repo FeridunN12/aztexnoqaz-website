@@ -66,6 +66,8 @@
     "Regulators": ["Tənzimləyicilər", "Regulators", "Regülatörler", "Регуляторы", "რეგულატორები", "رگلاتورها"],
     "Conversion": ["Korreksiya", "Conversion", "Dönüştürme", "Корректоры", "კონვერტაცია", "تبدیل حجم"],
     "Valves": ["Klapanlar", "Valves", "Vanalar", "Клапаны", "სარქველები", "شیرآلات"],
+    "HVAC": ["Kombi", "HVAC", "HVAC", "HVAC", "HVAC"],
+    "Modems": ["Modem", "Modems", "Modem", "Модемы", "მოდემები"],
     "Accessories": ["Aksesuarlar", "Accessories", "Aksesuarlar", "Комплектующие", "აქსესუარები", "لوازم جانبی"],
     "Cabinets": ["Şkaflar", "Cabinets", "Kabinler", "Шкафы", "კარადები", "کابینت‌ها"],
     "Prices are confirmed by quote after model and specification check.": ["Qiymətlər model və texniki göstəricilər yoxlanıldıqdan sonra təkliflə təsdiqlənir.", "Prices are confirmed by quote after model and specification check.", "Fiyatlar model ve teknik özellik kontrolünden sonra teklifle kesinleşir.", "Цены подтверждаются предложением после проверки модели и характеристик.", "ფასი დასტურდება მოდელისა და მახასიათებლების შემოწმების შემდეგ.", "قیمت پس از بررسی مدل و مشخصات در پیش‌فاکتور تأیید می‌شود."],

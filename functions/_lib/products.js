@@ -6,6 +6,7 @@ export const CATEGORIES = new Set([
   "conversion",
   "valves",
   "hvac",
+  "modems",
   "accessories",
   "cabinets",
 ]);

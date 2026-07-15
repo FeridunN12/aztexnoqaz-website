@@ -10,6 +10,7 @@ const categoryTranslationKeys = {
   conversion: "Conversion",
   valves: "Valves",
   hvac: "HVAC",
+  modems: "Modems",
   accessories: "Accessories",
   cabinets: "Cabinets",
 };

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 284" role="img" aria-labelledby="title">
+  <title id="title">INNO electronics</title>
+  <rect width="760" height="284" rx="8" fill="#07557d"/>
+  <g fill="none" stroke="#fff" stroke-linecap="square" stroke-linejoin="miter">
+    <path stroke-width="12" d="M42 35h72v22H88v126h26v22H42v-22h20V57H42z"/>
+    <path stroke-width="12" d="M143 205V35h31l103 126V35h27v170h-31L170 79v126z"/>
+    <path stroke-width="12" d="M333 205V35h31l103 126V35h27v170h-31L360 79v126z"/>
+    <circle cx="624" cy="120" r="84" stroke-width="12"/>
+    <circle cx="624" cy="120" r="54" stroke-width="7"/>
+  </g>
+  <g fill="#fff">
+    <circle cx="62" cy="80" r="8"/><circle cx="62" cy="162" r="8"/>
+    <circle cx="170" cy="64" r="8"/><circle cx="199" cy="115" r="8"/><circle cx="267" cy="176" r="8"/>
+    <circle cx="360" cy="64" r="8"/><circle cx="389" cy="115" r="8"/><circle cx="457" cy="176" r="8"/>
+    <circle cx="624" cy="36" r="8"/><circle cx="696" cy="78" r="8"/><circle cx="576" cy="189" r="8"/>
+  </g>
+  <circle cx="624" cy="120" r="43" fill="#ed1c24"/>
+  <text x="45" y="258" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="400" letter-spacing="17">electronics</text>
+</svg>
