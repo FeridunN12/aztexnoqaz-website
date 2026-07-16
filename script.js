@@ -61,6 +61,7 @@ const imageDropZone = document.querySelector("#image-drop-zone");
 const imageDropPrompt = document.querySelector("#image-drop-prompt");
 const editorLanguageTabs = document.querySelector("#editor-language-tabs");
 const editorLanguageButtons = [...editorLanguageTabs.querySelectorAll("[data-editor-language]")];
+const editorResetTranslations = document.querySelector("#editor-reset-translations");
 const editorLoginModal = document.querySelector("#editor-login-modal");
 const editorLoginForm = document.querySelector("#editor-login-form");
 const editorLoginMessage = document.querySelector("#editor-login-message");
@@ -551,27 +552,24 @@ function restoreEditorTechnicalText(text, protectedValues) {
   return restored;
 }
 
-async function translateEditorDraft(sourceDraft, brand) {
+async function translateEditorDraft(sourceDraft, brand, sourceLanguage) {
   const sourceParts = [sourceDraft.name, sourceDraft.summary, ...sourceDraft.specs, ...sourceDraft.tags];
   const { protectedParts, protectedValues } = protectEditorTechnicalText(sourceParts, brand);
   const combined = protectedParts.join(`\n\n${translationFieldSeparator}\n\n`);
-  const detected = await requestBrowserTranslation(combined, "auto", "az");
-  const sourceLanguage = productLanguages.includes(detected.sourceLanguage)
-    ? detected.sourceLanguage
-    : "az";
+  const translationSourceLanguage = productLanguages.includes(sourceLanguage)
+    ? sourceLanguage
+    : activeEditorLanguage;
 
   const entries = await Promise.all(productLanguages.map(async (language) => {
     let translatedParts;
-    if (language === sourceLanguage) {
+    if (language === translationSourceLanguage) {
       translatedParts = protectedParts;
     } else {
-      const result = language === "az" && sourceLanguage !== "az"
-        ? detected
-        : await requestBrowserTranslation(combined, sourceLanguage, language);
+      const result = await requestBrowserTranslation(combined, translationSourceLanguage, language);
       translatedParts = result.text.split(translationFieldSeparatorPattern);
       if (translatedParts.length !== protectedParts.length) {
         translatedParts = await Promise.all(protectedParts.map(async (part) => (
-          await requestBrowserTranslation(part, sourceLanguage, language)
+          await requestBrowserTranslation(part, translationSourceLanguage, language)
         ).text));
       }
     }
@@ -585,34 +583,68 @@ async function translateEditorDraft(sourceDraft, brand) {
     }];
   }));
 
-  return { sourceLanguage, translations: Object.fromEntries(entries) };
+  return { sourceLanguage: translationSourceLanguage, translations: Object.fromEntries(entries) };
 }
 
-async function refreshEditorTranslations() {
+async function refreshEditorTranslations({
+  force = false,
+  overwriteManual = false,
+  sourceLanguage = editorSourceLanguage,
+} = {}) {
   storeEditorTranslationDraft();
-  const sourceDraft = editorTranslationDrafts[activeEditorLanguage];
-  if (!editorTranslationsNeedRefresh || !draftCanTranslate(sourceDraft)) return;
+  const translationSourceLanguage = productLanguages.includes(sourceLanguage)
+    ? sourceLanguage
+    : activeEditorLanguage;
+  const sourceDraft = editorTranslationDrafts[translationSourceLanguage];
+  if ((!force && !editorTranslationsNeedRefresh) || !draftCanTranslate(sourceDraft)) return;
 
   setFormMessage(productEditorMessage, t("Detecting language and translating product text..."));
   editorLanguageButtons.forEach((button) => { button.disabled = true; });
+  editorResetTranslations.disabled = true;
 
   try {
     const body = await translateEditorDraft(
       sourceDraft,
       productEditorForm.querySelector('[name="brand"]').value.trim(),
+      translationSourceLanguage,
     );
     productLanguages.forEach((language) => {
-      if (!editedTranslationLanguages.has(language) && body.translations?.[language]) {
+      const preserveManual = !overwriteManual && editedTranslationLanguages.has(language);
+      if (language !== translationSourceLanguage && !preserveManual && body.translations?.[language]) {
         editorTranslationDrafts[language] = normalizeTranslationDraft(body.translations[language]);
       }
     });
-    editorSourceLanguage = productLanguages.includes(body.sourceLanguage)
-      ? body.sourceLanguage
-      : activeEditorLanguage;
+    editorTranslationDrafts[translationSourceLanguage] = normalizeTranslationDraft(sourceDraft);
+    editorSourceLanguage = translationSourceLanguage;
     editorTranslationsNeedRefresh = false;
     setFormMessage(productEditorMessage);
   } finally {
     editorLanguageButtons.forEach((button) => { button.disabled = false; });
+    editorResetTranslations.disabled = false;
+  }
+}
+
+async function resetEditorTranslations() {
+  storeEditorTranslationDraft();
+  const sourceDraft = editorTranslationDrafts[activeEditorLanguage];
+  if (!draftCanTranslate(sourceDraft)) {
+    setFormMessage(productEditorMessage, t("Enter a product name and description before resetting translations."), true);
+    return;
+  }
+
+  editorSourceLanguage = activeEditorLanguage;
+  editedTranslationLanguages = new Set([activeEditorLanguage]);
+  editorTranslationsNeedRefresh = true;
+  try {
+    await refreshEditorTranslations({
+      force: true,
+      overwriteManual: true,
+      sourceLanguage: activeEditorLanguage,
+    });
+    loadEditorTranslationDraft(activeEditorLanguage);
+    setFormMessage(productEditorMessage, t("Other languages were translated again from this language."));
+  } catch (error) {
+    setFormMessage(productEditorMessage, error.message, true);
   }
 }
 
@@ -784,6 +816,12 @@ async function saveProduct(event) {
     return;
   }
   storeEditorTranslationDraft();
+  const sourceDraft = editorTranslationDrafts[editorSourceLanguage]
+    || editorTranslationDrafts[activeEditorLanguage];
+  formData.set("name", sourceDraft.name);
+  formData.set("summary", sourceDraft.summary);
+  formData.set("specs", sourceDraft.specs.join("\n"));
+  formData.set("tags", sourceDraft.tags.join(", "));
   formData.set("sourceLanguage", editorSourceLanguage);
   formData.set("translationOverrides", JSON.stringify(
     Object.fromEntries(
@@ -1047,8 +1085,12 @@ productEditorForm.addEventListener("submit", saveProduct);
 editorLanguageButtons.forEach((button) => {
   button.addEventListener("click", () => selectEditorLanguage(button.dataset.editorLanguage));
 });
+editorResetTranslations.addEventListener("click", resetEditorTranslations);
 localizedEditorFields.forEach((name) => {
   productEditorForm.querySelector(`[name="${name}"]`).addEventListener("input", () => {
+    if (editedTranslationLanguages.size === 0) {
+      editorSourceLanguage = activeEditorLanguage;
+    }
     editedTranslationLanguages.add(activeEditorLanguage);
     editorTranslationsNeedRefresh = true;
     const activeButton = editorLanguageButtons.find(

@@ -9,10 +9,10 @@
       content="AzTexnoQaz LLC supplies gas meters, regulators, valves, volume converters, pressure hoses, HVAC equipment and industrial gas cabinets in Azerbaijan."
     />
     <link rel="icon" href="assets/logo-mark.png" />
-    <link rel="stylesheet" href="styles.css?v=20260715-catalog-categories-v1" />
+    <link rel="stylesheet" href="styles.css?v=20260716-editor-translations-v1" />
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-    <script defer src="i18n.js?v=20260716-image-upload-v2"></script>
-    <script defer src="script.js?v=20260716-image-upload-v3"></script>
+    <script defer src="i18n.js?v=20260716-editor-translations-v1"></script>
+    <script defer src="script.js?v=20260716-editor-translations-v1"></script>
   </head>
   <body>
     <a class="skip-link" href="#products">Skip to products</a>
@@ -502,9 +502,15 @@
             <p class="section-kicker">Catalog editor</p>
             <h3 id="product-editor-title">Add new product</h3>
           </div>
-          <button class="icon-button editor-dialog-close" type="button" aria-label="Close product editor">
-            <i data-lucide="x"></i>
-          </button>
+          <div class="editor-modal-header-actions">
+            <button class="editor-reset-translations" id="editor-reset-translations" type="button" aria-label="Reset translations">
+              <i data-lucide="rotate-ccw"></i>
+              <span>Reset translations</span>
+            </button>
+            <button class="icon-button editor-dialog-close" type="button" aria-label="Close product editor">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
         </header>
 
         <div class="editor-form-layout">

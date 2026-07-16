@@ -1505,6 +1505,46 @@ button {
   line-height: 1.2;
 }
 
+.editor-modal-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editor-reset-translations {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 42px;
+  padding: 0 13px;
+  border: 1px solid #cbd7e5;
+  border-radius: 7px;
+  color: #244768;
+  background: #f6f9fd;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.editor-reset-translations:hover,
+.editor-reset-translations:focus-visible {
+  border-color: #8eb6df;
+  color: #073d81;
+  background: #edf5fe;
+}
+
+.editor-reset-translations:disabled {
+  cursor: wait;
+  opacity: 0.58;
+}
+
+.editor-reset-translations svg {
+  width: 17px;
+  height: 17px;
+}
+
 .editor-form-layout {
   display: grid;
   grid-template-columns: minmax(250px, 0.78fr) minmax(0, 1.22fr);
@@ -2364,6 +2404,15 @@ button {
 
   .editor-modal-header h3 {
     font-size: 1.35rem;
+  }
+
+  .editor-reset-translations {
+    width: 42px;
+    padding: 0;
+  }
+
+  .editor-reset-translations span {
+    display: none;
   }
 
   .editor-field-row {
