@@ -479,24 +479,148 @@ function draftCanTranslate(draft) {
   return Boolean(draft?.name && draft?.summary);
 }
 
+function splitBrowserTranslationText(text, maxLength = 450) {
+  const chunks = [];
+  let remaining = String(text);
+  while (remaining.length > maxLength) {
+    let splitAt = Math.max(
+      remaining.lastIndexOf("\n", maxLength),
+      remaining.lastIndexOf(". ", maxLength) + 1,
+      remaining.lastIndexOf(" ", maxLength),
+    );
+    if (splitAt < Math.floor(maxLength * 0.5)) splitAt = maxLength;
+    chunks.push(remaining.slice(0, splitAt));
+    remaining = remaining.slice(splitAt);
+  }
+  if (remaining) chunks.push(remaining);
+  return chunks;
+}
+
+function decodeBrowserTranslationEntities(value) {
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = String(value);
+  return textarea.value;
+}
+
+async function requestBrowserTranslationChunk(text, sourceLanguage, targetLanguage) {
+  let lastError;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 15_000);
+    try {
+      const url = new URL("https://api.mymemory.translated.net/get");
+      url.searchParams.set("q", text);
+      url.searchParams.set("langpair", `${sourceLanguage}|${targetLanguage}`);
+      url.searchParams.set("de", salesEmail);
+      const response = await fetch(url, { signal: controller.signal });
+      if (!response.ok) throw new Error(`Translation service returned ${response.status}`);
+      const payload = await response.json();
+      const translated = payload?.responseData?.translatedText;
+      if (!translated || payload?.quotaFinished || Number(payload?.responseStatus || 200) >= 400) {
+        throw new Error(payload?.responseDetails || "Translation service returned no text");
+      }
+      return decodeBrowserTranslationEntities(translated);
+    } catch (error) {
+      lastError = error;
+    } finally {
+      window.clearTimeout(timeout);
+    }
+  }
+
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 15_000);
+  try {
+    const url = new URL("https://translate.googleapis.com/translate_a/single");
+    url.searchParams.set("client", "gtx");
+    url.searchParams.set("sl", sourceLanguage);
+    url.searchParams.set("tl", targetLanguage);
+    url.searchParams.set("dt", "t");
+    url.searchParams.set("q", text);
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) throw new Error(`Translation service returned ${response.status}`);
+    const payload = await response.json();
+    const translated = Array.isArray(payload?.[0])
+      ? payload[0].map((segment) => segment?.[0] || "").join("")
+      : "";
+    if (!translated) throw new Error("Translation service returned no text");
+    return translated;
+  } catch (error) {
+    throw new Error(t("Automatic translation is temporarily unavailable. Try publishing again."), {
+      cause: lastError || error,
+    });
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+async function requestBrowserTranslation(text, sourceLanguage, targetLanguage) {
+  if (!String(text).trim() || sourceLanguage === targetLanguage) return String(text);
+  const chunks = splitBrowserTranslationText(text);
+  const translated = [];
+  for (const chunk of chunks) {
+    translated.push(await requestBrowserTranslationChunk(chunk, sourceLanguage, targetLanguage));
+  }
+  return translated.join("");
+}
+
+function protectEditorTechnicalText(parts, brand) {
+  const protectedValues = [];
+  const candidates = new Set([String(brand || "").trim()]);
+  parts.forEach((part) => {
+    String(part)
+      .match(/\b(?:[A-Z]{2,}[A-Z0-9./+_-]*|[A-Za-z]*\d[A-Za-z0-9./+_-]*)\b/g)
+      ?.forEach((value) => candidates.add(value));
+  });
+  const protectedParts = parts.map((part) => {
+    let text = String(part);
+    [...candidates]
+      .filter((value) => value.length >= 2)
+      .sort((left, right) => right.length - left.length)
+      .forEach((value) => {
+        if (!text.includes(value)) return;
+        let index = protectedValues.indexOf(value);
+        if (index < 0) {
+          index = protectedValues.length;
+          protectedValues.push(value);
+        }
+        text = text.split(value).join(`ZXQPH${index}QXZ`);
+      });
+    return text;
+  });
+  return { protectedParts, protectedValues };
+}
+
+function restoreEditorTechnicalText(text, protectedValues) {
+  let restored = String(text).trim();
+  protectedValues.forEach((value, index) => {
+    restored = restored.replace(new RegExp(`ZXQPH${index}QXZ`, "gi"), value);
+  });
+  return restored;
+}
+
 async function translateEditorDraft(sourceDraft, brand, sourceLanguage) {
   const translationSourceLanguage = productLanguages.includes(sourceLanguage)
     ? sourceLanguage
     : activeEditorLanguage;
-  const formData = new FormData();
-  formData.set("name", sourceDraft.name);
-  formData.set("brand", brand);
-  formData.set("category", productEditorForm.querySelector('[name="category"]').value);
-  formData.set("summary", sourceDraft.summary);
-  formData.set("specs", sourceDraft.specs.join("\n"));
-  formData.set("tags", sourceDraft.tags.join(", "));
-  formData.set("sourceLanguage", translationSourceLanguage);
-  const response = await fetch("/api/admin/translations", {
-    method: "POST",
-    body: formData,
-    credentials: "same-origin",
-  });
-  return readApiResponse(response);
+  const sourceParts = [sourceDraft.name, sourceDraft.summary, ...sourceDraft.specs, ...sourceDraft.tags];
+  const { protectedParts, protectedValues } = protectEditorTechnicalText(sourceParts, brand);
+  const entries = await Promise.all(productLanguages.map(async (language) => {
+    const translatedParts = [];
+    for (const part of protectedParts) {
+      translatedParts.push(language === translationSourceLanguage
+        ? part
+        : await requestBrowserTranslation(part, translationSourceLanguage, language));
+    }
+    const restored = translatedParts.map((part) => restoreEditorTechnicalText(part, protectedValues));
+    let index = 0;
+    return [language, {
+      name: restored[index++],
+      summary: restored[index++],
+      specs: restored.slice(index, index + sourceDraft.specs.length),
+      tags: restored.slice(index + sourceDraft.specs.length),
+    }];
+  }));
+  return { sourceLanguage: translationSourceLanguage, translations: Object.fromEntries(entries) };
 }
 
 async function refreshEditorTranslations({
