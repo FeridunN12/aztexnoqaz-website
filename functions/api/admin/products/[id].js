@@ -25,10 +25,25 @@ export async function onRequestPut({ request, env, data, params }) {
   try {
     requireSameOrigin(request);
     const id = String(params.id);
+    await ensureProductTranslations(env.DB);
+    const formData = await request.formData();
+    const requestId = String(formData.get("requestId") || "").trim();
+    const requestKey = /^[a-zA-Z0-9-]{8,100}$/.test(requestId)
+      ? `product_request_${requestId}`
+      : null;
+    if (requestKey) {
+      const previousRequest = await env.DB
+        .prepare("SELECT value FROM catalog_metadata WHERE key = ?")
+        .bind(requestKey)
+        .first();
+      if (previousRequest?.value === id) {
+        const previousProduct = await getProduct(env.DB, id);
+        if (previousProduct) return json({ product: previousProduct });
+      }
+    }
     const existing = await env.DB.prepare("SELECT * FROM products WHERE id = ?").bind(id).first();
     if (!existing) throw new ApiError(404, "This product no longer exists.", "not_found");
 
-    const formData = await request.formData();
     const revision = Number(formData.get("revision"));
     if (!Number.isInteger(revision) || revision !== existing.version) {
       throw new ApiError(409, "This product changed in another session. Refresh and try again.", "conflict");
@@ -49,7 +64,6 @@ export async function onRequestPut({ request, env, data, params }) {
     }
 
     const now = new Date().toISOString();
-    await ensureProductTranslations(env.DB);
     const updateProduct = env.DB
       .prepare(
         `UPDATE products
@@ -71,10 +85,18 @@ export async function onRequestPut({ request, env, data, params }) {
         id,
         revision,
       );
-    const [result] = await env.DB.batch([
+    const statements = [
       updateProduct,
       ...productTranslationStatements(env.DB, id, translatedProduct, now),
-    ]);
+    ];
+    if (requestKey) {
+      statements.push(
+        env.DB
+          .prepare("INSERT INTO catalog_metadata (key, value, updated_at) VALUES (?, ?, ?)")
+          .bind(requestKey, id, now),
+      );
+    }
+    const [result] = await env.DB.batch(statements);
 
     if (!result.meta.changes) {
       throw new ApiError(409, "This product changed in another session. Refresh and try again.", "conflict");

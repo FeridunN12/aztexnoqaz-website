@@ -20,7 +20,22 @@ export async function onRequestPost({ request, env, data }) {
   try {
     requireSameOrigin(request);
     await ensureCatalog(env.DB);
+    await ensureProductTranslations(env.DB);
     const formData = await request.formData();
+    const requestId = String(formData.get("requestId") || "").trim();
+    const requestKey = /^[a-zA-Z0-9-]{8,100}$/.test(requestId)
+      ? `product_request_${requestId}`
+      : null;
+    if (requestKey) {
+      const previousRequest = await env.DB
+        .prepare("SELECT value FROM catalog_metadata WHERE key = ?")
+        .bind(requestKey)
+        .first();
+      if (previousRequest?.value) {
+        const previousProduct = await getProduct(env.DB, previousRequest.value);
+        if (previousProduct) return json({ product: previousProduct }, 200);
+      }
+    }
     const product = parseProductForm(formData);
     const translationOverrides = parseTranslationOverrides(formData);
     const translatedProduct = completeTranslatedProduct(formData, translationOverrides)
@@ -35,7 +50,6 @@ export async function onRequestPost({ request, env, data }) {
       .first();
     const now = new Date().toISOString();
 
-    await ensureProductTranslations(env.DB);
     const insertProduct = env.DB
       .prepare(
         `INSERT INTO products (
@@ -57,10 +71,18 @@ export async function onRequestPost({ request, env, data }) {
         now,
         data.editor.email,
       );
-    await env.DB.batch([
+    const statements = [
       insertProduct,
       ...productTranslationStatements(env.DB, id, translatedProduct, now),
-    ]);
+    ];
+    if (requestKey) {
+      statements.push(
+        env.DB
+          .prepare("INSERT INTO catalog_metadata (key, value, updated_at) VALUES (?, ?, ?)")
+          .bind(requestKey, id, now),
+      );
+    }
+    await env.DB.batch(statements);
 
     await writeAudit(env.DB, data.editor.email, "create", "product", id, {
       name: product.name,

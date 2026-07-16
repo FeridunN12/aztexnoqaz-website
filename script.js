@@ -814,6 +814,25 @@ function closeProductEditor() {
   document.body.classList.remove("modal-open");
 }
 
+async function publishProductRequest(endpoint, method, formData) {
+  let lastError;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      return await fetch(endpoint, {
+        method,
+        body: formData,
+        credentials: "same-origin",
+      });
+    } catch (error) {
+      lastError = error;
+      if (attempt === 0) await new Promise((resolve) => window.setTimeout(resolve, 1200));
+    }
+  }
+  throw new Error(t("The product upload was interrupted. Check your connection and try again."), {
+    cause: lastError,
+  });
+}
+
 async function saveProduct(event) {
   event.preventDefault();
   setFormMessage(productEditorMessage);
@@ -844,6 +863,7 @@ async function saveProduct(event) {
   formData.set("specs", sourceDraft.specs.join("\n"));
   formData.set("tags", sourceDraft.tags.join(", "));
   formData.set("sourceLanguage", editorSourceLanguage);
+  formData.set("requestId", crypto.randomUUID());
   formData.set("translationOverrides", JSON.stringify(
     Object.fromEntries(
       productLanguages.map((language) => [language, editorTranslationDrafts[language]]),
@@ -858,11 +878,11 @@ async function saveProduct(event) {
     const endpoint = editingProduct
       ? `/api/admin/products/${encodeURIComponent(editingProduct.id)}`
       : "/api/admin/products";
-    const response = await fetch(endpoint, {
-      method: editingProduct ? "PUT" : "POST",
-      body: formData,
-      credentials: "same-origin",
-    });
+    const response = await publishProductRequest(
+      endpoint,
+      editingProduct ? "PUT" : "POST",
+      formData,
+    );
     const body = await readApiResponse(response);
     const existingIndex = products.findIndex((product) => product.id === body.product.id);
     if (existingIndex >= 0) products.splice(existingIndex, 1, body.product);
