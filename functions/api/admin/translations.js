@@ -5,8 +5,10 @@ import { translateProduct } from "../../_lib/translate.js";
 export async function onRequestPost({ request }) {
   try {
     requireSameOrigin(request);
-    const product = parseProductForm(await request.formData());
-    const translatedProduct = await translateProduct(product);
+    const formData = await request.formData();
+    const product = parseProductForm(formData);
+    const sourceLanguage = String(formData.get("sourceLanguage") || "").trim();
+    const translatedProduct = await translateProduct(product, sourceLanguage);
     return json(translatedProduct);
   } catch (error) {
     return errorResponse(error);

@@ -3,6 +3,7 @@ import { ApiError } from "./http.js";
 export const PRODUCT_LANGUAGES = ["az", "en", "tr", "ru", "ka"];
 
 const TRANSLATE_ENDPOINT = "https://translate.googleapis.com/translate_a/single";
+const MYMEMORY_ENDPOINT = "https://api.mymemory.translated.net/get";
 const FIELD_SEPARATOR = "ZXQFIELDSEPARATORQXZ";
 const FIELD_SEPARATOR_PATTERN = /\s*ZXQFIELDSEPARATORQXZ\s*/;
 
@@ -19,13 +20,24 @@ async function requestTranslation(text, sourceLanguage, targetLanguage) {
     return { text, sourceLanguage };
   }
 
+  let lastError = null;
+  if (sourceLanguage !== "auto") {
+    try {
+      return {
+        text: await requestMyMemoryTranslation(text, sourceLanguage, targetLanguage),
+        sourceLanguage,
+      };
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
   const url = new URL(TRANSLATE_ENDPOINT);
   url.searchParams.set("client", "gtx");
   url.searchParams.set("sl", sourceLanguage);
   url.searchParams.set("tl", targetLanguage);
   url.searchParams.set("dt", "t");
 
-  let lastError = null;
   for (let attempt = 0; attempt < 2; attempt += 1) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15_000);
@@ -56,6 +68,60 @@ async function requestTranslation(text, sourceLanguage, targetLanguage) {
 
   console.error("Product translation failed", lastError);
   throw translationError();
+}
+
+function splitTranslationText(text, maxLength = 450) {
+  const chunks = [];
+  let remaining = String(text);
+  while (remaining.length > maxLength) {
+    let splitAt = Math.max(
+      remaining.lastIndexOf("\n", maxLength),
+      remaining.lastIndexOf(". ", maxLength) + 1,
+      remaining.lastIndexOf(" ", maxLength),
+    );
+    if (splitAt < Math.floor(maxLength * 0.5)) splitAt = maxLength;
+    chunks.push(remaining.slice(0, splitAt));
+    remaining = remaining.slice(splitAt);
+  }
+  if (remaining) chunks.push(remaining);
+  return chunks;
+}
+
+function decodeTranslationEntities(value) {
+  return String(value)
+    .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCodePoint(Number.parseInt(code, 16)))
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
+}
+
+async function requestMyMemoryTranslation(text, sourceLanguage, targetLanguage) {
+  const chunks = splitTranslationText(text);
+  const translatedChunks = [];
+  for (const chunk of chunks) {
+    const url = new URL(MYMEMORY_ENDPOINT);
+    url.searchParams.set("q", chunk);
+    url.searchParams.set("langpair", `${sourceLanguage}|${targetLanguage}`);
+    url.searchParams.set("de", "aztexnogaz@gmail.com");
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15_000);
+    try {
+      const response = await fetch(url, { signal: controller.signal });
+      if (!response.ok) throw new Error(`Fallback translation returned ${response.status}`);
+      const payload = await response.json();
+      const translated = payload?.responseData?.translatedText;
+      if (!translated || Number(payload?.responseStatus || 200) >= 400) {
+        throw new Error(payload?.responseDetails || "Fallback translation returned no text");
+      }
+      translatedChunks.push(decodeTranslationEntities(translated));
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+  return translatedChunks.join("");
 }
 
 function protectTechnicalText(parts, brand) {
@@ -185,12 +251,17 @@ function normalizeAzerbaijaniProduct(product, translation) {
   return normalized;
 }
 
-export async function translateProduct(product) {
+export async function translateProduct(product, requestedSourceLanguage = "") {
   const sourceParts = [product.name, product.summary, ...product.specs, ...product.tags];
   const { protectedParts, protectedValues } = protectTechnicalText(sourceParts, product.brand);
   const combined = protectedParts.join(`\n\n${FIELD_SEPARATOR}\n\n`);
-  const initialAzerbaijani = await requestTranslation(combined, "auto", "az");
-  const sourceLanguage = initialAzerbaijani.sourceLanguage || "en";
+  const explicitSourceLanguage = PRODUCT_LANGUAGES.includes(requestedSourceLanguage)
+    ? requestedSourceLanguage
+    : null;
+  const initialAzerbaijani = explicitSourceLanguage
+    ? null
+    : await requestTranslation(combined, "auto", "az");
+  const sourceLanguage = explicitSourceLanguage || initialAzerbaijani?.sourceLanguage || "en";
 
   const translatedEntries = await Promise.all(
     PRODUCT_LANGUAGES.map(async (language) => {
@@ -207,7 +278,9 @@ export async function translateProduct(product) {
   );
 
   const translations = Object.fromEntries(translatedEntries);
-  translations.az = normalizeAzerbaijaniProduct(product, translations.az);
+  if (sourceLanguage !== "az") {
+    translations.az = normalizeAzerbaijaniProduct(product, translations.az);
+  }
 
   return {
     sourceLanguage,
