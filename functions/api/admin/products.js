@@ -7,6 +7,7 @@ import {
 } from "../../_lib/db.js";
 import { errorResponse, json, requireSameOrigin } from "../../_lib/http.js";
 import {
+  completeTranslatedProduct,
   parseProductForm,
   parseTranslationOverrides,
   storeImage,
@@ -22,8 +23,11 @@ export async function onRequestPost({ request, env, data }) {
     const formData = await request.formData();
     const product = parseProductForm(formData);
     const translationOverrides = parseTranslationOverrides(formData);
-    const translatedProduct = await translateProduct(product);
-    Object.assign(translatedProduct.translations, translationOverrides);
+    const translatedProduct = completeTranslatedProduct(formData, translationOverrides)
+      || await translateProduct(product);
+    if (translatedProduct.translations !== translationOverrides) {
+      Object.assign(translatedProduct.translations, translationOverrides);
+    }
     const id = await uniqueProductId(env.DB, product.name);
     storedImage = await storeImage(env.DB, formData.get("image"), id);
     const orderRow = await env.DB

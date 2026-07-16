@@ -117,6 +117,17 @@ export function parseTranslationOverrides(formData) {
   );
 }
 
+export function completeTranslatedProduct(formData, translations) {
+  if (![...PRODUCT_LANGUAGES].every((language) => translations[language])) return null;
+  const requestedSourceLanguage = String(formData.get("sourceLanguage") || "").trim();
+  return {
+    sourceLanguage: PRODUCT_LANGUAGES.has(requestedSourceLanguage)
+      ? requestedSourceLanguage
+      : "az",
+    translations,
+  };
+}
+
 export function slugify(value) {
   return String(value)
     .normalize("NFKD")

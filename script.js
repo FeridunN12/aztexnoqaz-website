@@ -85,6 +85,7 @@ let droppedImageFile = null;
 const productLanguages = ["az", "en", "tr", "ru", "ka"];
 const localizedEditorFields = ["name", "summary", "specs", "tags"];
 let activeEditorLanguage = "az";
+let editorSourceLanguage = "az";
 let editorTranslationDrafts = {};
 let editedTranslationLanguages = new Set();
 let editorTranslationsNeedRefresh = false;
@@ -504,6 +505,9 @@ async function refreshEditorTranslations() {
         editorTranslationDrafts[language] = normalizeTranslationDraft(body.translations[language]);
       }
     });
+    editorSourceLanguage = productLanguages.includes(body.sourceLanguage)
+      ? body.sourceLanguage
+      : activeEditorLanguage;
     editorTranslationsNeedRefresh = false;
     setFormMessage(productEditorMessage);
   } finally {
@@ -562,13 +566,15 @@ async function optimizeProductImage(file) {
     throw new Error(t("The selected file is not a valid product photo."));
   }
   let size = 1200;
-  let quality = 0.88;
+  let quality = 0.86;
 
   for (let attempt = 0; attempt < 6; attempt += 1) {
     const canvas = document.createElement("canvas");
     canvas.width = size;
     canvas.height = size;
     const context = canvas.getContext("2d");
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = "high";
     context.fillStyle = "#e8f0f8";
     context.fillRect(0, 0, size, size);
 
@@ -597,7 +603,7 @@ async function optimizeProductImage(file) {
     context.drawImage(decoded.source, x, y, width, height);
 
     const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
-    if (blob && blob.size <= 1_400_000) {
+    if (blob && blob.size <= 900_000) {
       decoded.close();
       return new File([blob], `${file.name.replace(/\.[^.]+$/, "") || "product"}.jpg`, {
         type: "image/jpeg",
@@ -620,6 +626,9 @@ function openProductEditor(productId = null) {
   productEditorSave.innerHTML = `<i data-lucide="upload-cloud"></i>${escapeHtml(t(editingProduct ? "Publish changes" : "Publish product"))}`;
   editorImage.required = !editingProduct;
   activeEditorLanguage = productLanguages.includes(i18n?.language) ? i18n.language : "az";
+  editorSourceLanguage = productLanguages.includes(editingProduct?.sourceLanguage)
+    ? editingProduct.sourceLanguage
+    : activeEditorLanguage;
   editedTranslationLanguages = new Set();
   editorTranslationsNeedRefresh = false;
   editorTranslationDrafts = Object.fromEntries(
@@ -656,12 +665,6 @@ async function saveProduct(event) {
   setFormMessage(productEditorMessage);
   const formData = new FormData(productEditorForm);
   storeEditorTranslationDraft();
-  const translationOverrides = Object.fromEntries(
-    [...editedTranslationLanguages]
-      .filter((language) => language !== activeEditorLanguage)
-      .map((language) => [language, editorTranslationDrafts[language]]),
-  );
-  formData.set("translationOverrides", JSON.stringify(translationOverrides));
   const selectedImage = droppedImageFile || editorImage.files[0];
   if (selectedImage) {
     setFormMessage(productEditorMessage, t("Optimizing product photo..."));
@@ -672,8 +675,22 @@ async function saveProduct(event) {
       return;
     }
   }
-  if (editingProduct) formData.set("revision", String(editingProduct.revision));
   setFormMessage(productEditorMessage, t("Detecting language and translating product text..."));
+  try {
+    await refreshEditorTranslations();
+  } catch (error) {
+    setFormMessage(productEditorMessage, error.message, true);
+    return;
+  }
+  storeEditorTranslationDraft();
+  formData.set("sourceLanguage", editorSourceLanguage);
+  formData.set("translationOverrides", JSON.stringify(
+    Object.fromEntries(
+      productLanguages.map((language) => [language, editorTranslationDrafts[language]]),
+    ),
+  ));
+  if (editingProduct) formData.set("revision", String(editingProduct.revision));
+  setFormMessage(productEditorMessage, t("Saving product..."));
 
   productEditorSave.disabled = true;
   productEditorSave.classList.add("loading");
