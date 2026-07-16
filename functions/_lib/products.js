@@ -77,7 +77,7 @@ export function parseProductForm(formData) {
     name: cleanText(formData.get("name"), "Product name", 120),
     brand: cleanText(formData.get("brand"), "Brand", 80),
     category,
-    summary: cleanText(formData.get("summary"), "Description", 600),
+    summary: cleanText(formData.get("summary"), "Description", 1500),
     specs: splitList(formData.get("specs"), 12, 180),
     tags: splitList(formData.get("tags"), 10, 50),
   };
@@ -108,7 +108,7 @@ export function parseTranslationOverrides(formData) {
         language,
         {
           name: cleanText(translation.name, "Translated product name", 120),
-          summary: cleanText(translation.summary, "Translated description", 600),
+          summary: cleanText(translation.summary, "Translated description", 1500),
           specs: splitList(Array.isArray(translation.specs) ? translation.specs.join("\n") : translation.specs, 12, 180),
           tags: splitList(Array.isArray(translation.tags) ? translation.tags.join("\n") : translation.tags, 10, 50),
         },
