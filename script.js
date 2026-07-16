@@ -522,12 +522,45 @@ async function selectEditorLanguage(language) {
   }
 }
 
+async function decodeProductImage(file) {
+  try {
+    const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+    return {
+      source: bitmap,
+      width: bitmap.width,
+      height: bitmap.height,
+      close: () => bitmap.close(),
+    };
+  } catch {
+    const objectUrl = URL.createObjectURL(file);
+    try {
+      const image = new Image();
+      image.src = objectUrl;
+      await image.decode();
+      return {
+        source: image,
+        width: image.naturalWidth,
+        height: image.naturalHeight,
+        close: () => URL.revokeObjectURL(objectUrl),
+      };
+    } catch (error) {
+      URL.revokeObjectURL(objectUrl);
+      throw error;
+    }
+  }
+}
+
 async function optimizeProductImage(file) {
-  if (file.size > 8 * 1024 * 1024) {
-    throw new Error(t("Choose a product photo smaller than 8 MB."));
+  if (file.size > 25 * 1024 * 1024) {
+    throw new Error(t("Choose a product photo smaller than 25 MB."));
   }
 
-  const bitmap = await createImageBitmap(file);
+  let decoded;
+  try {
+    decoded = await decodeProductImage(file);
+  } catch {
+    throw new Error(t("The selected file is not a valid product photo."));
+  }
   let size = 1200;
   let quality = 0.88;
 
@@ -539,13 +572,13 @@ async function optimizeProductImage(file) {
     context.fillStyle = "#e8f0f8";
     context.fillRect(0, 0, size, size);
 
-    const backgroundScale = Math.max((size + 80) / bitmap.width, (size + 80) / bitmap.height);
-    const backgroundWidth = Math.round(bitmap.width * backgroundScale);
-    const backgroundHeight = Math.round(bitmap.height * backgroundScale);
+    const backgroundScale = Math.max((size + 80) / decoded.width, (size + 80) / decoded.height);
+    const backgroundWidth = Math.round(decoded.width * backgroundScale);
+    const backgroundHeight = Math.round(decoded.height * backgroundScale);
     context.save();
     context.filter = `blur(${Math.round(size * 0.025)}px) brightness(0.82) saturate(0.88)`;
     context.drawImage(
-      bitmap,
+      decoded.source,
       Math.round((size - backgroundWidth) / 2),
       Math.round((size - backgroundHeight) / 2),
       backgroundWidth,
@@ -556,16 +589,16 @@ async function optimizeProductImage(file) {
     context.fillRect(0, 0, size, size);
 
     const availableSize = size;
-    const scale = Math.min(availableSize / bitmap.width, availableSize / bitmap.height);
-    const width = Math.max(1, Math.round(bitmap.width * scale));
-    const height = Math.max(1, Math.round(bitmap.height * scale));
+    const scale = Math.min(availableSize / decoded.width, availableSize / decoded.height);
+    const width = Math.max(1, Math.round(decoded.width * scale));
+    const height = Math.max(1, Math.round(decoded.height * scale));
     const x = Math.round((size - width) / 2);
     const y = Math.round((size - height) / 2);
-    context.drawImage(bitmap, x, y, width, height);
+    context.drawImage(decoded.source, x, y, width, height);
 
     const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
     if (blob && blob.size <= 1_400_000) {
-      bitmap.close();
+      decoded.close();
       return new File([blob], `${file.name.replace(/\.[^.]+$/, "") || "product"}.jpg`, {
         type: "image/jpeg",
       });
@@ -574,7 +607,7 @@ async function optimizeProductImage(file) {
     if (attempt >= 3) size = Math.max(900, Math.round(size * 0.9));
   }
 
-  bitmap.close();
+  decoded.close();
   throw new Error(t("This photo could not be optimized. Choose a smaller image."));
 }
 

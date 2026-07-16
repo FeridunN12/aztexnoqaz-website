@@ -13,9 +13,39 @@ export const CATEGORIES = new Set([
 
 const IMAGE_TYPES = new Map([
   ["image/jpeg", "jpg"],
+  ["image/jpg", "jpg"],
   ["image/png", "png"],
   ["image/webp", "webp"],
 ]);
+
+function declaredImageType(file) {
+  const type = String(file?.type || "").toLowerCase().split(";", 1)[0].trim();
+  return type === "image/jpg" ? "image/jpeg" : type;
+}
+
+export function detectImageType(contents, declaredType = "") {
+  const bytes = new Uint8Array(contents.slice(0, 16));
+  const isJpeg = bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+  const isPng =
+    bytes[0] === 0x89 &&
+    bytes[1] === 0x50 &&
+    bytes[2] === 0x4e &&
+    bytes[3] === 0x47 &&
+    bytes[4] === 0x0d &&
+    bytes[5] === 0x0a &&
+    bytes[6] === 0x1a &&
+    bytes[7] === 0x0a;
+  const isWebp =
+    String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" &&
+    String.fromCharCode(...bytes.slice(8, 12)) === "WEBP";
+
+  if (isJpeg) return "image/jpeg";
+  if (isPng) return "image/png";
+  if (isWebp) return "image/webp";
+
+  const normalizedDeclaredType = declaredType === "image/jpg" ? "image/jpeg" : declaredType;
+  return IMAGE_TYPES.has(normalizedDeclaredType) ? normalizedDeclaredType : null;
+}
 
 function cleanText(value, label, maxLength) {
   const text = String(value || "").trim();
@@ -117,23 +147,7 @@ export async function storeImage(db, file, productId) {
   }
 
   const contents = await file.arrayBuffer();
-  const bytes = new Uint8Array(contents.slice(0, 12));
-  const isJpeg = bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
-  const isPng =
-    bytes[0] === 0x89 &&
-    bytes[1] === 0x50 &&
-    bytes[2] === 0x4e &&
-    bytes[3] === 0x47;
-  const isWebp =
-    String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" &&
-    String.fromCharCode(...bytes.slice(8, 12)) === "WEBP";
-  const contentType = isJpeg
-    ? "image/jpeg"
-    : isPng
-      ? "image/png"
-      : isWebp
-        ? "image/webp"
-        : null;
+  const contentType = detectImageType(contents, declaredImageType(file));
   if (!contentType) {
     throw new ApiError(415, "The selected file is not a valid product photo.", "invalid_image");
   }
