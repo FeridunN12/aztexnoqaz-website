@@ -23,6 +23,18 @@ export async function onRequestPatch({ request, env, data, params }) {
     requireSameOrigin(request);
     requirePermission(data.editor, "inventory");
     const body = await readJson(request);
+    const importId = String(params.id);
+    if (body.action === "reopen") {
+      const result = await env.DB
+        .prepare("UPDATE inventory_imports SET status = 'preview' WHERE id = ? AND status = 'cancelled'")
+        .bind(importId)
+        .run();
+      if (!Number(result.meta?.changes || 0)) {
+        throw new ApiError(409, "Only a cancelled preview can be reopened.", "import_locked");
+      }
+      await writeAudit(env.DB, data.editor.email, "reopen", "inventory_import", importId);
+      return json(await getImportPreview(env.DB, importId));
+    }
     const rowNumber = Number(body.rowNumber);
     if (!Number.isInteger(rowNumber) || rowNumber < 1) {
       throw new ApiError(400, "Choose a valid workbook row.", "invalid_row");
@@ -31,7 +43,7 @@ export async function onRequestPatch({ request, env, data, params }) {
     return json(
       await updateImportMapping(
         env.DB,
-        String(params.id),
+        importId,
         rowNumber,
         action,
         String(body.productId || ""),

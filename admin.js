@@ -329,10 +329,27 @@ function renderConnector(body) {
 
 function renderImportHistory() {
   document.querySelector("#import-history-body").innerHTML = state.imports.length
-    ? state.imports.map((item) => `<tr><td><strong>${escapeHtml(reportLabel(item.reportMonth, item.reportYear))}</strong><small>${escapeHtml(formatDate(item.appliedAt || item.createdAt, true))}</small></td><td><strong>${escapeHtml(item.fileName)}</strong><small>${escapeHtml(item.sourceName)}</small></td><td>${statusBadge(item.status)}</td><td>${escapeHtml(item.summary.totalRows)}</td><td>${escapeHtml(item.summary.mappedRows)}</td><td>${escapeHtml(item.summary.changedProducts)}</td><td>${escapeHtml(item.createdBy)}</td><td><div class="heading-actions"><button class="secondary-button" type="button" data-review-import="${escapeHtml(item.id)}">Review</button>${item.status === "applied" ? `<button class="secondary-button" type="button" data-rollback-import="${escapeHtml(item.id)}">Rollback</button>` : ""}</div></td></tr>`).join("")
+    ? state.imports.map((item) => `<tr><td><strong>${escapeHtml(reportLabel(item.reportMonth, item.reportYear))}</strong><small>${escapeHtml(formatDate(item.appliedAt || item.createdAt, true))}</small></td><td><strong>${escapeHtml(item.fileName)}</strong><small>${escapeHtml(item.sourceName)}</small></td><td>${statusBadge(item.status)}</td><td>${escapeHtml(item.summary.totalRows)}</td><td>${escapeHtml(item.summary.mappedRows)}</td><td>${escapeHtml(item.summary.changedProducts)}</td><td>${escapeHtml(item.createdBy)}</td><td><div class="heading-actions"><button class="secondary-button" type="button" data-review-import="${escapeHtml(item.id)}">Review</button>${item.status === "cancelled" ? `<button class="secondary-button" type="button" data-reopen-import="${escapeHtml(item.id)}">Reopen</button>` : ""}${item.status === "applied" ? `<button class="secondary-button" type="button" data-rollback-import="${escapeHtml(item.id)}">Rollback</button>` : ""}</div></td></tr>`).join("")
     : `<tr class="empty-row"><td colspan="8">No inventory imports have been created.</td></tr>`;
   document.querySelectorAll("[data-review-import]").forEach((button) => button.addEventListener("click", () => openImportPreview(button.dataset.reviewImport)));
+  document.querySelectorAll("[data-reopen-import]").forEach((button) => button.addEventListener("click", () => reopenImport(button.dataset.reopenImport)));
   document.querySelectorAll("[data-rollback-import]").forEach((button) => button.addEventListener("click", () => rollbackImport(button.dataset.rollbackImport)));
+}
+
+async function reopenImport(id) {
+  try {
+    state.preview = await api(`/api/admin/imports/${encodeURIComponent(id)}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "reopen" }),
+    });
+    renderPreview();
+    await refreshImportsOnly();
+    document.querySelector("#import-preview").scrollIntoView({ behavior: "smooth", block: "start" });
+    showToast("Import preview reopened.");
+  } catch (error) {
+    showToast(error.message);
+  }
 }
 
 async function submitImport(event) {
