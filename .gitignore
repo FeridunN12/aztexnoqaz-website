@@ -14,6 +14,7 @@ node_modules/
 dist/
 build/
 .cache/
+submission-media/
 .wrangler/
 wrangler.local.jsonc
 wrangler.jsonc

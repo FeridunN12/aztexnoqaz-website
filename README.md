@@ -7,6 +7,34 @@ invented inventory, prices, customer figures, or performance statistics.
 
 Production: [https://aztexnogaz.com](https://aztexnogaz.com)
 
+Demo: [AzTexnoQaz | OpenAI Build Week Demo](https://youtu.be/ukhGKmaBr0g)
+
+## OpenAI Build Week
+
+AzTexnoQaz is entered in the **Work and Productivity** track. During Build
+Week, the existing catalogue was substantially extended into a practical
+operations platform with a secure staff workspace, validated monthly inventory
+imports, persistent workbook-to-product mappings, quotation records,
+availability rules, audit history, responsive administration, and a
+five-language product editor.
+
+Codex and GPT-5.6 were used throughout implementation to inspect the existing
+system, generate and modify code under the project owner's direction, analyze
+the supplied workbook structure, design defensive validation, write database
+migrations and regression tests, diagnose production failures, review browser
+behavior, and iterate on the deployed experience. The project owner directed,
+tested, and reviewed the resulting work across several Codex tasks.
+
+- Public repository: [github.com/FeridunN12/aztexnoqaz-website](https://github.com/FeridunN12/aztexnoqaz-website)
+- Production deployment: [aztexnogaz.com](https://aztexnogaz.com)
+- Public demo: [youtu.be/ukhGKmaBr0g](https://youtu.be/ukhGKmaBr0g)
+- Submission checkpoint: `f2edd50`
+- Primary Codex task: `019f4756-9cf8-7981-b909-06b854a6f278`
+
+The confidential original inventory workbook, credentials, private database
+contents, and customer information are not included. The demo uses the
+sanitized fixture in `tests/fixtures/sanitized-inventory.xlsx`.
+
 ## Architecture
 
 - Static public UI: `index.html`, `styles.css`, `i18n.js`, `script.js`
