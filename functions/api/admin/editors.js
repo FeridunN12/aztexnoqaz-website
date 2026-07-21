@@ -7,21 +7,37 @@ import {
   readJson,
   requireSameOrigin,
 } from "../../_lib/http.js";
+import {
+  ensurePlatformSchema,
+  requirePermission,
+  STAFF_ROLES,
+} from "../../_lib/platform.js";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function onRequestGet({ env, data }) {
   try {
+    requirePermission(data.editor, "team");
     await ensureEditors(env.DB);
+    await ensurePlatformSchema(env.DB);
     const now = new Date().toISOString();
+    await env.DB
+      .prepare(
+        `INSERT OR IGNORE INTO staff_profiles (editor_email, platform_role, created_at, updated_at)
+         SELECT email, 'administrator', ?, ? FROM editors WHERE password_hash IS NOT NULL`,
+      )
+      .bind(now, now)
+      .run();
     await env.DB.prepare("DELETE FROM editor_sessions WHERE expires_at <= ?").bind(now).run();
     const editorResult = await env.DB
       .prepare(
         `SELECT
-           email, role, display_name AS displayName,
+           e.email, e.role, e.display_name AS displayName,
+           COALESCE(s.platform_role, 'viewer') AS platformRole,
            added_at AS addedAt, added_by AS addedBy
-         FROM editors
-         WHERE password_hash IS NOT NULL
+         FROM editors e
+         LEFT JOIN staff_profiles s ON s.editor_email = e.email COLLATE NOCASE
+         WHERE e.password_hash IS NOT NULL
          ORDER BY display_name, email`,
       )
       .all();
@@ -58,9 +74,14 @@ export async function onRequestGet({ env, data }) {
 export async function onRequestPost({ request, env, data }) {
   try {
     requireSameOrigin(request);
+    requirePermission(data.editor, "team");
+    await ensurePlatformSchema(env.DB);
     const body = await readJson(request);
     const email = String(body.email || "").trim().toLowerCase();
     const displayName = String(body.displayName || "").trim();
+    const platformRole = STAFF_ROLES.has(String(body.platformRole || ""))
+      ? String(body.platformRole)
+      : "administrator";
     if (!EMAIL_PATTERN.test(email) || email.length > 254) {
       throw new ApiError(400, "Enter a valid email address.", "invalid_email");
     }
@@ -77,14 +98,13 @@ export async function onRequestPost({ request, env, data }) {
 
     const now = new Date().toISOString();
     const password = await createPasswordRecord(body.password, env.AUTH_PEPPER);
-    await env.DB
-      .prepare(
+    await env.DB.batch([
+      env.DB.prepare(
         `INSERT INTO editors (
            email, role, added_at, added_by, display_name,
            password_salt, password_hash, password_iterations, updated_at
          ) VALUES (?, 'owner', ?, ?, ?, ?, ?, ?, ?)`,
-      )
-      .bind(
+      ).bind(
         email,
         now,
         data.editor.email,
@@ -93,8 +113,14 @@ export async function onRequestPost({ request, env, data }) {
         password.hash,
         password.iterations,
         now,
-      )
-      .run();
+      ),
+      env.DB
+        .prepare(
+          `INSERT INTO staff_profiles (editor_email, platform_role, created_at, updated_at)
+           VALUES (?, ?, ?, ?)`,
+        )
+        .bind(email, platformRole, now, now),
+    ]);
     await writeAudit(env.DB, data.editor.email, "add", "editor", email);
     return json(
       {
@@ -102,6 +128,7 @@ export async function onRequestPost({ request, env, data }) {
           email,
           displayName,
           role: "owner",
+          platformRole,
           devices: [],
           addedAt: now,
           addedBy: data.editor.email,

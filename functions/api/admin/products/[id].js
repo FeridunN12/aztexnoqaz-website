@@ -1,4 +1,5 @@
 import {
+  ensureProductDetails,
   ensureProductTranslations,
   getProduct,
   productTranslationStatements,
@@ -13,19 +14,26 @@ import {
 } from "../../../_lib/http.js";
 import {
   completeTranslatedProduct,
+  inventoryAvailabilityStatement,
   mediaKeyFromUrl,
+  parseProductDetails,
   parseProductForm,
   parseTranslationOverrides,
+  productDetailsStatement,
   storeImage,
+  uniqueProductSlug,
 } from "../../../_lib/products.js";
 import { translateProduct } from "../../../_lib/translate.js";
+import { requirePermission } from "../../../_lib/platform.js";
 
 export async function onRequestPut({ request, env, data, params }) {
   let storedImage = null;
   try {
     requireSameOrigin(request);
+    requirePermission(data.editor, "products");
     const id = String(params.id);
     await ensureProductTranslations(env.DB);
+    await ensureProductDetails(env.DB);
     const formData = await request.formData();
     const requestId = String(formData.get("requestId") || "").trim();
     const requestKey = /^[a-zA-Z0-9-]{8,100}$/.test(requestId)
@@ -50,6 +58,8 @@ export async function onRequestPut({ request, env, data, params }) {
     }
 
     const product = parseProductForm(formData);
+    const details = parseProductDetails(formData, product.name);
+    const slug = await uniqueProductSlug(env.DB, details.requestedSlug, id);
     const translationOverrides = parseTranslationOverrides(formData);
     const translatedProduct = completeTranslatedProduct(formData, translationOverrides)
       || await translateProduct(product);
@@ -64,6 +74,10 @@ export async function onRequestPut({ request, env, data, params }) {
     }
 
     const now = new Date().toISOString();
+    const existingDetails = await env.DB
+      .prepare("SELECT * FROM product_catalog_details WHERE product_id = ?")
+      .bind(id)
+      .first();
     const updateProduct = env.DB
       .prepare(
         `UPDATE products
@@ -87,6 +101,21 @@ export async function onRequestPut({ request, env, data, params }) {
       );
     const statements = [
       updateProduct,
+      env.DB
+        .prepare(
+          `INSERT INTO product_revisions (
+             product_id, version, snapshot_json, created_at, created_by
+           ) VALUES (?, ?, ?, ?, ?)`,
+        )
+        .bind(
+          id,
+          revision,
+          JSON.stringify({ product: existing, details: existingDetails }),
+          now,
+          data.editor.email,
+        ),
+      productDetailsStatement(env.DB, id, details, slug, now, data.editor.email),
+      inventoryAvailabilityStatement(env.DB, id, details.lowStockThreshold),
       ...productTranslationStatements(env.DB, id, translatedProduct, now),
     ];
     if (requestKey) {
@@ -131,6 +160,7 @@ export async function onRequestPut({ request, env, data, params }) {
 export async function onRequestDelete({ request, env, data, params }) {
   try {
     requireSameOrigin(request);
+    requirePermission(data.editor, "products");
     const id = String(params.id);
     const body = await readJson(request);
     const revision = Number(body.revision);
@@ -141,14 +171,20 @@ export async function onRequestDelete({ request, env, data, params }) {
     }
 
     await ensureProductTranslations(env.DB);
-    const [result] = await env.DB.batch([
-      env.DB
-        .prepare("DELETE FROM products WHERE id = ? AND version = ?")
-        .bind(id, revision),
+    await ensureProductDetails(env.DB);
+    const results = await env.DB.batch([
       env.DB
         .prepare("DELETE FROM product_translations WHERE product_id = ?")
         .bind(id),
+      env.DB.prepare("DELETE FROM inventory_mappings WHERE product_id = ?").bind(id),
+      env.DB.prepare("DELETE FROM product_inventory WHERE product_id = ?").bind(id),
+      env.DB.prepare("DELETE FROM product_catalog_details WHERE product_id = ?").bind(id),
+      env.DB.prepare("UPDATE quotation_items SET product_id = NULL WHERE product_id = ?").bind(id),
+      env.DB
+        .prepare("DELETE FROM products WHERE id = ? AND version = ?")
+        .bind(id, revision),
     ]);
+    const result = results.at(-1);
     if (!result.meta.changes) {
       throw new ApiError(409, "This product changed in another session. Refresh and try again.", "conflict");
     }

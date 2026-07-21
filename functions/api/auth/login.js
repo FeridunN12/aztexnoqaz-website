@@ -9,6 +9,7 @@ import {
 } from "../../_lib/auth.js";
 import { ensureEditors, writeAudit } from "../../_lib/db.js";
 import { ApiError, errorResponse, json, readJson, requireSameOrigin } from "../../_lib/http.js";
+import { ensureStaffProfile } from "../../_lib/platform.js";
 
 const LOGIN_ROUTE_VERSION = "2026-07-10-seeded-owner-passwords";
 
@@ -45,6 +46,7 @@ export async function onRequestPost({ request, env }) {
     }
 
     const session = await createEditorSession(env.DB, request, editor.email, deviceName);
+    const platformRole = await ensureStaffProfile(env.DB, editor);
     await clearLoginFailures(env.DB, attemptKey);
     await writeAudit(env.DB, editor.email, "login", "session", deviceName, {
       platform: request.headers.get("Sec-CH-UA-Platform") || null,
@@ -54,6 +56,7 @@ export async function onRequestPost({ request, env }) {
         editor: {
           email: editor.email,
           role: "owner",
+          platformRole,
           displayName: editor.display_name || editor.email,
           deviceName,
         },
