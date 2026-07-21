@@ -1,8 +1,0 @@
-{
-  "name": "aztexnoqaz-business-platform",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "test": "node tests/run-tests.mjs && python tests/schema-smoke.py"
-  }
-}

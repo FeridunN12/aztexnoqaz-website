@@ -1,44 +1,26 @@
 import {
   ensureCatalog,
-  ensureProductDetails,
   ensureProductTranslations,
   getProduct,
-  listProducts,
   productTranslationStatements,
   writeAudit,
 } from "../../_lib/db.js";
 import { errorResponse, json, requireSameOrigin } from "../../_lib/http.js";
 import {
   completeTranslatedProduct,
-  inventoryAvailabilityStatement,
   parseProductForm,
-  parseProductDetails,
   parseTranslationOverrides,
-  productDetailsStatement,
   storeImage,
   uniqueProductId,
-  uniqueProductSlug,
 } from "../../_lib/products.js";
 import { translateProduct } from "../../_lib/translate.js";
-import { requirePermission } from "../../_lib/platform.js";
-
-export async function onRequestGet({ env, data }) {
-  try {
-    requirePermission(data.editor, "products");
-    return json({ products: await listProducts(env.DB, { includeDrafts: true }) });
-  } catch (error) {
-    return errorResponse(error);
-  }
-}
 
 export async function onRequestPost({ request, env, data }) {
   let storedImage = null;
   try {
     requireSameOrigin(request);
-    requirePermission(data.editor, "products");
     await ensureCatalog(env.DB);
     await ensureProductTranslations(env.DB);
-    await ensureProductDetails(env.DB);
     const formData = await request.formData();
     const requestId = String(formData.get("requestId") || "").trim();
     const requestKey = /^[a-zA-Z0-9-]{8,100}$/.test(requestId)
@@ -55,7 +37,6 @@ export async function onRequestPost({ request, env, data }) {
       }
     }
     const product = parseProductForm(formData);
-    const details = parseProductDetails(formData, product.name);
     const translationOverrides = parseTranslationOverrides(formData);
     const translatedProduct = completeTranslatedProduct(formData, translationOverrides)
       || await translateProduct(product);
@@ -63,7 +44,6 @@ export async function onRequestPost({ request, env, data }) {
       Object.assign(translatedProduct.translations, translationOverrides);
     }
     const id = await uniqueProductId(env.DB, product.name);
-    const slug = await uniqueProductSlug(env.DB, details.requestedSlug);
     storedImage = await storeImage(env.DB, formData.get("image"), id);
     const orderRow = await env.DB
       .prepare("SELECT COALESCE(MAX(sort_order), -1) + 1 AS next_order FROM products")
@@ -93,8 +73,6 @@ export async function onRequestPost({ request, env, data }) {
       );
     const statements = [
       insertProduct,
-      productDetailsStatement(env.DB, id, details, slug, now, data.editor.email),
-      inventoryAvailabilityStatement(env.DB, id, details.lowStockThreshold),
       ...productTranslationStatements(env.DB, id, translatedProduct, now),
     ];
     if (requestKey) {

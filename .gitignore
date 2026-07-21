@@ -3,8 +3,6 @@ Thumbs.db
 *.log
 *.tmp
 *.zip
-*.xlsx
-!tests/fixtures/*.xlsx
 
 .env
 .env.*

@@ -1,8 +1,6 @@
 import initialProducts from "../../data/products.json";
 import initialProductTranslations from "../../data/product-translations.json";
 import azerbaijaniProductCorrections from "../../data/product-az-corrections.json";
-import { availabilityFor } from "./inventory.js";
-import { ensurePlatformSchema } from "./platform.js";
 
 const PRODUCT_TRANSLATION_SEED_KEY = "product_translation_seed_20260713_v1";
 const AZ_TRANSLATION_CORRECTION_SEED_KEY = "product_az_corrections_20260713_v3";
@@ -243,26 +241,6 @@ export async function ensureProductTranslations(db) {
     .run();
 }
 
-export async function ensureProductDetails(db) {
-  await ensurePlatformSchema(db);
-  const now = new Date().toISOString();
-  await db
-    .prepare(
-      `INSERT OR IGNORE INTO product_catalog_details (
-         product_id, model, sku, internal_id, applications_json,
-         datasheets_json, certificates_json, related_products_json,
-         public_quantity, availability_override, override_reason,
-         override_expires_at, publication_status, slug, seo_title,
-         seo_description, updated_at, updated_by
-       )
-       SELECT id, '', '', '', '[]', '[]', '[]', '[]', 0, '', '', NULL, 'published', id,
-              name, summary, ?, 'system'
-       FROM products`,
-    )
-    .bind(now)
-    .run();
-}
-
 function translationRowsToObject(rows) {
   return Object.fromEntries(
     rows.map((row) => [
@@ -308,21 +286,6 @@ export function productTranslationStatements(db, productId, translatedProduct, u
 
 export function rowToProduct(row, translations = {}, sourceLanguage = null) {
   const imageUrl = String(row.image_url || "");
-  const dataStatus = row.inventory_data_status || "unavailable";
-  const quantity = row.inventory_quantity === null || row.inventory_quantity === undefined
-    ? null
-    : Number(row.inventory_quantity);
-  const threshold = row.low_stock_threshold === null || row.low_stock_threshold === undefined
-    ? null
-    : Number(row.low_stock_threshold);
-  const availabilityStatus = availabilityFor(quantity, threshold, dataStatus);
-  const overrideActive = Boolean(
-    row.availability_override
-      && (!row.override_expires_at || new Date(row.override_expires_at).getTime() > Date.now()),
-  );
-  const publicAvailabilityStatus = overrideActive
-    ? row.availability_override
-    : availabilityStatus;
   return {
     id: row.id,
     name: row.name,
@@ -339,97 +302,32 @@ export function rowToProduct(row, translations = {}, sourceLanguage = null) {
     updatedAt: row.updated_at,
     sourceLanguage,
     translations,
-    model: row.model || "",
-    sku: row.sku || "",
-    internalId: row.internal_id || "",
-    applications: JSON.parse(row.applications_json || "[]"),
-    slug: row.slug || row.id,
-    publicationStatus: row.publication_status || "published",
-    seoTitle: row.seo_title || "",
-    seoDescription: row.seo_description || "",
-    lowStockThreshold: threshold,
-    publicQuantity: Boolean(row.public_quantity),
-    availabilityOverride: row.availability_override || "",
-    overrideReason: row.override_reason || "",
-    overrideExpiresAt: row.override_expires_at || null,
-    availability: {
-      status: publicAvailabilityStatus,
-      baseStatus: availabilityStatus,
-      overridden: overrideActive,
-      quantity: row.public_quantity ? quantity : null,
-      exactQuantityPublic: Boolean(row.public_quantity),
-      dataStatus,
-      reportMonth: row.report_month === null || row.report_month === undefined
-        ? null
-        : Number(row.report_month),
-      reportYear: row.report_year === null || row.report_year === undefined
-        ? null
-        : Number(row.report_year),
-      updatedAt: row.inventory_updated_at || null,
-      source: row.inventory_source || null,
-    },
-    workbookCodes: JSON.parse(row.workbook_codes_json || "[]"),
-    inventoryMapped: Number(row.mapped_row_count || 0) > 0,
   };
 }
 
-const PRODUCT_SELECT = `
-  SELECT p.*,
-         COALESCE(d.model, '') AS model,
-         COALESCE(d.sku, '') AS sku,
-         COALESCE(d.internal_id, '') AS internal_id,
-         COALESCE(d.applications_json, '[]') AS applications_json,
-         COALESCE(d.slug, p.id) AS slug,
-         COALESCE(d.publication_status, 'published') AS publication_status,
-         COALESCE(d.seo_title, '') AS seo_title,
-         COALESCE(d.seo_description, '') AS seo_description,
-         d.low_stock_threshold,
-         COALESCE(d.public_quantity, 0) AS public_quantity,
-         COALESCE(d.availability_override, '') AS availability_override,
-         COALESCE(d.override_reason, '') AS override_reason,
-         d.override_expires_at,
-         i.quantity AS inventory_quantity,
-         i.availability_status,
-         i.data_status AS inventory_data_status,
-         i.report_month,
-         i.report_year,
-         i.updated_at AS inventory_updated_at,
-         i.source_name AS inventory_source,
-         COALESCE(i.workbook_codes_json, '[]') AS workbook_codes_json,
-         COALESCE(i.mapped_row_count, 0) AS mapped_row_count
-  FROM products p
-  LEFT JOIN product_catalog_details d ON d.product_id = p.id
-  LEFT JOIN product_inventory i ON i.product_id = p.id`;
-
 export async function getProduct(db, id) {
   await ensureProductTranslations(db);
-  await ensureProductDetails(db);
-  const row = await db.prepare(`${PRODUCT_SELECT} WHERE p.id = ? OR d.slug = ? LIMIT 1`).bind(id, id).first();
+  const [row, translationResult] = await Promise.all([
+    db.prepare("SELECT * FROM products WHERE id = ?").bind(id).first(),
+    db
+      .prepare(
+        `SELECT language, source_language, name, summary, specs_json, tags_json
+         FROM product_translations WHERE product_id = ?`,
+      )
+      .bind(id)
+      .all(),
+  ]);
   if (!row) return null;
-  const translationResult = await db
-    .prepare(
-      `SELECT language, source_language, name, summary, specs_json, tags_json
-       FROM product_translations WHERE product_id = ?`,
-    )
-    .bind(row.id)
-    .all();
   const translationRows = translationResult.results;
   const translations = translationRowsToObject(translationRows);
   return rowToProduct(row, translations, translationRows[0]?.source_language || null);
 }
 
-export async function listProducts(db, { includeDrafts = false } = {}) {
+export async function listProducts(db) {
   await ensureCatalog(db);
   await ensureProductTranslations(db);
-  await ensureProductDetails(db);
   const [productResult, translationResult] = await Promise.all([
-    db
-      .prepare(
-        `${PRODUCT_SELECT}
-         ${includeDrafts ? "" : "WHERE COALESCE(d.publication_status, 'published') = 'published'"}
-         ORDER BY p.sort_order ASC, p.created_at ASC`,
-      )
-      .all(),
+    db.prepare("SELECT * FROM products ORDER BY sort_order ASC, created_at ASC").all(),
     db
       .prepare(
         `SELECT product_id, language, source_language, name, summary, specs_json, tags_json

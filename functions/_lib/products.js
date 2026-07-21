@@ -1,5 +1,4 @@
 import { ApiError } from "./http.js";
-import { cleanOptionalText, parsePositiveNumber } from "./platform.js";
 
 export const CATEGORIES = new Set([
   "metering",
@@ -84,62 +83,6 @@ export function parseProductForm(formData) {
   };
 }
 
-export function parseProductDetails(formData, productName) {
-  const thresholdValue = String(formData.get("lowStockThreshold") || "").trim();
-  const lowStockThreshold = thresholdValue
-    ? parsePositiveNumber(thresholdValue, { max: 1_000_000_000 })
-    : null;
-  if (thresholdValue && lowStockThreshold === null) {
-    throw new ApiError(400, "Enter a valid low-stock threshold.", "invalid_threshold");
-  }
-  const publicationStatus = formData.get("publicationStatus") === "draft"
-    ? "draft"
-    : "published";
-  const overrideStatuses = new Set([
-    "in_stock",
-    "low_stock",
-    "out_of_stock",
-    "contact",
-    "unavailable",
-  ]);
-  const requestedOverride = String(formData.get("availabilityOverride") || "").trim();
-  const availabilityOverride = overrideStatuses.has(requestedOverride) ? requestedOverride : "";
-  const overrideReason = cleanOptionalText(formData.get("overrideReason"), 500);
-  if (availabilityOverride && !overrideReason) {
-    throw new ApiError(
-      400,
-      "Explain why the inventory availability is being overridden.",
-      "override_reason_required",
-    );
-  }
-  const rawOverrideExpiry = cleanOptionalText(formData.get("overrideExpiresAt"), 40);
-  let overrideExpiresAt = null;
-  if (rawOverrideExpiry) {
-    const parsedExpiry = new Date(rawOverrideExpiry);
-    if (Number.isNaN(parsedExpiry.getTime())) {
-      throw new ApiError(400, "Choose a valid override expiration date.", "invalid_override_expiry");
-    }
-    overrideExpiresAt = parsedExpiry.toISOString();
-  }
-  return {
-    model: cleanOptionalText(formData.get("model"), 140),
-    sku: cleanOptionalText(formData.get("sku"), 120),
-    internalId: cleanOptionalText(formData.get("internalId"), 120),
-    applications: splitList(formData.get("applications"), 30, 600),
-    lowStockThreshold,
-    publicQuantity: ["1", "true", "on", "yes"].includes(
-      String(formData.get("publicQuantity") || "").toLowerCase(),
-    ),
-    availabilityOverride,
-    overrideReason: availabilityOverride ? overrideReason : "",
-    overrideExpiresAt: availabilityOverride ? overrideExpiresAt : null,
-    publicationStatus,
-    requestedSlug: slugify(cleanOptionalText(formData.get("slug"), 100) || productName),
-    seoTitle: cleanOptionalText(formData.get("seoTitle"), 160),
-    seoDescription: cleanOptionalText(formData.get("seoDescription"), 320),
-  };
-}
-
 const PRODUCT_LANGUAGES = new Set(["az", "en", "tr", "ru", "ka"]);
 
 export function parseTranslationOverrides(formData) {
@@ -204,80 +147,6 @@ export async function uniqueProductId(db, name) {
     suffix += 1;
   }
   return id;
-}
-
-export async function uniqueProductSlug(db, requestedSlug, excludeProductId = null) {
-  const base = slugify(requestedSlug);
-  let slug = base;
-  let suffix = 2;
-  while (true) {
-    const existing = await db
-      .prepare("SELECT product_id FROM product_catalog_details WHERE slug = ?")
-      .bind(slug)
-      .first();
-    if (!existing || existing.product_id === excludeProductId) return slug;
-    slug = `${base.slice(0, 58)}-${suffix}`;
-    suffix += 1;
-  }
-}
-
-export function productDetailsStatement(db, productId, details, slug, updatedAt, updatedBy) {
-  return db
-    .prepare(
-      `INSERT INTO product_catalog_details (
-         product_id, model, sku, internal_id, applications_json,
-         datasheets_json, certificates_json, related_products_json,
-         low_stock_threshold, public_quantity, availability_override,
-         override_reason, override_expires_at, publication_status,
-         slug, seo_title, seo_description, updated_at, updated_by
-       ) VALUES (?, ?, ?, ?, ?, '[]', '[]', '[]', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-       ON CONFLICT(product_id) DO UPDATE SET
-         model = excluded.model, sku = excluded.sku, internal_id = excluded.internal_id,
-         applications_json = excluded.applications_json,
-         low_stock_threshold = excluded.low_stock_threshold,
-         public_quantity = excluded.public_quantity,
-         availability_override = excluded.availability_override,
-         override_reason = excluded.override_reason,
-         override_expires_at = excluded.override_expires_at,
-         publication_status = excluded.publication_status,
-         slug = excluded.slug, seo_title = excluded.seo_title,
-         seo_description = excluded.seo_description,
-         updated_at = excluded.updated_at, updated_by = excluded.updated_by`,
-    )
-    .bind(
-      productId,
-      details.model,
-      details.sku,
-      details.internalId,
-      JSON.stringify(details.applications),
-      details.lowStockThreshold,
-      details.publicQuantity ? 1 : 0,
-      details.availabilityOverride,
-      details.overrideReason,
-      details.overrideExpiresAt,
-      details.publicationStatus,
-      slug,
-      details.seoTitle,
-      details.seoDescription,
-      updatedAt,
-      updatedBy,
-    );
-}
-
-export function inventoryAvailabilityStatement(db, productId, threshold) {
-  return db
-    .prepare(
-      `UPDATE product_inventory
-       SET availability_status = CASE
-         WHEN data_status = 'unavailable' THEN 'unavailable'
-         WHEN data_status != 'current' OR quantity IS NULL THEN 'contact'
-         WHEN quantity <= 0 THEN 'out_of_stock'
-         WHEN ? IS NOT NULL AND quantity <= ? THEN 'low_stock'
-         ELSE 'in_stock'
-       END
-       WHERE product_id = ?`,
-    )
-    .bind(threshold, threshold, productId);
 }
 
 export async function storeImage(db, file, productId) {

@@ -17,63 +17,6 @@
 
   // Active values are ordered as Azerbaijani, English, Turkish, Russian, Georgian.
   const rows = {
-    "Home": ["Ana səhifə", "Home", "Ana sayfa", "Главная", "მთავარი"],
-    "Categories": ["Kateqoriyalar", "Categories", "Kategoriler", "Категории", "კატეგორიები"],
-    "Brands": ["Brendlər", "Brands", "Markalar", "Бренды", "ბრენდები"],
-    "Technical resources": ["Texniki resurslar", "Technical resources", "Teknik kaynaklar", "Технические материалы", "ტექნიკური რესურსები"],
-    "AzTexnoQaz LLC | Industrial equipment catalogue": ["AzTexnoQaz MMC | Sənaye avadanlıqları kataloqu", "AzTexnoQaz LLC | Industrial equipment catalogue", "AzTexnoQaz LLC | Endüstriyel ekipman kataloğu", "AzTexnoQaz LLC | Каталог промышленного оборудования", "AzTexnoQaz LLC | სამრეწველო მოწყობილობების კატალოგი"],
-    "Industrial Gas Measurement and Control Solutions": ["Sənaye qaz ölçmə və idarəetmə həlləri", "Industrial Gas Measurement and Control Solutions", "Endüstriyel Gaz Ölçüm ve Kontrol Çözümleri", "Решения для промышленного учета и управления газом", "სამრეწველო გაზის აღრიცხვისა და მართვის გადაწყვეტილებები"],
-    "Equipment for gas measurement, pressure regulation, volume conversion, monitoring, filtration, valves, telemetry and industrial control, supported through technical selection and confirmed quotations.": ["Qaz ölçülməsi, təzyiq tənzimlənməsi, həcm korreksiyası, monitorinq, filtrasiya, klapanlar, telemetriya və sənaye idarəetməsi üçün avadanlıqlar; texniki seçim və təsdiqlənmiş qiymət təklifləri ilə dəstəklənir.", "Equipment for gas measurement, pressure regulation, volume conversion, monitoring, filtration, valves, telemetry and industrial control, supported through technical selection and confirmed quotations.", "Gaz ölçümü, basınç regülasyonu, hacim düzeltme, izleme, filtrasyon, vanalar, telemetri ve endüstriyel kontrol ekipmanları; teknik seçim ve onaylı teklifler ile desteklenir.", "Оборудование для учета газа, регулирования давления, коррекции объема, мониторинга, фильтрации, клапанов, телеметрии и промышленного управления с техническим подбором и подтвержденными предложениями.", "მოწყობილობები გაზის აღრიცხვის, წნევის რეგულირების, მოცულობის კორექციის, მონიტორინგის, ფილტრაციის, სარქველების, ტელემეტრიისა და სამრეწველო მართვისთვის, ტექნიკური შერჩევითა და დადასტურებული შეთავაზებებით."],
-    "Request a quotation": ["Qiymət təklifi al", "Request a quotation", "Fiyat teklifi iste", "Запросить предложение", "ფასის შეთავაზების მოთხოვნა"],
-    "Contact technical sales": ["Texniki satışla əlaqə", "Contact technical sales", "Teknik satışla iletişim", "Связаться с техническим отделом продаж", "ტექნიკურ გაყიდვებთან დაკავშირება"],
-    "Latest stock report": ["Son anbar hesabatı", "Latest stock report", "Son stok raporu", "Последний складской отчет", "მარაგების ბოლო ანგარიში"],
-    "Equipment categories": ["Avadanlıq kateqoriyaları", "Equipment categories", "Ekipman kategorileri", "Категории оборудования", "მოწყობილობების კატეგორიები"],
-    "Browse the real catalogue by application": ["Real kataloqu tətbiq sahəsinə görə nəzərdən keçirin", "Browse the real catalogue by application", "Gerçek kataloğu kullanım alanına göre inceleyin", "Просмотрите реальный каталог по применению", "დაათვალიერეთ რეალური კატალოგი გამოყენების მიხედვით"],
-    "Category counts are calculated from published product records and update with the catalogue.": ["Kateqoriya sayları yayımlanmış məhsul qeydlərindən hesablanır və kataloqla birlikdə yenilənir.", "Category counts are calculated from published product records and update with the catalogue.", "Kategori sayıları yayınlanmış ürün kayıtlarından hesaplanır ve katalogla birlikte güncellenir.", "Количество в категориях рассчитывается по опубликованным товарам и обновляется вместе с каталогом.", "კატეგორიების რაოდენობა გამოქვეყნებული პროდუქტებიდან ითვლება და კატალოგთან ერთად ახლდება."],
-    "Search name, model, SKU, code or brand": ["Ad, model, SKU, kod və ya brend axtarın", "Search name, model, SKU, code or brand", "Ad, model, SKU, kod veya marka ara", "Поиск по названию, модели, SKU, коду или бренду", "მოძებნეთ სახელი, მოდელი, SKU, კოდი ან ბრენდი"],
-    "Availability": ["Mövcudluq", "Availability", "Stok durumu", "Наличие", "ხელმისაწვდომობა"],
-    "All availability": ["Bütün mövcudluq halları", "All availability", "Tüm stok durumları", "Все статусы наличия", "ყველა სტატუსი"],
-    "In stock": ["Stokda var", "In stock", "Stokta var", "В наличии", "მარაგშია"],
-    "Low stock": ["Az qalıb", "Low stock", "Stok az", "Мало на складе", "მცირე მარაგი"],
-    "Out of stock": ["Stokda yoxdur", "Out of stock", "Stokta yok", "Нет в наличии", "მარაგში არ არის"],
-    "Contact for availability": ["Mövcudluq üçün əlaqə saxlayın", "Contact for availability", "Stok bilgisi için iletişime geçin", "Уточнить наличие", "ხელმისაწვდომობისთვის დაგვიკავშირდით"],
-    "Inventory information unavailable": ["Anbar məlumatı mövcud deyil", "Inventory information unavailable", "Stok bilgisi kullanılamıyor", "Данные о запасах недоступны", "მარაგების ინფორმაცია მიუწვდომელია"],
-    "Inventory unavailable": ["Anbar məlumatı yoxdur", "Inventory unavailable", "Stok bilgisi yok", "Данные о запасах недоступны", "მარაგები მიუწვდომელია"],
-    "Not available": ["Mövcud deyil", "Not available", "Mevcut değil", "Недоступно", "მიუწვდომელია"],
-    "Not specified": ["Göstərilməyib", "Not specified", "Belirtilmemiş", "Не указано", "არ არის მითითებული"],
-    "Model": ["Model", "Model", "Model", "Модель", "მოდელი"],
-    "Latest inventory report": ["Son anbar hesabatı", "Latest inventory report", "Son envanter raporu", "Последний инвентаризационный отчет", "ინვენტარის ბოლო ანგარიში"],
-    "Stock synchronized from the latest official monthly inventory report. Report: {date}.": ["Stok son rəsmi aylıq anbar hesabatından sinxronlaşdırılıb. Hesabat: {date}.", "Stock synchronized from the latest official monthly inventory report. Report: {date}.", "Stok son resmi aylık envanter raporundan eşitlendi. Rapor: {date}.", "Запасы синхронизированы с последним официальным ежемесячным отчетом. Отчет: {date}.", "მარაგები სინქრონიზებულია ბოლო ოფიციალურ ყოველთვიურ ანგარიშთან. ანგარიში: {date}."],
-    "Inventory information is not available yet. Availability is confirmed during quotation.": ["Anbar məlumatı hələ mövcud deyil. Mövcudluq qiymət təklifi zamanı təsdiqlənir.", "Inventory information is not available yet. Availability is confirmed during quotation.", "Stok bilgisi henüz mevcut değil. Stok durumu teklif sırasında doğrulanır.", "Данные о запасах пока недоступны. Наличие подтверждается при подготовке предложения.", "მარაგების ინფორმაცია ჯერ მიუწვდომელია. ხელმისაწვდომობა დასტურდება შეთავაზების დროს."],
-    "All brands": ["Bütün brendlər", "All brands", "Tüm markalar", "Все бренды", "ყველა ბრენდი"],
-    "Sort": ["Sırala", "Sort", "Sırala", "Сортировка", "დალაგება"],
-    "Catalogue order": ["Kataloq sırası", "Catalogue order", "Katalog sırası", "Порядок каталога", "კატალოგის რიგი"],
-    "Recently updated": ["Son yenilənənlər", "Recently updated", "Son güncellenen", "Недавно обновленные", "ბოლოს განახლებული"],
-    "Grid view": ["Şəbəkə görünüşü", "Grid view", "Izgara görünümü", "Сетка", "ბადის ხედი"],
-    "List view": ["Siyahı görünüşü", "List view", "Liste görünümü", "Список", "სიის ხედი"],
-    "Gas and water measurement equipment": ["Qaz və su ölçmə avadanlıqları", "Gas and water measurement equipment", "Gaz ve su ölçüm ekipmanları", "Оборудование для учета газа и воды", "გაზისა და წყლის აღრიცხვის მოწყობილობები"],
-    "Pressure control and regulation": ["Təzyiqin idarə edilməsi və tənzimlənməsi", "Pressure control and regulation", "Basınç kontrolü ve regülasyonu", "Контроль и регулирование давления", "წნევის კონტროლი და რეგულირება"],
-    "Volume correction and data conversion": ["Həcm korreksiyası və məlumat çevrilməsi", "Volume correction and data conversion", "Hacim düzeltme ve veri dönüştürme", "Коррекция объема и преобразование данных", "მოცულობის კორექცია და მონაცემთა გარდაქმნა"],
-    "Isolation and gas control valves": ["Ayırıcı və qaz idarəetmə klapanları", "Isolation and gas control valves", "İzolasyon ve gaz kontrol vanaları", "Запорные и регулирующие газовые клапаны", "ჩამკეტი და გაზის მართვის სარქველები"],
-    "Heating and climate equipment": ["İsitmə və iqlim avadanlıqları", "Heating and climate equipment", "Isıtma ve iklim ekipmanları", "Отопительное и климатическое оборудование", "გათბობისა და კლიმატის მოწყობილობები"],
-    "Remote monitoring and telemetry": ["Uzaqdan monitorinq və telemetriya", "Remote monitoring and telemetry", "Uzaktan izleme ve telemetri", "Удаленный мониторинг и телеметрия", "დისტანციური მონიტორინგი და ტელემეტრია"],
-    "Components, filters and spare parts": ["Komponentlər, filtrlər və ehtiyat hissələri", "Components, filters and spare parts", "Bileşenler, filtreler ve yedek parçalar", "Компоненты, фильтры и запасные части", "კომპონენტები, ფილტრები და სათადარიგო ნაწილები"],
-    "Integrated gas cabinet solutions": ["İnteqrasiya olunmuş qaz şkafı həlləri", "Integrated gas cabinet solutions", "Entegre gaz kabini çözümleri", "Комплексные решения для газовых шкафов", "ინტეგრირებული გაზის კარადის გადაწყვეტილებები"],
-    "Industrial product solutions": ["Sənaye məhsulu həlləri", "Industrial product solutions", "Endüstriyel ürün çözümleri", "Промышленные продуктовые решения", "სამრეწველო პროდუქტის გადაწყვეტილებები"],
-    "Share": ["Paylaş", "Share", "Paylaş", "Поделиться", "გაზიარება"],
-    "Product link copied.": ["Məhsul keçidi kopyalandı.", "Product link copied.", "Ürün bağlantısı kopyalandı.", "Ссылка на товар скопирована.", "პროდუქტის ბმული დაკოპირდა."],
-    "The product link could not be copied.": ["Məhsul keçidi kopyalanmadı.", "The product link could not be copied.", "Ürün bağlantısı kopyalanamadı.", "Не удалось скопировать ссылку на товар.", "პროდუქტის ბმულის დაკოპირება ვერ მოხერხდა."],
-    "Saving your quotation request...": ["Qiymət sorğunuz yadda saxlanılır...", "Saving your quotation request...", "Teklif talebiniz kaydediliyor...", "Сохранение запроса предложения...", "ფასის მოთხოვნა ინახება..."],
-    "Request saved. Your reference is {reference}.": ["Sorğu yadda saxlanıldı. İstinad nömrəniz: {reference}.", "Request saved. Your reference is {reference}.", "Talep kaydedildi. Referans numaranız: {reference}.", "Запрос сохранен. Ваш номер: {reference}.", "მოთხოვნა შენახულია. თქვენი ნომერია: {reference}."],
-    "Selection starts with the operating requirement": ["Seçim iş tələbindən başlayır", "Selection starts with the operating requirement", "Seçim çalışma gereksinimiyle başlar", "Подбор начинается с рабочих требований", "შერჩევა სამუშაო მოთხოვნით იწყება"],
-    "Send the model, flow range, pressure, connection, communication requirement or an existing equipment photo. Technical details are reviewed before a quotation is confirmed.": ["Modeli, axın diapazonunu, təzyiqi, birləşməni, rabitə tələbini və ya mövcud avadanlığın şəklini göndərin. Qiymət təklifi təsdiqlənməzdən əvvəl texniki detallar yoxlanılır.", "Send the model, flow range, pressure, connection, communication requirement or an existing equipment photo. Technical details are reviewed before a quotation is confirmed.", "Model, debi aralığı, basınç, bağlantı, iletişim gereksinimi veya mevcut ekipman fotoğrafını gönderin. Teklif onaylanmadan önce teknik ayrıntılar incelenir.", "Отправьте модель, диапазон расхода, давление, подключение, требования к связи или фото имеющегося оборудования. Технические данные проверяются до подтверждения предложения.", "გამოგვიგზავნეთ მოდელი, ნაკადის დიაპაზონი, წნევა, შეერთება, კომუნიკაციის მოთხოვნა ან არსებული მოწყობილობის ფოტო. ტექნიკური დეტალები მოწმდება შეთავაზების დადასტურებამდე."],
-    "Submit a requirement": ["Tələbi göndərin", "Submit a requirement", "Gereksinim gönderin", "Отправить требования", "მოთხოვნის გაგზავნა"],
-    "Save a quotation request with a reference number.": ["Qiymət sorğusunu istinad nömrəsi ilə yadda saxlayın.", "Save a quotation request with a reference number.", "Teklif talebini referans numarasıyla kaydedin.", "Сохраните запрос с уникальным номером.", "შეინახეთ ფასის მოთხოვნა ნომრით."],
-    "Request technical documents": ["Texniki sənədləri soruşun", "Request technical documents", "Teknik belgeleri isteyin", "Запросить технические документы", "ტექნიკური დოკუმენტების მოთხოვნა"],
-    "Ask for available datasheets and product documentation.": ["Mövcud texniki pasportları və məhsul sənədlərini soruşun.", "Ask for available datasheets and product documentation.", "Mevcut veri sayfalarını ve ürün belgelerini isteyin.", "Запросите доступные технические паспорта и документацию.", "მოითხოვეთ ხელმისაწვდომი მონაცემთა ფურცლები და პროდუქტის დოკუმენტები."],
-    "Discuss product selection": ["Məhsul seçimini müzakirə edin", "Discuss product selection", "Ürün seçimini görüşün", "Обсудить подбор продукта", "პროდუქტის შერჩევის განხილვა"],
-    "Continue with the technical sales team on WhatsApp.": ["WhatsApp-da texniki satış komandası ilə davam edin.", "Continue with the technical sales team on WhatsApp.", "WhatsApp üzerinden teknik satış ekibiyle devam edin.", "Продолжите общение с техническим отделом продаж в WhatsApp.", "გააგრძელეთ ტექნიკურ გაყიდვებთან WhatsApp-ში."],
-    "Website availability does not reserve stock. Availability and technical suitability are confirmed by staff during quotation.": ["Saytdakı mövcudluq stoku rezerv etmir. Mövcudluq və texniki uyğunluq qiymət təklifi zamanı əməkdaşlar tərəfindən təsdiqlənir.", "Website availability does not reserve stock. Availability and technical suitability are confirmed by staff during quotation.", "Web sitesindeki stok durumu ürünü ayırmaz. Stok ve teknik uygunluk teklif sırasında ekip tarafından doğrulanır.", "Наличие на сайте не резервирует товар. Наличие и техническая совместимость подтверждаются сотрудниками при подготовке предложения.", "საიტზე ხელმისაწვდომობა მარაგს არ ჯავშნის. ხელმისაწვდომობასა და ტექნიკურ შესაბამისობას თანამშრომლები შეთავაზებისას ადასტურებენ."],
     "Reset translations": ["Tərcümələri sıfırla", "Reset translations", "Çevirileri sıfırla", "Сбросить переводы", "თარგმანების განულება"],
     "Enter a product name and description before resetting translations.": ["Tərcümələri sıfırlamazdan əvvəl məhsulun adını və təsvirini daxil edin.", "Enter a product name and description before resetting translations.", "Çevirileri sıfırlamadan önce ürün adı ve açıklaması girin.", "Перед сбросом переводов введите название и описание товара.", "თარგმანების განულებამდე შეიყვანეთ პროდუქტის სახელი და აღწერა."],
     "Other languages were translated again from this language.": ["Digər dillər bu dildən yenidən tərcümə edildi.", "Other languages were translated again from this language.", "Diğer diller bu dilden yeniden çevrildi.", "Остальные языки были заново переведены с этого языка.", "სხვა ენები ამ ენიდან ხელახლა ითარგმნა."],
@@ -248,19 +191,6 @@
     "Administrator account removed.": ["Administrator hesabı silindi.", "Administrator account removed.", "Yönetici hesabı kaldırıldı.", "Учетная запись администратора удалена.", "ადმინისტრატორის ანგარიში წაიშალა.", "حساب مدیر حذف شد."],
   };
 
-  Object.assign(rows, {
-    "Stock synchronized from the connected official inventory workbook. Report: {date}.": ["Stok qoşulmuş rəsmi anbar faylından sinxronlaşdırılıb. Hesabat: {date}.", "Stock synchronized from the connected official inventory workbook. Report: {date}.", "Stok bağlı resmi envanter dosyasından eşitlendi. Rapor: {date}.", "Запасы синхронизированы с подключенной официальной книгой учета. Отчет: {date}.", "მარაგი სინქრონიზებულია დაკავშირებულ ოფიციალურ ინვენტარის ფაილთან. ანგარიში: {date}."],
-    "Add product to request": ["Sorğuya məhsul əlavə et", "Add product to request", "Talebe ürün ekle", "Добавить товар в запрос", "პროდუქტის დამატება მოთხოვნაში"],
-    "Quantity": ["Miqdar", "Quantity", "Miktar", "Количество", "რაოდენობა"],
-    "Quantity: {quantity}": ["Miqdar: {quantity}", "Quantity: {quantity}", "Miktar: {quantity}", "Количество: {quantity}", "რაოდენობა: {quantity}"],
-    "Quantity not specified": ["Miqdar göstərilməyib", "Quantity not specified", "Miktar belirtilmedi", "Количество не указано", "რაოდენობა მითითებული არ არის"],
-    "Submit quote request": ["Sorğunu göndər", "Submit quote request", "Teklif talebini gönder", "Отправить запрос", "მოთხოვნის გაგზავნა"],
-    "Stock report": ["Anbar hesabatı", "Stock report", "Stok raporu", "Отчет по складу", "მარაგის ანგარიში"],
-    "Remove {name}": ["{name} məhsulunu sil", "Remove {name}", "{name} ürününü kaldır", "Удалить {name}", "{name}-ის წაშლა"],
-    "Remove product": ["Məhsulu sil", "Remove product", "Ürünü kaldır", "Удалить товар", "პროდუქტის წაშლა"],
-    "Choose a product before adding it.": ["Əlavə etməzdən əvvəl məhsul seçin.", "Choose a product before adding it.", "Eklemeden önce bir ürün seçin.", "Перед добавлением выберите товар.", "დამატებამდე აირჩიეთ პროდუქტი."],
-  });
-
   const languageIndex = new Map(languages.map((language, index) => [language.id, index]));
   const validLanguages = new Set(languageIndex.keys());
   const storageKey = "aztexnogaz_language";
@@ -274,8 +204,6 @@
   } catch {
     currentLanguage = "az";
   }
-  const requestedLanguage = new URL(window.location.href).searchParams.get("lang");
-  if (validLanguages.has(requestedLanguage)) currentLanguage = requestedLanguage;
 
   function normalize(value) {
     return String(value).replace(/\s+/g, " ").trim();
@@ -319,7 +247,7 @@
     document.querySelector("#language-picker")?.classList.toggle("open", open);
   }
 
-  function applyLanguage(languageId, { persist = true, announce = true, syncUrl = true } = {}) {
+  function applyLanguage(languageId, { persist = true, announce = true } = {}) {
     if (!validLanguages.has(languageId)) languageId = "az";
     currentLanguage = languageId;
     const language = languages.find((item) => item.id === languageId);
@@ -360,11 +288,6 @@
         // The language still applies when storage is unavailable.
       }
     }
-    if (syncUrl) {
-      const url = new URL(window.location.href);
-      url.searchParams.set("lang", language.id);
-      window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
-    }
     setMenuOpen(false);
     if (announce) window.dispatchEvent(new CustomEvent("aztexnogaz:languagechange", { detail: { language: language.id } }));
   }
@@ -400,5 +323,5 @@
     t: translate,
   };
 
-  applyLanguage(currentLanguage, { persist: false, announce: false, syncUrl: false });
+  applyLanguage(currentLanguage, { persist: false, announce: false });
 })();

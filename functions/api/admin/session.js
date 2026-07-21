@@ -8,7 +8,6 @@ export function onRequestGet({ data }) {
       displayName: data.editor.displayName,
       deviceName: data.editor.deviceName,
       platform: data.editor.platform,
-      platformRole: data.editor.platformRole,
     },
   });
 }
