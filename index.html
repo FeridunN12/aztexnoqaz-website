@@ -8,11 +8,34 @@
       name="description"
       content="AzTexnoQaz LLC supplies gas meters, regulators, valves, volume converters, pressure hoses, HVAC equipment and industrial gas cabinets in Azerbaijan."
     />
+    <link rel="canonical" href="https://aztexnogaz.com/" />
+    <link rel="alternate" hreflang="az" href="https://aztexnogaz.com/?lang=az" />
+    <link rel="alternate" hreflang="en" href="https://aztexnogaz.com/?lang=en" />
+    <link rel="alternate" hreflang="tr" href="https://aztexnogaz.com/?lang=tr" />
+    <link rel="alternate" hreflang="ru" href="https://aztexnogaz.com/?lang=ru" />
+    <link rel="alternate" hreflang="ka" href="https://aztexnogaz.com/?lang=ka" />
+    <link rel="alternate" hreflang="x-default" href="https://aztexnogaz.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AzTexnoQaz LLC" />
+    <meta property="og:title" content="AzTexnoQaz LLC | Industrial Equipment Catalogue" />
+    <meta property="og:description" content="Gas, water and industrial equipment catalogue with quotation support." />
+    <meta property="og:image" content="https://aztexnogaz.com/assets/about-aztexnogaz.jpeg" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "AzTexnoQaz LLC",
+        "url": "https://aztexnogaz.com/",
+        "logo": "https://aztexnogaz.com/assets/logo.png",
+        "email": "aztexnogaz@gmail.com",
+        "telephone": "+994505728966"
+      }
+    </script>
     <link rel="icon" href="assets/logo-mark.png" />
-    <link rel="stylesheet" href="styles.css?v=20260716-translation-v4" />
+    <link rel="stylesheet" href="styles.css?v=20260720-platform-v1" />
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-    <script defer src="i18n.js?v=20260716-translation-v4"></script>
-    <script defer src="script.js?v=20260716-translation-v4"></script>
+    <script defer src="i18n.js?v=20260720-platform-v1"></script>
+    <script defer src="script.js?v=20260720-platform-v1"></script>
   </head>
   <body>
     <a class="skip-link" href="#products">Skip to products</a>
@@ -32,15 +55,18 @@
             <small>LLC</small>
           </span>
         </a>
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-menu">
+        <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="main-menu">
           <i data-lucide="menu"></i>
           <span>Menu</span>
         </button>
         <div class="nav-links" id="main-menu">
+          <a href="#top">Home</a>
           <a href="#products">Products</a>
+          <a href="#categories">Categories</a>
           <a href="#services">Services</a>
+          <a href="#brands">Brands</a>
+          <a href="#resources">Technical resources</a>
           <a href="#about">About</a>
-          <a href="#buy">How to buy</a>
           <a href="#contact">Contact</a>
         </div>
         <div class="language-picker" id="language-picker">
@@ -98,6 +124,9 @@
             <i data-lucide="plus"></i>
             Add product
           </button>
+          <a class="editor-icon-action" id="staff-dashboard-link" href="admin.html" aria-label="Open staff workspace" title="Open staff workspace">
+            <i data-lucide="layout-dashboard"></i>
+          </a>
           <button class="editor-icon-action" id="manage-editors-button" type="button" aria-label="Manage users" title="Manage users" hidden>
             <i data-lucide="users"></i>
           </button>
@@ -111,21 +140,25 @@
     <main id="top">
       <section class="hero" aria-label="AzTexnoQaz product showcase">
         <div class="hero-content">
-          <p class="eyebrow">Official gas equipment supply and support</p>
-          <h1>AzTexnoQaz LLC</h1>
+          <p class="eyebrow">AzTexnoQaz LLC | Industrial equipment catalogue</p>
+          <h1>Industrial Gas Measurement and Control Solutions</h1>
           <p class="hero-copy">
-            Professional gas, water and industrial equipment solutions from trusted brands including
-            Honeywell, Elster, Plum GAS, FANGAZ, FMG, ESKA, MADAS, QW/CSSC, Daikin, Airfel, CEM,
-            BAYLAN and BROEN.
+            Equipment for gas measurement, pressure regulation, volume conversion, monitoring,
+            filtration, valves, telemetry and industrial control, supported through technical selection
+            and confirmed quotations.
           </p>
           <div class="hero-actions">
             <a class="primary-button" href="#products">
               <i data-lucide="boxes"></i>
               View products
             </a>
+            <a class="secondary-button" href="#buy">
+              <i data-lucide="file-check-2"></i>
+              Request a quotation
+            </a>
             <a class="secondary-button" href="https://wa.me/994505728966?text=Hello%20AzTexnoQaz%2C%20I%20want%20to%20request%20a%20quote." target="_blank" rel="noreferrer">
-              <i data-lucide="message-circle"></i>
-              WhatsApp sales
+              <i data-lucide="headset"></i>
+              Contact technical sales
             </a>
           </div>
           <dl class="hero-metrics" aria-label="Company highlights">
@@ -134,12 +167,12 @@
               <dd>Operating since</dd>
             </div>
             <div>
-              <dt>30+</dt>
+              <dt id="hero-product-count">-</dt>
               <dd>Product lines</dd>
             </div>
             <div>
-              <dt>2</dt>
-              <dd>Sales lines</dd>
+              <dt id="hero-report-date">-</dt>
+              <dd>Latest stock report</dd>
             </div>
           </dl>
         </div>
@@ -167,6 +200,19 @@
             <strong>Long-term partner</strong>
             <span>Supply support for companies, facilities and contractors.</span>
           </div>
+        </div>
+      </section>
+
+      <section class="category-section" id="categories" aria-labelledby="categories-heading">
+        <div class="section-inner">
+          <div class="section-heading compact-heading">
+            <div>
+              <p class="section-kicker">Equipment categories</p>
+              <h2 id="categories-heading">Browse the real catalogue by application</h2>
+            </div>
+            <p>Category counts are calculated from published product records and update with the catalogue.</p>
+          </div>
+          <div class="category-grid" id="category-grid" aria-live="polite"></div>
         </div>
       </section>
 
@@ -239,7 +285,7 @@
           <div class="catalog-toolbar" aria-label="Product filters">
             <div class="search-wrap">
               <i data-lucide="search"></i>
-              <input id="product-search" type="search" placeholder="Search products or brands" autocomplete="off" />
+              <input id="product-search" type="search" placeholder="Search name, model, SKU, code or brand" autocomplete="off" />
             </div>
             <div class="filter-group" role="list" aria-label="Filter products by category">
               <button type="button" class="active" data-filter="all">All</button>
@@ -252,11 +298,40 @@
               <button type="button" data-filter="accessories">Accessories</button>
               <button type="button" data-filter="cabinets">Cabinets</button>
             </div>
+            <label class="availability-filter">
+              <span>Availability</span>
+              <select id="availability-filter">
+                <option value="all">All availability</option>
+                <option value="in_stock">In stock</option>
+                <option value="low_stock">Low stock</option>
+                <option value="out_of_stock">Out of stock</option>
+                <option value="contact">Contact for availability</option>
+                <option value="unavailable">Inventory unavailable</option>
+              </select>
+            </label>
+            <label class="catalog-select-control">
+              <span>Brand</span>
+              <select id="brand-filter"><option value="all">All brands</option></select>
+            </label>
+            <label class="catalog-select-control">
+              <span>Sort</span>
+              <select id="catalog-sort">
+                <option value="default">Catalogue order</option>
+                <option value="name">Name</option>
+                <option value="category">Category</option>
+                <option value="newest">Recently updated</option>
+                <option value="availability">Availability</option>
+              </select>
+            </label>
+            <div class="catalog-view-toggle" aria-label="Catalogue view">
+              <button class="active" type="button" data-catalog-view="grid" aria-pressed="true" title="Grid view" aria-label="Grid view"><i data-lucide="grid-2x2"></i></button>
+              <button type="button" data-catalog-view="list" aria-pressed="false" title="List view" aria-label="List view"><i data-lucide="list"></i></button>
+            </div>
           </div>
 
           <div class="result-line">
             <span id="product-count">0 products</span>
-            <span>Prices are confirmed by quote after model and specification check.</span>
+            <span id="catalog-report-note">Availability is confirmed during quotation.</span>
           </div>
 
           <div class="product-grid" id="product-grid" aria-live="polite"></div>
@@ -283,6 +358,21 @@
             <img src="assets/gas-regulation-cabinet.jpeg" alt="AzTexnoQaz gas regulation cabinet" />
             <figcaption>Gas cabinet and station assembly options</figcaption>
           </figure>
+        </div>
+      </section>
+
+      <section class="resources-section" id="resources" aria-labelledby="resources-heading">
+        <div class="section-inner resources-layout">
+          <div>
+            <p class="section-kicker">Technical resources</p>
+            <h2 id="resources-heading">Selection starts with the operating requirement</h2>
+            <p>Send the model, flow range, pressure, connection, communication requirement or an existing equipment photo. Technical details are reviewed before a quotation is confirmed.</p>
+          </div>
+          <div class="resource-actions">
+            <a href="#buy"><i data-lucide="clipboard-list"></i><span><strong>Submit a requirement</strong><small>Save a quotation request with a reference number.</small></span><i data-lucide="arrow-right"></i></a>
+            <a href="mailto:aztexnogaz@gmail.com"><i data-lucide="file-cog"></i><span><strong>Request technical documents</strong><small>Ask for available datasheets and product documentation.</small></span><i data-lucide="arrow-right"></i></a>
+            <a href="https://wa.me/994505728966?text=Hello%20AzTexnoQaz%2C%20I%20need%20help%20selecting%20industrial%20equipment." target="_blank" rel="noreferrer"><i data-lucide="messages-square"></i><span><strong>Discuss product selection</strong><small>Continue with the technical sales team on WhatsApp.</small></span><i data-lucide="arrow-up-right"></i></a>
+          </div>
         </div>
       </section>
 
@@ -355,17 +445,32 @@
             <select id="quote-product" name="product"></select>
 
             <label for="quote-name">Your name</label>
-            <input id="quote-name" name="name" type="text" placeholder="Name or company" />
+            <input id="quote-name" name="name" type="text" maxlength="120" placeholder="Name or company" required />
 
             <label for="quote-contact">Phone or email</label>
-            <input id="quote-contact" name="contact" type="text" placeholder="+994..." />
+            <input id="quote-contact" name="contact" type="text" maxlength="254" placeholder="+994... or name@example.com" required />
+
+            <label for="quote-quantity">Quantity</label>
+            <input id="quote-quantity" name="quantity" type="number" min="1" step="1" placeholder="Optional" />
+
+            <button class="quote-add-product" id="quote-add-product" type="button">
+              <i data-lucide="list-plus"></i>
+              Add product to request
+            </button>
+            <div class="quote-items-list" id="quote-items-list" aria-live="polite"></div>
 
             <label for="quote-message">Details</label>
-            <textarea id="quote-message" name="message" rows="4" placeholder="Quantity, size, model, pressure, delivery city or project notes"></textarea>
+            <textarea id="quote-message" name="message" rows="4" maxlength="2500" placeholder="Quantity, size, model, pressure, delivery city or project notes"></textarea>
+
+            <p class="quote-disclaimer">Website availability does not reserve stock. Availability and technical suitability are confirmed by staff during quotation.</p>
+
+            <label class="quote-honeypot" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
+
+            <p class="quote-form-status" id="quote-form-status" role="status" aria-live="polite"></p>
 
             <button class="primary-button form-button" type="submit">
               <i data-lucide="send"></i>
-              Prepare email quote
+              Submit quote request
             </button>
             <a class="secondary-button form-button" href="https://wa.me/994505728966?text=Hello%20AzTexnoQaz%2C%20I%20want%20to%20buy%20a%20product." target="_blank" rel="noreferrer">
               <i data-lucide="message-circle"></i>
@@ -424,14 +529,6 @@
       </div>
     </footer>
 
-    <div class="sticky-actions" aria-label="Sticky contact actions">
-      <a href="tel:+994505728966"><i data-lucide="phone"></i> Call</a>
-      <a href="https://wa.me/994505728966?text=Hello%20AzTexnoQaz%2C%20I%20want%20to%20request%20a%20quote." target="_blank" rel="noreferrer">
-        <i data-lucide="message-circle"></i> WhatsApp
-      </a>
-      <a href="#buy"><i data-lucide="file-text"></i> Quote</a>
-    </div>
-
     <dialog class="product-modal" id="product-modal" aria-labelledby="modal-title">
       <button class="modal-close" type="button" aria-label="Close product details">
         <i data-lucide="x"></i>
@@ -442,6 +539,11 @@
           <p id="modal-category" class="section-kicker"></p>
           <h3 id="modal-title"></h3>
           <p id="modal-description"></p>
+          <dl class="modal-product-meta">
+            <div><dt>Model</dt><dd id="modal-model">Not specified</dd></div>
+            <div><dt>Availability</dt><dd id="modal-availability"></dd></div>
+            <div><dt>Stock report</dt><dd id="modal-report-date">Not available</dd></div>
+          </dl>
           <ul id="modal-specs"></ul>
           <div class="modal-actions">
             <button class="primary-button" id="modal-quote" type="button">
@@ -452,6 +554,10 @@
               <i data-lucide="message-circle"></i>
               WhatsApp
             </a>
+            <button class="secondary-button" id="modal-share" type="button">
+              <i data-lucide="share-2"></i>
+              Share
+            </button>
           </div>
         </div>
       </div>
@@ -543,6 +649,12 @@
               </label>
             </div>
 
+            <div class="editor-field-row editor-technical-row">
+              <label><span>Model</span><input name="model" type="text" maxlength="140" /></label>
+              <label><span>SKU</span><input name="sku" type="text" maxlength="120" /></label>
+              <label><span>Internal ID</span><input name="internalId" type="text" maxlength="120" /></label>
+            </div>
+
             <label>
               <span>Category</span>
               <select name="category" required>
@@ -568,9 +680,46 @@
             </label>
 
             <label>
+              <span>Applications</span>
+              <textarea name="applications" rows="3" placeholder="One application per line"></textarea>
+            </label>
+
+            <label>
               <span>Tags</span>
               <input name="tags" type="text" placeholder="Gas, Meter, Industrial" />
             </label>
+
+            <div class="editor-field-row editor-settings-row">
+              <label><span>Low-stock threshold</span><input name="lowStockThreshold" type="number" min="0" step="1" /></label>
+              <label><span>Publication</span><select name="publicationStatus"><option value="published">Published</option><option value="draft">Draft</option></select></label>
+              <label class="editor-checkbox"><input name="publicQuantity" type="checkbox" value="1" /><span>Show exact quantity publicly</span></label>
+            </div>
+
+            <fieldset class="availability-override-fields">
+              <legend>Availability override</legend>
+              <p>Use only when a documented business decision must temporarily replace the imported stock label.</p>
+              <div class="editor-field-row">
+                <label>
+                  <span>Public status</span>
+                  <select name="availabilityOverride">
+                    <option value="">Use imported inventory</option>
+                    <option value="in_stock">In stock</option>
+                    <option value="low_stock">Low stock</option>
+                    <option value="out_of_stock">Out of stock</option>
+                    <option value="contact">Contact for availability</option>
+                    <option value="unavailable">Inventory unavailable</option>
+                  </select>
+                </label>
+                <label><span>Expires</span><input name="overrideExpiresAt" type="datetime-local" /></label>
+              </div>
+              <label><span>Internal reason</span><textarea name="overrideReason" rows="2" maxlength="500"></textarea></label>
+            </fieldset>
+
+            <div class="editor-field-row">
+              <label><span>Page slug</span><input name="slug" type="text" maxlength="100" placeholder="product-model" /></label>
+              <label><span>SEO title</span><input name="seoTitle" type="text" maxlength="160" /></label>
+            </div>
+            <label><span>SEO description</span><textarea name="seoDescription" rows="2" maxlength="320"></textarea></label>
           </div>
         </div>
 
@@ -609,6 +758,16 @@
           <label>
             <span>Password</span>
             <input name="password" type="password" autocomplete="new-password" placeholder="Minimum 8 characters" minlength="8" maxlength="128" required />
+          </label>
+          <label>
+            <span>Role</span>
+            <select name="platformRole">
+              <option value="administrator">Administrator</option>
+              <option value="product_editor">Product editor</option>
+              <option value="sales">Sales</option>
+              <option value="inventory_manager">Inventory manager</option>
+              <option value="viewer">Viewer</option>
+            </select>
           </label>
           <button class="editor-save-button add-editor-button" type="submit">
             <i data-lucide="user-plus"></i>
