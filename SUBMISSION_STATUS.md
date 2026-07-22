@@ -14,13 +14,13 @@
 - Demo visibility: public
 - YouTube copyright check: no issues found
 - Primary Codex task: `019f4756-9cf8-7981-b909-06b854a6f278`
-- Devpost status: not yet verified
-- Devpost submission URL: pending
-- Submission time: pending
+- Devpost status: submitted and publicly verified
+- Devpost submission URL: https://devpost.com/software/aztexnoqaz
+- Submission status verified: 2026-07-22T04:56:53+04:00
 
-## Remaining Human Requirement
+## Final Submission
 
-The project owner must personally review and accept any Devpost eligibility,
-ownership, rules, privacy, or legal declaration. The official Codex `/feedback`
-submission identifier must also be confirmed before the final Devpost submit
-action.
+The project owner personally accepted the required Devpost declarations and
+completed the final submit action. Devpost displays the project as **Submitted**
+under OpenAI Build Week. The submitted Codex session identifier is
+`019f4756-9cf8-7981-b909-06b854a6f278`.
