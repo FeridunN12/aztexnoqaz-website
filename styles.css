@@ -3115,3 +3115,9 @@ html[dir="rtl"] .search-wrap input {
     grid-column: 1;
   }
 }
+
+@media (min-width: 1241px) {
+  body:not(.inventory-mode) .catalog-toolbar {
+    grid-template-columns: minmax(270px, 1.15fr) minmax(0, 2.6fr) repeat(2, minmax(150px, 0.65fr)) auto;
+  }
+}

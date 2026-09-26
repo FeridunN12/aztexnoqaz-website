@@ -115,6 +115,71 @@ let editorTranslationDrafts = {};
 let editedTranslationLanguages = new Set();
 let editorTranslationsNeedRefresh = false;
 
+function canViewInventory() {
+  return Boolean(editorSession && ["administrator", "inventory_manager"].includes(editorSession.platformRole));
+}
+
+function syncInventoryVisibility() {
+  const allowed = canViewInventory();
+  document.body.classList.toggle("inventory-mode", allowed);
+  document.querySelectorAll("[data-inventory-only]").forEach((element) => {
+    element.hidden = !allowed;
+    if (element.tagName === "OPTION") element.disabled = !allowed;
+  });
+  if (!allowed) {
+    if (availabilityFilter) availabilityFilter.value = "all";
+    if (sortSelect?.value === "availability") sortSelect.value = "default";
+  }
+}
+
+function clearPrivateCatalogDetails() {
+  products = products.map((product) => {
+    const { availability, lowStockThreshold, publicQuantity, availabilityOverride,
+      overrideReason, overrideExpiresAt, workbookCodes, inventoryMapped, ...catalogProduct } = product;
+    return catalogProduct;
+  });
+  catalogMetadata.latestReport = null;
+  delete catalogMetadata.trackedProductCount;
+}
+
+async function loadPrivateCatalogDetails() {
+  const session = editorSession;
+  if (!session) return;
+  const readPrivate = async (url) => {
+    try {
+      const response = await fetch(url, {
+        cache: "no-store", credentials: "same-origin", headers: { Accept: "application/json" },
+      });
+      return response.ok ? await response.json() : null;
+    } catch {
+      return null;
+    }
+  };
+  const [editorData, inventoryData] = await Promise.all([
+    ["administrator", "product_editor"].includes(session.platformRole)
+      ? readPrivate("/api/admin/products") : null,
+    canViewInventory() ? readPrivate("/api/admin/inventory") : null,
+  ]);
+  // A response from a signed-out session must never repopulate private data.
+  if (editorSession !== session) return;
+  const editorById = new Map((editorData?.products || []).map((product) => [product.id, product]));
+  const inventoryById = new Map((inventoryData?.inventory || []).map((item) => [item.productId, item]));
+  products = products.map((product) => {
+    const merged = { ...product, ...(editorById.get(product.id) || {}) };
+    const stock = inventoryById.get(product.id);
+    if (stock) merged.availability = {
+      status: stock.overrideStatus === "active" || stock.dataStatus !== "unavailable"
+        ? stock.publicAvailability : "unavailable",
+      quantity: stock.quantity,
+      dataStatus: stock.dataStatus,
+      reportMonth: stock.reportMonth,
+      reportYear: stock.reportYear,
+    };
+    return merged;
+  });
+  if (inventoryData) catalogMetadata.latestReport = inventoryData.latestReport || null;
+}
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -186,7 +251,7 @@ function productCard(product) {
         <h3>${escapeHtml(displayProduct.name)}</h3>
         ${product.model ? `<p class="product-model"><span>${escapeHtml(t("Model"))}</span><strong>${escapeHtml(product.model)}</strong></p>` : ""}
         <p>${escapeHtml(displayProduct.summary)}</p>
-        <div class="product-stock-row">
+        <div class="product-stock-row" data-inventory-only ${canViewInventory() ? "" : "hidden"}>
           <span class="availability-badge ${escapeHtml(availability.status)}"><i data-lucide="${availability.status === "in_stock" ? "circle-check" : availability.status === "out_of_stock" ? "circle-x" : "circle-help"}"></i>${escapeHtml(availabilityLabel(availability.status, availability.quantity))}</span>
           <span class="product-report-date" title="${escapeHtml(t("Latest inventory report"))}"><i data-lucide="calendar-days"></i>${escapeHtml(report)}</span>
         </div>
@@ -207,7 +272,7 @@ function productCard(product) {
 
 function getVisibleProducts() {
   const query = searchInput.value || "";
-  const selectedAvailability = availabilityFilter?.value || "all";
+  const selectedAvailability = canViewInventory() ? availabilityFilter?.value || "all" : "all";
   const selectedBrand = brandFilter?.value || "all";
   const visible = products.filter((product) => {
     const categoryMatch = activeFilter === "all" || product.category === activeFilter;
@@ -229,6 +294,7 @@ function getVisibleProducts() {
 }
 
 function renderProducts() {
+  syncInventoryVisibility();
   const visibleProducts = getVisibleProducts();
   grid.classList.toggle("list-view", activeCatalogView === "list");
   grid.innerHTML = visibleProducts.map(productCard).join("");
@@ -589,13 +655,13 @@ async function checkEditorSession() {
     });
     if (!response.ok) return;
     const body = await response.json();
-    activateEditorSession(body.editor);
+    await activateEditorSession(body.editor);
   } catch {
     editorSession = null;
   }
 }
 
-function activateEditorSession(editor) {
+async function activateEditorSession(editor) {
   editorSession = editor;
   editorEmail.textContent = editor.displayName || editor.email;
   editorEmail.title = editor.email;
@@ -605,6 +671,15 @@ function activateEditorSession(editor) {
   manageEditorsButton.hidden = role !== "administrator";
   addProductButton.hidden = !["administrator", "product_editor"].includes(role);
   document.body.classList.add("editor-mode");
+  await loadPrivateCatalogDetails();
+  syncInventoryVisibility();
+  renderProducts();
+  updateCatalogFacts();
+  if (activeModalProduct && modal.open) {
+    activeModalProduct = products.find((product) => product.id === activeModalProduct.id) || activeModalProduct;
+    renderProductModalContent(activeModalProduct);
+  }
+  handleUrlState();
 }
 
 function openEditorLogin() {
@@ -636,7 +711,7 @@ async function submitEditorLogin(event) {
       }),
     });
     const body = await readApiResponse(response);
-    activateEditorSession(body.editor);
+    await activateEditorSession(body.editor);
     editorLoginForm.reset();
     closeEditorLogin();
     renderProducts();
@@ -660,6 +735,15 @@ async function signOutEditor() {
     });
   } finally {
     editorSession = null;
+    clearPrivateCatalogDetails();
+    syncInventoryVisibility();
+    updateCatalogFacts();
+    productEditorForm.reset();
+    if (productEditorModal.open) closeProductEditor();
+    if (activeModalProduct && modal.open) {
+      activeModalProduct = products.find((product) => product.id === activeModalProduct.id);
+      if (activeModalProduct) renderProductModalContent(activeModalProduct);
+    }
     editorBar.hidden = true;
     staffAccess.hidden = false;
     document.body.classList.remove("editor-mode");
@@ -724,13 +808,13 @@ function localizedReportDate(report) {
 }
 
 function updateCatalogFacts() {
-  heroProductCount.textContent = new Intl.NumberFormat(i18n?.language || "az").format(
+  if (heroProductCount) heroProductCount.textContent = new Intl.NumberFormat(i18n?.language || "az").format(
     catalogMetadata.productCount || products.length,
   );
-  heroReportDate.textContent = catalogMetadata.latestReport
+  if (heroReportDate) heroReportDate.textContent = catalogMetadata.latestReport
     ? localizedReportDate(catalogMetadata.latestReport)
     : t("Not available");
-  catalogReportNote.textContent = catalogMetadata.latestReport
+  if (catalogReportNote) catalogReportNote.textContent = catalogMetadata.latestReport
     ? t(catalogMetadata.latestReport.sourceType === "connector"
       ? "Stock synchronized from the connected official inventory workbook. Report: {date}."
       : "Stock synchronized from the latest official monthly inventory report. Report: {date}.", {
@@ -1305,6 +1389,7 @@ async function deletePendingProduct() {
 
 async function reloadCatalog() {
   await loadProducts();
+  await loadPrivateCatalogDetails();
   populateBrandFilter();
   renderCategories();
   updateCatalogFacts();
@@ -1655,20 +1740,22 @@ window.addEventListener("popstate", handleUrlState);
 
 async function initializeSite() {
   try {
-    await Promise.all([loadProducts(), checkEditorSession()]);
+    await loadProducts();
   } catch (error) {
     count.textContent = t("Catalog unavailable");
     grid.innerHTML = `<p class="catalog-error">${escapeHtml(error.message)}</p>`;
     refreshIcons();
     return;
   }
+  // Render the catalogue before optional session, statistics, or staff requests.
+  renderProducts();
   populateBrandFilter();
   renderCategories();
   populateQuoteProducts();
   updateCatalogFacts();
-  renderProducts();
   handleUrlState();
   refreshIcons();
+  void checkEditorSession();
 }
 
 initializeSite();
