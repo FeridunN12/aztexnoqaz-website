@@ -171,8 +171,8 @@
               <dd>Product lines</dd>
             </div>
             <div>
-              <dt id="hero-report-date">-</dt>
-              <dd>Latest stock report</dd>
+              <dt id="hero-language-count">5</dt>
+              <dd data-i18n="Catalogue languages">Catalogue languages</dd>
             </div>
           </dl>
         </div>
@@ -301,17 +301,6 @@
               <button type="button" data-filter="accessories">Accessories</button>
               <button type="button" data-filter="cabinets">Cabinets</button>
             </div>
-            <label class="availability-filter">
-              <span>Availability</span>
-              <select id="availability-filter">
-                <option value="all">All availability</option>
-                <option value="in_stock">In stock</option>
-                <option value="low_stock">Low stock</option>
-                <option value="out_of_stock">Out of stock</option>
-                <option value="contact">Contact for availability</option>
-                <option value="unavailable">Inventory unavailable</option>
-              </select>
-            </label>
             <label class="catalog-select-control">
               <span>Brand</span>
               <select id="brand-filter"><option value="all">All brands</option></select>
@@ -323,7 +312,6 @@
                 <option value="name">Name</option>
                 <option value="category">Category</option>
                 <option value="newest">Recently updated</option>
-                <option value="availability">Availability</option>
               </select>
             </label>
             <div class="catalog-view-toggle" aria-label="Catalogue view">
@@ -334,7 +322,6 @@
 
           <div class="result-line">
             <span id="product-count">0 products</span>
-            <span id="catalog-report-note">Availability is confirmed during quotation.</span>
           </div>
 
           <div class="product-grid" id="product-grid" aria-live="polite"></div>
@@ -465,8 +452,6 @@
             <label for="quote-message">Details</label>
             <textarea id="quote-message" name="message" rows="4" maxlength="2500" placeholder="Quantity, size, model, pressure, delivery city or project notes"></textarea>
 
-            <p class="quote-disclaimer">Website availability does not reserve stock. Availability and technical suitability are confirmed by staff during quotation.</p>
-
             <label class="quote-honeypot" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
 
             <p class="quote-form-status" id="quote-form-status" role="status" aria-live="polite"></p>
@@ -544,8 +529,6 @@
           <p id="modal-description"></p>
           <dl class="modal-product-meta">
             <div><dt>Model</dt><dd id="modal-model">Not specified</dd></div>
-            <div><dt>Availability</dt><dd id="modal-availability"></dd></div>
-            <div><dt>Stock report</dt><dd id="modal-report-date">Not available</dd></div>
           </dl>
           <ul id="modal-specs"></ul>
           <div class="modal-actions">
@@ -693,17 +676,16 @@
             </label>
 
             <div class="editor-field-row editor-settings-row">
-              <label><span>Low-stock threshold</span><input name="lowStockThreshold" type="number" min="0" step="1" /></label>
               <label><span>Publication</span><select name="publicationStatus"><option value="published">Published</option><option value="draft">Draft</option></select></label>
-              <label class="editor-checkbox"><input name="publicQuantity" type="checkbox" value="1" /><span>Show exact quantity publicly</span></label>
             </div>
 
-            <fieldset class="availability-override-fields">
-              <legend>Availability override</legend>
-              <p>Use only when a documented business decision must temporarily replace the imported stock label.</p>
+            <fieldset class="availability-override-fields" id="product-inventory-settings" hidden>
+              <legend>Private inventory controls</legend>
+              <p>Only staff with inventory access can view or change these settings.</p>
+              <label><span>Low-stock threshold</span><input name="lowStockThreshold" type="number" min="0" step="1" /></label>
               <div class="editor-field-row">
                 <label>
-                  <span>Public status</span>
+                  <span>Internal availability override</span>
                   <select name="availabilityOverride">
                     <option value="">Use imported inventory</option>
                     <option value="in_stock">In stock</option>

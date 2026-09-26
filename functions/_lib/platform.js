@@ -194,10 +194,14 @@ export async function ensureStaffProfile(db, editor) {
 }
 
 export function requirePermission(editor, permission) {
-  const role = editor.platformRole || "viewer";
-  if (!PERMISSIONS[role]?.has(permission)) {
+  if (!hasPermission(editor, permission)) {
     throw new ApiError(403, "You do not have permission to perform this action.", "forbidden");
   }
+}
+
+export function hasPermission(editor, permission) {
+  const role = editor.platformRole || "viewer";
+  return Boolean(PERMISSIONS[role]?.has(permission));
 }
 
 export function cleanOptionalText(value, maxLength) {
