@@ -17,7 +17,6 @@
 
   // Active values are ordered as Azerbaijani, English, Turkish, Russian, Georgian.
   const rows = {
-    "Catalogue languages": ["Kataloq dilləri", "Catalogue languages", "Katalog dilleri", "Языки каталога", "კატალოგის ენები"],
     "Home": ["Ana səhifə", "Home", "Ana sayfa", "Главная", "მთავარი"],
     "Categories": ["Kateqoriyalar", "Categories", "Kategoriler", "Категории", "კატეგორიები"],
     "Brands": ["Brendlər", "Brands", "Markalar", "Бренды", "ბრენდები"],

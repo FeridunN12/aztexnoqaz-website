@@ -13,10 +13,6 @@ import {
   requireSameOrigin,
 } from "../../../_lib/http.js";
 import {
-  applyProductInventoryPermission,
-  toProductEditorProduct,
-} from "../../../_lib/catalog-access.js";
-import {
   completeTranslatedProduct,
   inventoryAvailabilityStatement,
   mediaKeyFromUrl,
@@ -28,11 +24,7 @@ import {
   uniqueProductSlug,
 } from "../../../_lib/products.js";
 import { translateProduct } from "../../../_lib/translate.js";
-import { hasPermission, requirePermission } from "../../../_lib/platform.js";
-
-function productForEditor(product, editor) {
-  return hasPermission(editor, "inventory") ? product : toProductEditorProduct(product);
-}
+import { requirePermission } from "../../../_lib/platform.js";
 
 export async function onRequestPut({ request, env, data, params }) {
   let storedImage = null;
@@ -54,7 +46,7 @@ export async function onRequestPut({ request, env, data, params }) {
         .first();
       if (previousRequest?.value === id) {
         const previousProduct = await getProduct(env.DB, id);
-        if (previousProduct) return json({ product: productForEditor(previousProduct, data.editor) });
+        if (previousProduct) return json({ product: previousProduct });
       }
     }
     const existing = await env.DB.prepare("SELECT * FROM products WHERE id = ?").bind(id).first();
@@ -65,16 +57,8 @@ export async function onRequestPut({ request, env, data, params }) {
       throw new ApiError(409, "This product changed in another session. Refresh and try again.", "conflict");
     }
 
-    const existingDetails = await env.DB
-      .prepare("SELECT * FROM product_catalog_details WHERE product_id = ?")
-      .bind(id)
-      .first();
     const product = parseProductForm(formData);
-    const details = applyProductInventoryPermission(
-      parseProductDetails(formData, product.name),
-      existingDetails,
-      hasPermission(data.editor, "inventory"),
-    );
+    const details = parseProductDetails(formData, product.name);
     const slug = await uniqueProductSlug(env.DB, details.requestedSlug, id);
     const translationOverrides = parseTranslationOverrides(formData);
     const translatedProduct = completeTranslatedProduct(formData, translationOverrides)
@@ -90,6 +74,10 @@ export async function onRequestPut({ request, env, data, params }) {
     }
 
     const now = new Date().toISOString();
+    const existingDetails = await env.DB
+      .prepare("SELECT * FROM product_catalog_details WHERE product_id = ?")
+      .bind(id)
+      .first();
     const updateProduct = env.DB
       .prepare(
         `UPDATE products
@@ -156,7 +144,7 @@ export async function onRequestPut({ request, env, data, params }) {
       name: product.name,
       imageChanged: Boolean(storedImage),
     });
-    return json({ product: productForEditor(await getProduct(env.DB, id), data.editor) });
+    return json({ product: await getProduct(env.DB, id) });
   } catch (error) {
     if (storedImage?.key && env.DB) {
       await env.DB

@@ -28,18 +28,22 @@ let products = [];
 let catalogMetadata = {
   productCount: 0,
   brandCount: 0,
+  trackedProductCount: 0,
+  latestReport: null,
 };
 
 const grid = document.querySelector("#product-grid");
 const count = document.querySelector("#product-count");
 const searchInput = document.querySelector("#product-search");
 const filterButtons = document.querySelectorAll("[data-filter]");
+const availabilityFilter = document.querySelector("#availability-filter");
 const brandFilter = document.querySelector("#brand-filter");
 const sortSelect = document.querySelector("#catalog-sort");
 const viewButtons = document.querySelectorAll("[data-catalog-view]");
 const categoryGrid = document.querySelector("#category-grid");
 const heroProductCount = document.querySelector("#hero-product-count");
-const heroLanguageCount = document.querySelector("#hero-language-count");
+const heroReportDate = document.querySelector("#hero-report-date");
+const catalogReportNote = document.querySelector("#catalog-report-note");
 const quoteProduct = document.querySelector("#quote-product");
 const quoteQuantity = document.querySelector("#quote-quantity");
 const quoteAddProduct = document.querySelector("#quote-add-product");
@@ -54,6 +58,8 @@ const modalTitle = document.querySelector("#modal-title");
 const modalDescription = document.querySelector("#modal-description");
 const modalSpecs = document.querySelector("#modal-specs");
 const modalModel = document.querySelector("#modal-model");
+const modalAvailability = document.querySelector("#modal-availability");
+const modalReportDate = document.querySelector("#modal-report-date");
 const modalQuote = document.querySelector("#modal-quote");
 const modalWhatsapp = document.querySelector("#modal-whatsapp");
 const modalShare = document.querySelector("#modal-share");
@@ -68,7 +74,6 @@ const addProductButton = document.querySelector("#add-product-button");
 const manageEditorsButton = document.querySelector("#manage-editors-button");
 const productEditorModal = document.querySelector("#product-editor-modal");
 const productEditorForm = document.querySelector("#product-editor-form");
-const productInventorySettings = document.querySelector("#product-inventory-settings");
 const productEditorTitle = document.querySelector("#product-editor-title");
 const productEditorMessage = document.querySelector("#product-editor-message");
 const productEditorSave = document.querySelector("#product-editor-save");
@@ -130,7 +135,6 @@ function productMatches(product, query) {
   const haystack = [
     displayProduct.name,
     product.name,
-    product.id,
     product.brand,
     displayProduct.summary,
     product.category,
@@ -150,6 +154,10 @@ function productMatches(product, query) {
 function productCard(product) {
   const displayProduct = localizedProduct(product);
   const tagMarkup = (displayProduct.tags || []).slice(0, 3).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("");
+  const availability = product.availability || { status: "unavailable", quantity: null };
+  const report = availability.reportMonth && availability.reportYear
+    ? localizedReportDate({ month: availability.reportMonth, year: availability.reportYear })
+    : t("Not available");
   const canEditProducts = editorSession
     && ["administrator", "product_editor"].includes(editorSession.platformRole || "administrator");
   const editorActions = canEditProducts
@@ -178,6 +186,10 @@ function productCard(product) {
         <h3>${escapeHtml(displayProduct.name)}</h3>
         ${product.model ? `<p class="product-model"><span>${escapeHtml(t("Model"))}</span><strong>${escapeHtml(product.model)}</strong></p>` : ""}
         <p>${escapeHtml(displayProduct.summary)}</p>
+        <div class="product-stock-row">
+          <span class="availability-badge ${escapeHtml(availability.status)}"><i data-lucide="${availability.status === "in_stock" ? "circle-check" : availability.status === "out_of_stock" ? "circle-x" : "circle-help"}"></i>${escapeHtml(availabilityLabel(availability.status, availability.quantity))}</span>
+          <span class="product-report-date" title="${escapeHtml(t("Latest inventory report"))}"><i data-lucide="calendar-days"></i>${escapeHtml(report)}</span>
+        </div>
         <div class="product-tags">${tagMarkup}</div>
         <div class="product-actions">
           <button class="quote-button" type="button" data-quote="${escapeHtml(product.id)}">
@@ -195,11 +207,14 @@ function productCard(product) {
 
 function getVisibleProducts() {
   const query = searchInput.value || "";
+  const selectedAvailability = availabilityFilter?.value || "all";
   const selectedBrand = brandFilter?.value || "all";
   const visible = products.filter((product) => {
     const categoryMatch = activeFilter === "all" || product.category === activeFilter;
+    const availabilityMatch = selectedAvailability === "all"
+      || product.availability?.status === selectedAvailability;
     const brandMatch = selectedBrand === "all" || product.brand === selectedBrand;
-    return categoryMatch && brandMatch && productMatches(product, query);
+    return categoryMatch && availabilityMatch && brandMatch && productMatches(product, query);
   });
   const sort = sortSelect?.value || "default";
   return visible.sort((a, b) => {
@@ -207,6 +222,8 @@ function getVisibleProducts() {
     if (sort === "category") return categoryLabel(a.category).localeCompare(categoryLabel(b.category), i18n?.language)
       || localizedProduct(a).name.localeCompare(localizedProduct(b).name, i18n?.language);
     if (sort === "newest") return String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""));
+    if (sort === "availability") return (availabilityOrder[a.availability?.status] ?? 9)
+      - (availabilityOrder[b.availability?.status] ?? 9);
     return Number(a.sortOrder || 0) - Number(b.sortOrder || 0);
   });
 }
@@ -312,12 +329,17 @@ function requestProductQuote(productId) {
 
 function renderProductModalContent(product) {
   const displayProduct = localizedProduct(product);
+  const availability = product.availability || { status: "unavailable", quantity: null };
   modalImage.src = product.image;
   modalImage.alt = displayProduct.name;
   modalCategory.textContent = `${categoryLabel(product.category)} | ${product.brand}`;
   modalTitle.textContent = displayProduct.name;
   modalDescription.textContent = displayProduct.summary;
   modalModel.textContent = product.model || product.sku || t("Not specified");
+  modalAvailability.innerHTML = `<span class="availability-badge ${escapeHtml(availability.status)}">${escapeHtml(availabilityLabel(availability.status, availability.quantity))}</span>`;
+  modalReportDate.textContent = availability.reportMonth && availability.reportYear
+    ? localizedReportDate({ month: availability.reportMonth, year: availability.reportYear })
+    : t("Not available");
   modalSpecs.innerHTML = (displayProduct.specs || []).map((spec) => `<li>${escapeHtml(spec)}</li>`).join("");
   modalWhatsapp.href = `${whatsappBase}?text=${encodeURIComponent(
     t("Hello AzTexnoQaz, I want to request a quote for {name}.", { name: displayProduct.name }),
@@ -508,6 +530,8 @@ async function loadProducts() {
     catalogMetadata = body.catalog || {
       productCount: products.length,
       brandCount: new Set(products.map((product) => product.brand)).size,
+      trackedProductCount: 0,
+      latestReport: null,
     };
   } catch {
     const [response, translationsResponse, correctionsResponse] = await Promise.all([
@@ -550,42 +574,10 @@ async function loadProducts() {
     catalogMetadata = {
       productCount: products.length,
       brandCount: new Set(products.map((product) => product.brand)).size,
+      trackedProductCount: 0,
+      latestReport: null,
     };
   }
-}
-
-async function loadEditorProductDetails() {
-  if (!editorSession || !["administrator", "product_editor"].includes(editorSession.platformRole || "administrator")) return;
-  try {
-    const response = await fetch("/api/admin/products", {
-      cache: "no-store",
-      credentials: "same-origin",
-      headers: { Accept: "application/json" },
-    });
-    if (!response.ok) return;
-    const body = await response.json();
-    const byId = new Map((body.products || []).map((product) => [product.id, product]));
-    products = products.map((product) => ({ ...product, ...(byId.get(product.id) || {}) }));
-  } catch {
-    // The public catalogue remains usable if private editor details are unavailable.
-  }
-}
-
-function clearPrivateProductDetails() {
-  products = products.map((product) => {
-    const {
-      availability,
-      lowStockThreshold,
-      publicQuantity,
-      availabilityOverride,
-      overrideReason,
-      overrideExpiresAt,
-      workbookCodes,
-      inventoryMapped,
-      ...publicProduct
-    } = product;
-    return publicProduct;
-  });
 }
 
 async function checkEditorSession() {
@@ -597,24 +589,22 @@ async function checkEditorSession() {
     });
     if (!response.ok) return;
     const body = await response.json();
-    await activateEditorSession(body.editor);
+    activateEditorSession(body.editor);
   } catch {
     editorSession = null;
   }
 }
 
-async function activateEditorSession(editor) {
+function activateEditorSession(editor) {
   editorSession = editor;
   editorEmail.textContent = editor.displayName || editor.email;
   editorEmail.title = editor.email;
   editorBar.hidden = false;
   staffAccess.hidden = true;
   const role = editor.platformRole || "administrator";
-  productInventorySettings.hidden = !["administrator", "inventory_manager"].includes(role);
   manageEditorsButton.hidden = role !== "administrator";
   addProductButton.hidden = !["administrator", "product_editor"].includes(role);
   document.body.classList.add("editor-mode");
-  await loadEditorProductDetails();
 }
 
 function openEditorLogin() {
@@ -646,7 +636,7 @@ async function submitEditorLogin(event) {
       }),
     });
     const body = await readApiResponse(response);
-    await activateEditorSession(body.editor);
+    activateEditorSession(body.editor);
     editorLoginForm.reset();
     closeEditorLogin();
     renderProducts();
@@ -670,17 +660,10 @@ async function signOutEditor() {
     });
   } finally {
     editorSession = null;
-    clearPrivateProductDetails();
-    productInventorySettings.hidden = true;
     editorBar.hidden = true;
     staffAccess.hidden = false;
     document.body.classList.remove("editor-mode");
     editorSignOut.disabled = false;
-    await loadProducts().catch(() => {});
-    populateBrandFilter();
-    renderCategories();
-    populateQuoteProducts();
-    updateCatalogFacts();
     renderProducts();
     showToast(t("Signed out from this device."));
   }
@@ -709,13 +692,51 @@ function showImagePreview(fileOrUrl) {
   imageDropPrompt.hidden = true;
 }
 
+const availabilityOrder = {
+  in_stock: 0,
+  low_stock: 1,
+  contact: 2,
+  out_of_stock: 3,
+  unavailable: 4,
+};
+
+function availabilityLabel(status, quantity = null) {
+  const labels = {
+    in_stock: "In stock",
+    low_stock: "Low stock",
+    out_of_stock: "Out of stock",
+    contact: "Contact for availability",
+    unavailable: "Inventory information unavailable",
+  };
+  const label = t(labels[status] || labels.contact);
+  return quantity === null || quantity === undefined
+    ? label
+    : `${label} (${new Intl.NumberFormat(i18n?.language || "az").format(quantity)})`;
+}
+
+function localizedReportDate(report) {
+  if (!report?.month || !report?.year) return t("Not available");
+  return new Intl.DateTimeFormat(i18n?.language || "az", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(Date.UTC(report.year, report.month - 1, 1)));
+}
+
 function updateCatalogFacts() {
   heroProductCount.textContent = new Intl.NumberFormat(i18n?.language || "az").format(
     catalogMetadata.productCount || products.length,
   );
-  heroLanguageCount.textContent = new Intl.NumberFormat(i18n?.language || "az").format(
-    productLanguages.length,
-  );
+  heroReportDate.textContent = catalogMetadata.latestReport
+    ? localizedReportDate(catalogMetadata.latestReport)
+    : t("Not available");
+  catalogReportNote.textContent = catalogMetadata.latestReport
+    ? t(catalogMetadata.latestReport.sourceType === "connector"
+      ? "Stock synchronized from the connected official inventory workbook. Report: {date}."
+      : "Stock synchronized from the latest official monthly inventory report. Report: {date}.", {
+        date: localizedReportDate(catalogMetadata.latestReport),
+      })
+    : t("Inventory information is not available yet. Availability is confirmed during quotation.");
 }
 
 function emptyTranslationDraft() {
@@ -1126,6 +1147,7 @@ function openProductEditor(productId = null) {
     productEditorForm.querySelector('[name="applications"]').value = (editingProduct.applications || []).join("\n");
     productEditorForm.querySelector('[name="lowStockThreshold"]').value = editingProduct.lowStockThreshold ?? "";
     productEditorForm.querySelector('[name="publicationStatus"]').value = editingProduct.publicationStatus || "published";
+    productEditorForm.querySelector('[name="publicQuantity"]').checked = Boolean(editingProduct.publicQuantity);
     productEditorForm.querySelector('[name="availabilityOverride"]').value = editingProduct.availabilityOverride || "";
     productEditorForm.querySelector('[name="overrideReason"]').value = editingProduct.overrideReason || "";
     productEditorForm.querySelector('[name="overrideExpiresAt"]').value = overrideDateTimeLocal(editingProduct.overrideExpiresAt);
@@ -1283,7 +1305,6 @@ async function deletePendingProduct() {
 
 async function reloadCatalog() {
   await loadProducts();
-  await loadEditorProductDetails();
   populateBrandFilter();
   renderCategories();
   updateCatalogFacts();
@@ -1429,6 +1450,7 @@ filterButtons.forEach((button) => {
 });
 
 searchInput.addEventListener("input", renderProducts);
+availabilityFilter?.addEventListener("change", renderProducts);
 brandFilter?.addEventListener("change", renderProducts);
 sortSelect?.addEventListener("change", renderProducts);
 viewButtons.forEach((button) => {
@@ -1633,8 +1655,7 @@ window.addEventListener("popstate", handleUrlState);
 
 async function initializeSite() {
   try {
-    await loadProducts();
-    await checkEditorSession();
+    await Promise.all([loadProducts(), checkEditorSession()]);
   } catch (error) {
     count.textContent = t("Catalog unavailable");
     grid.innerHTML = `<p class="catalog-error">${escapeHtml(error.message)}</p>`;

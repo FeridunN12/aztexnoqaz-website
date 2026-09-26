@@ -11,7 +11,7 @@ function parseJson(value) {
 
 export async function onRequestGet({ env, data }) {
   try {
-    requirePermission(data.editor, "inventory");
+    requirePermission(data.editor, "view");
     const result = await env.DB
       .prepare(
         `SELECT p.id, p.name, p.image_url, p.brand, p.category, p.updated_at,
