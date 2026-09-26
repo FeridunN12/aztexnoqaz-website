@@ -43,7 +43,7 @@ const VIEW_PERMISSIONS = {
   product_editor: new Set(["overview", "products"]),
   sales: new Set(["overview", "quotes"]),
   inventory_manager: new Set(["overview", "inventory", "imports"]),
-  viewer: new Set(["overview", "inventory"]),
+  viewer: new Set(["overview"]),
 };
 
 function escapeHtml(value) {
@@ -195,6 +195,18 @@ async function signOut() {
   }).catch(() => {});
   state.editor = null;
   state.loaded.clear();
+  state.dashboard = null;
+  state.inventory = [];
+  state.imports = [];
+  state.preview = null;
+  state.quotes = [];
+  state.products = [];
+  document.querySelector("#overview-metrics").replaceChildren();
+  document.querySelector("#latest-report-panel").replaceChildren();
+  document.querySelector("#import-history-chart").replaceChildren();
+  document.querySelector("#overview-inventory-panels").hidden = true;
+  document.querySelector("#inventory-body").replaceChildren();
+  document.querySelector("#import-history-body").replaceChildren();
   showLogin();
 }
 
@@ -240,17 +252,31 @@ function metricCard(label, value, detail, icon) {
 async function loadOverview() {
   const body = await api("/api/admin/dashboard");
   state.dashboard = body;
-  document.querySelector("#overview-metrics").innerHTML = [
-    metricCard("Published products", body.catalog.published, `${body.inventory.mapped} mapped / ${body.inventory.unmapped} unmapped`, "package-check"),
-    metricCard("In-stock lines", body.inventory.inStock, `${body.inventory.lowStock} low / ${body.inventory.outOfStock} out of stock`, "boxes"),
-    metricCard("New quotations", body.quotes.new, `${body.quotes.inProgress} in progress`, "files"),
-    metricCard("Latest report", body.latestReport ? reportLabel(body.latestReport.month, body.latestReport.year) : "Not imported", body.latestReport ? formatDate(body.latestReport.appliedAt) : "Upload a validated workbook", "calendar-check"),
-  ].join("");
+  const metrics = [
+    metricCard("Published products", body.catalog.published, body.inventory ? `${body.inventory.mapped} mapped / ${body.inventory.unmapped} unmapped` : `${body.catalog.brands} represented brands`, "package-check"),
+  ];
+  if (body.inventory) {
+    metrics.push(
+      metricCard("In-stock lines", body.inventory.inStock, `${body.inventory.lowStock} low / ${body.inventory.outOfStock} out of stock`, "boxes"),
+    );
+  }
+  metrics.push(metricCard("New quotations", body.quotes.new, `${body.quotes.inProgress} in progress`, "files"));
+  if (body.inventory) {
+    metrics.push(metricCard("Latest report", body.latestReport ? reportLabel(body.latestReport.month, body.latestReport.year) : "Not imported", body.latestReport ? formatDate(body.latestReport.appliedAt) : "Upload a validated workbook", "calendar-check"));
+  }
+  document.querySelector("#overview-metrics").innerHTML = metrics.join("");
   const reportPanel = document.querySelector("#latest-report-panel");
-  reportPanel.innerHTML = body.latestReport
-    ? `<div class="panel-heading"><div><p class="kicker">Inventory source</p><h3>Latest successful report</h3></div></div><div class="report-state ${body.latestReport.stale ? "report-warning" : ""}"><span><i data-lucide="${body.latestReport.stale ? "triangle-alert" : "shield-check"}"></i></span><div><strong>${escapeHtml(reportLabel(body.latestReport.month, body.latestReport.year))}</strong><small>${body.latestReport.stale ? "A newer monthly report may be expected" : "Applied successfully"}</small></div></div><div class="report-meta"><div><span>Source</span><strong>${escapeHtml(body.latestReport.source)}</strong></div><div><span>Updated</span><strong>${escapeHtml(formatDate(body.latestReport.appliedAt, true))}</strong></div><div><span>Imported by</span><strong>${escapeHtml(body.latestReport.importedBy)}</strong></div><div><span>Review items</span><strong>${escapeHtml(body.latestReport.unmatchedRows + body.latestReport.ambiguousRows + body.latestReport.invalidRows)}</strong></div></div>`
-    : `<div class="panel-heading"><div><p class="kicker">Inventory source</p><h3>No successful report yet</h3></div></div><div class="empty-state"><i data-lucide="database"></i><p>Public products remain on Contact for availability until a reviewed import is applied.</p><button class="primary-button" type="button" data-open-view="imports">Open imports</button></div>`;
-  renderHistoryChart(body.importHistory);
+  const inventoryPanels = document.querySelector("#overview-inventory-panels");
+  inventoryPanels.hidden = !body.inventory;
+  if (body.inventory) {
+    reportPanel.innerHTML = body.latestReport
+      ? `<div class="panel-heading"><div><p class="kicker">Inventory source</p><h3>Latest successful report</h3></div></div><div class="report-state ${body.latestReport.stale ? "report-warning" : ""}"><span><i data-lucide="${body.latestReport.stale ? "triangle-alert" : "shield-check"}"></i></span><div><strong>${escapeHtml(reportLabel(body.latestReport.month, body.latestReport.year))}</strong><small>${body.latestReport.stale ? "A newer monthly report may be expected" : "Applied successfully"}</small></div></div><div class="report-meta"><div><span>Source</span><strong>${escapeHtml(body.latestReport.source)}</strong></div><div><span>Updated</span><strong>${escapeHtml(formatDate(body.latestReport.appliedAt, true))}</strong></div><div><span>Imported by</span><strong>${escapeHtml(body.latestReport.importedBy)}</strong></div><div><span>Review items</span><strong>${escapeHtml(body.latestReport.unmatchedRows + body.latestReport.ambiguousRows + body.latestReport.invalidRows)}</strong></div></div>`
+      : `<div class="panel-heading"><div><p class="kicker">Inventory source</p><h3>No successful report yet</h3></div></div><div class="empty-state"><i data-lucide="database"></i><p>Product stock stays private until an authorized staff member applies a reviewed import.</p><button class="primary-button" type="button" data-open-view="imports">Open imports</button></div>`;
+    renderHistoryChart(body.importHistory || []);
+  } else {
+    reportPanel.replaceChildren();
+    document.querySelector("#import-history-chart").replaceChildren();
+  }
   document.querySelector("#overview-quotes").innerHTML = body.recentQuotes.length
     ? body.recentQuotes.map((quote) => `<tr><td><strong>${escapeHtml(quote.reference)}</strong></td><td><strong>${escapeHtml(quote.companyName || quote.customerName)}</strong><small>${escapeHtml(quote.customerName)}</small></td><td>${escapeHtml(quote.products || "General enquiry")}</td><td>${statusBadge(quote.status)}</td><td>${escapeHtml(formatDate(quote.createdAt))}</td></tr>`).join("")
     : `<tr class="empty-row"><td colspan="5">No quotation requests have been submitted.</td></tr>`;
@@ -557,7 +583,12 @@ async function openQuoteDetails(id) {
         <div><span>Project</span><strong>${escapeHtml(quote.projectLocation || "Not provided")}</strong><small>${escapeHtml(quote.timeline || "Timeline not provided")}</small></div>
         <div><span>Request</span><strong>${escapeHtml(quote.message || "No additional message")}</strong></div>
       </section>
-      <section class="quote-detail-products"><div class="panel-heading"><div><p class="kicker">Requested equipment</p><h3>Products and stock context</h3></div></div>${body.items.map((item) => `<div class="quote-product-record"><div><strong>${escapeHtml(item.productName)}</strong><small>${escapeHtml(item.requirements || "No item-specific requirements")}</small></div><div><strong>${item.quantity ?? "-"}</strong><small>At request: ${escapeHtml(titleCase(item.inventoryStatusAtSubmission))}</small><small>Current: ${escapeHtml(titleCase(item.currentInventoryStatus))}</small></div></div>`).join("")}</section>
+      <section class="quote-detail-products"><div class="panel-heading"><div><p class="kicker">Requested equipment</p><h3>${body.items.some((item) => item.currentInventoryStatus || item.inventoryStatusAtSubmission) ? "Products and stock context" : "Requested products"}</h3></div></div>${body.items.map((item) => {
+        const inventoryContext = item.currentInventoryStatus || item.inventoryStatusAtSubmission
+          ? `<small>At request: ${escapeHtml(titleCase(item.inventoryStatusAtSubmission))}</small><small>Current: ${escapeHtml(titleCase(item.currentInventoryStatus))}</small>`
+          : "";
+        return `<div class="quote-product-record"><div><strong>${escapeHtml(item.productName)}</strong><small>${escapeHtml(item.requirements || "No item-specific requirements")}</small></div><div><strong>${item.quantity ?? "-"}</strong>${inventoryContext}</div></div>`;
+      }).join("")}</section>
       <section class="quote-detail-events"><div class="panel-heading"><div><p class="kicker">Audit trail</p><h3>Activity history</h3></div></div>${body.events.map((event) => `<div class="quote-event-record"><div><strong>${escapeHtml(titleCase(event.eventType))}</strong><p>${escapeHtml(event.note || `${titleCase(event.fromStatus || "start")} to ${titleCase(event.toStatus || "new")}`)}</p></div><small>${escapeHtml(formatDate(event.createdAt, true))}<br />${escapeHtml(event.actorEmail)}</small></div>`).join("")}</section>`;
     quoteDetailDialog.showModal();
     refreshIcons();

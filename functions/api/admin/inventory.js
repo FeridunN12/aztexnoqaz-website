@@ -11,7 +11,7 @@ function parseJson(value) {
 
 export async function onRequestGet({ env, data }) {
   try {
-    requirePermission(data.editor, "view");
+    requirePermission(data.editor, "inventory");
     const result = await env.DB
       .prepare(
         `SELECT p.id, p.name, p.image_url, p.brand, p.category, p.updated_at,
@@ -33,7 +33,19 @@ export async function onRequestGet({ env, data }) {
          ORDER BY p.name COLLATE NOCASE`,
       )
       .all();
+    const report = await env.DB.prepare(
+      `SELECT report_month, report_year, applied_at, source_type, source_name
+       FROM inventory_imports WHERE status = 'applied'
+       ORDER BY applied_at DESC LIMIT 1`,
+    ).first();
     return json({
+      latestReport: report ? {
+        month: Number(report.report_month),
+        year: Number(report.report_year),
+        appliedAt: report.applied_at,
+        sourceType: report.source_type,
+        sourceName: report.source_name,
+      } : null,
       inventory: result.results.map((row) => {
         const overrideActive = Boolean(
           row.availability_override

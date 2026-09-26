@@ -6,9 +6,9 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>AzTexnoQaz Staff Workspace</title>
     <link rel="icon" href="assets/logo-mark.png" />
-    <link rel="stylesheet" href="admin.css?v=20260926-restore-v1" />
+    <link rel="stylesheet" href="admin.css?v=20260926-inventory-v2" />
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-    <script defer src="admin.js?v=20260926-restore-v1"></script>
+    <script defer src="admin.js?v=20260926-inventory-v2"></script>
   </head>
   <body>
     <a class="skip-link" href="#workspace-content">Skip to workspace</a>
@@ -82,7 +82,7 @@
               <button class="icon-button" type="button" data-refresh="overview" aria-label="Refresh overview" title="Refresh"><i data-lucide="refresh-cw"></i></button>
             </div>
             <div class="metric-grid" id="overview-metrics" aria-live="polite"></div>
-            <div class="overview-grid">
+            <div class="overview-grid" id="overview-inventory-panels" hidden>
               <section class="panel report-panel" id="latest-report-panel"></section>
               <section class="panel">
                 <div class="panel-heading"><div><p class="kicker">Import history</p><h3>Mapped catalogue lines</h3></div></div>

@@ -32,10 +32,10 @@
       }
     </script>
     <link rel="icon" href="assets/logo-mark.png" />
-    <link rel="stylesheet" href="styles.css?v=20260926-restore-v1" />
+    <link rel="stylesheet" href="styles.css?v=20260926-inventory-v2" />
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-    <script defer src="i18n.js?v=20260926-restore-v1"></script>
-    <script defer src="script.js?v=20260926-restore-v1"></script>
+    <script defer src="i18n.js?v=20260926-inventory-v2"></script>
+    <script defer src="script.js?v=20260926-inventory-v2"></script>
   </head>
   <body>
     <a class="skip-link" href="#products">Skip to products</a>
@@ -170,7 +170,7 @@
               <dt id="hero-product-count">-</dt>
               <dd>Product lines</dd>
             </div>
-            <div>
+            <div data-inventory-only hidden>
               <dt id="hero-report-date">-</dt>
               <dd>Latest stock report</dd>
             </div>
@@ -301,7 +301,7 @@
               <button type="button" data-filter="accessories">Accessories</button>
               <button type="button" data-filter="cabinets">Cabinets</button>
             </div>
-            <label class="availability-filter">
+            <label class="availability-filter" data-inventory-only hidden>
               <span>Availability</span>
               <select id="availability-filter">
                 <option value="all">All availability</option>
@@ -323,7 +323,7 @@
                 <option value="name">Name</option>
                 <option value="category">Category</option>
                 <option value="newest">Recently updated</option>
-                <option value="availability">Availability</option>
+                <option value="availability" data-inventory-only hidden disabled>Availability</option>
               </select>
             </label>
             <div class="catalog-view-toggle" aria-label="Catalogue view">
@@ -334,7 +334,7 @@
 
           <div class="result-line">
             <span id="product-count">0 products</span>
-            <span id="catalog-report-note">Availability is confirmed during quotation.</span>
+            <span id="catalog-report-note" data-inventory-only hidden>Availability is confirmed during quotation.</span>
           </div>
 
           <div class="product-grid" id="product-grid" aria-live="polite"></div>
@@ -544,8 +544,8 @@
           <p id="modal-description"></p>
           <dl class="modal-product-meta">
             <div><dt>Model</dt><dd id="modal-model">Not specified</dd></div>
-            <div><dt>Availability</dt><dd id="modal-availability"></dd></div>
-            <div><dt>Stock report</dt><dd id="modal-report-date">Not available</dd></div>
+            <div data-inventory-only hidden><dt>Availability</dt><dd id="modal-availability"></dd></div>
+            <div data-inventory-only hidden><dt>Stock report</dt><dd id="modal-report-date">Not available</dd></div>
           </dl>
           <ul id="modal-specs"></ul>
           <div class="modal-actions">
@@ -693,12 +693,12 @@
             </label>
 
             <div class="editor-field-row editor-settings-row">
-              <label><span>Low-stock threshold</span><input name="lowStockThreshold" type="number" min="0" step="1" /></label>
+              <label data-inventory-only hidden><span>Low-stock threshold</span><input name="lowStockThreshold" type="number" min="0" step="1" /></label>
               <label><span>Publication</span><select name="publicationStatus"><option value="published">Published</option><option value="draft">Draft</option></select></label>
-              <label class="editor-checkbox"><input name="publicQuantity" type="checkbox" value="1" /><span>Show exact quantity publicly</span></label>
+              <label class="editor-checkbox" hidden><input name="publicQuantity" type="checkbox" value="1" disabled /><span>Show exact quantity publicly</span></label>
             </div>
 
-            <fieldset class="availability-override-fields">
+            <fieldset class="availability-override-fields" data-inventory-only hidden>
               <legend>Availability override</legend>
               <p>Use only when a documented business decision must temporarily replace the imported stock label.</p>
               <div class="editor-field-row">
