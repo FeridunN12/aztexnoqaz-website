@@ -9,6 +9,10 @@ import {
 } from "../../_lib/db.js";
 import { errorResponse, json, requireSameOrigin } from "../../_lib/http.js";
 import {
+  applyProductInventoryPermission,
+  toProductEditorProduct,
+} from "../../_lib/catalog-access.js";
+import {
   completeTranslatedProduct,
   inventoryAvailabilityStatement,
   parseProductForm,
@@ -20,12 +24,17 @@ import {
   uniqueProductSlug,
 } from "../../_lib/products.js";
 import { translateProduct } from "../../_lib/translate.js";
-import { requirePermission } from "../../_lib/platform.js";
+import { hasPermission, requirePermission } from "../../_lib/platform.js";
+
+function productForEditor(product, editor) {
+  return hasPermission(editor, "inventory") ? product : toProductEditorProduct(product);
+}
 
 export async function onRequestGet({ env, data }) {
   try {
     requirePermission(data.editor, "products");
-    return json({ products: await listProducts(env.DB, { includeDrafts: true }) });
+    const products = await listProducts(env.DB, { includeDrafts: true });
+    return json({ products: products.map((product) => productForEditor(product, data.editor)) });
   } catch (error) {
     return errorResponse(error);
   }
@@ -51,11 +60,15 @@ export async function onRequestPost({ request, env, data }) {
         .first();
       if (previousRequest?.value) {
         const previousProduct = await getProduct(env.DB, previousRequest.value);
-        if (previousProduct) return json({ product: previousProduct }, 200);
+        if (previousProduct) return json({ product: productForEditor(previousProduct, data.editor) }, 200);
       }
     }
     const product = parseProductForm(formData);
-    const details = parseProductDetails(formData, product.name);
+    const details = applyProductInventoryPermission(
+      parseProductDetails(formData, product.name),
+      null,
+      hasPermission(data.editor, "inventory"),
+    );
     const translationOverrides = parseTranslationOverrides(formData);
     const translatedProduct = completeTranslatedProduct(formData, translationOverrides)
       || await translateProduct(product);
@@ -109,7 +122,7 @@ export async function onRequestPost({ request, env, data }) {
     await writeAudit(env.DB, data.editor.email, "create", "product", id, {
       name: product.name,
     });
-    return json({ product: await getProduct(env.DB, id) }, 201);
+    return json({ product: productForEditor(await getProduct(env.DB, id), data.editor) }, 201);
   } catch (error) {
     if (storedImage?.key && env.DB) {
       await env.DB

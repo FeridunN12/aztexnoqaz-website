@@ -1,7 +1,16 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import {
+  applyProductInventoryPermission,
+  toProductEditorProduct,
+  toPublicCatalogProduct,
+} from "../functions/_lib/catalog-access.js";
 import { availabilityFor } from "../functions/_lib/inventory.js";
 import { detectImageType } from "../functions/_lib/products.js";
+import { hasPermission } from "../functions/_lib/platform.js";
+import { onRequestGet as getAdminDashboard } from "../functions/api/admin/dashboard.js";
+import { onRequestGet as getAdminInventory } from "../functions/api/admin/inventory.js";
+import { onRequestGet as getAdminQuoteDetails } from "../functions/api/admin/quotes/[id].js";
 import {
   normalizeInventoryText,
   parseInventoryWorkbook,
@@ -19,6 +28,155 @@ test("availability rules use only real quantity and configured thresholds", () =
   assert.equal(availabilityFor(0, 5, "current"), "out_of_stock");
   assert.equal(availabilityFor(null, null, "current"), "contact");
   assert.equal(availabilityFor(10, null, "unavailable"), "unavailable");
+});
+
+test("public product projection excludes all inventory values and report metadata", () => {
+  const projected = toPublicCatalogProduct({
+    id: "regulator-1",
+    name: "Gas regulator",
+    brand: "ESKA",
+    category: "regulators",
+    model: "ESKA-40",
+    sku: "SKU-40",
+    internalId: "CAT-40",
+    availability: {
+      status: "in_stock",
+      quantity: 987654321,
+      reportMonth: 9,
+      reportYear: 2026,
+      source: "private-workbook.xlsx",
+    },
+    lowStockThreshold: 4,
+    publicQuantity: true,
+    availabilityOverride: "out_of_stock",
+    overrideReason: "internal note",
+    overrideExpiresAt: "2026-10-01T00:00:00.000Z",
+    workbookCodes: ["WORKBOOK-40"],
+    inventoryMapped: true,
+  });
+  assert.equal(projected.name, "Gas regulator");
+  assert.equal(projected.model, "ESKA-40");
+  assert.equal("availability" in projected, false);
+  assert.equal("lowStockThreshold" in projected, false);
+  assert.equal("publicQuantity" in projected, false);
+  assert.equal("availabilityOverride" in projected, false);
+  assert.equal("workbookCodes" in projected, false);
+  assert.doesNotMatch(JSON.stringify(projected), /987654321|private-workbook|WORKBOOK-40|internal note/);
+});
+
+test("product editors receive catalog fields without inventory details", () => {
+  const projected = toProductEditorProduct({
+    id: "regulator-1",
+    name: "Gas regulator",
+    availability: { status: "low_stock", quantity: 3 },
+    lowStockThreshold: 5,
+    publicQuantity: true,
+    availabilityOverride: "in_stock",
+    overrideReason: "internal note",
+    overrideExpiresAt: "2026-10-01T00:00:00.000Z",
+    workbookCodes: ["WORKBOOK-40"],
+    inventoryMapped: true,
+  });
+  assert.equal(projected.name, "Gas regulator");
+  for (const key of ["availability", "lowStockThreshold", "publicQuantity", "availabilityOverride", "overrideReason", "overrideExpiresAt", "workbookCodes", "inventoryMapped"]) {
+    assert.equal(key in projected, false, `${key} must be private`);
+  }
+});
+
+test("only inventory-capable roles can view or change inventory settings", () => {
+  assert.equal(hasPermission({ platformRole: "administrator" }, "inventory"), true);
+  assert.equal(hasPermission({ platformRole: "inventory_manager" }, "inventory"), true);
+  assert.equal(hasPermission({ platformRole: "product_editor" }, "inventory"), false);
+  assert.equal(hasPermission({ platformRole: "sales" }, "inventory"), false);
+  assert.equal(hasPermission({ platformRole: "viewer" }, "inventory"), false);
+
+  const details = {
+    lowStockThreshold: 0,
+    publicQuantity: true,
+    availabilityOverride: "out_of_stock",
+    overrideReason: "forged change",
+    overrideExpiresAt: null,
+  };
+  const existing = {
+    low_stock_threshold: 7,
+    public_quantity: 1,
+    availability_override: "low_stock",
+    override_reason: "authorized note",
+    override_expires_at: "2026-10-01T00:00:00.000Z",
+  };
+  const restricted = applyProductInventoryPermission(details, existing, false);
+  assert.equal(restricted.lowStockThreshold, 7);
+  assert.equal(restricted.publicQuantity, false);
+  assert.equal(restricted.availabilityOverride, "low_stock");
+  assert.equal(restricted.overrideReason, "authorized note");
+  assert.equal(restricted.overrideExpiresAt, existing.override_expires_at);
+
+  const authorized = applyProductInventoryPermission(details, existing, true);
+  assert.equal(authorized.lowStockThreshold, 0);
+  assert.equal(authorized.availabilityOverride, "out_of_stock");
+  assert.equal(authorized.publicQuantity, false);
+});
+
+test("inventory endpoint denies staff without inventory capability", async () => {
+  const response = await getAdminInventory({
+    env: {},
+    data: { editor: { platformRole: "product_editor" } },
+  });
+  assert.equal(response.status, 403);
+  assert.equal((await response.json()).code, "forbidden");
+});
+
+test("dashboard omits inventory analytics from staff without inventory capability", async () => {
+  const queries = [];
+  const db = {
+    prepare(query) {
+      queries.push(query);
+      return {
+        first: async () => query.includes("COUNT(*) AS products")
+          ? { products: 4, published: 3, brands: 2 }
+          : { total: 0, new_count: 0, in_progress: 0, quoted: 0, accepted: 0, completed: 0 },
+        all: async () => ({ results: [] }),
+      };
+    },
+  };
+  const response = await getAdminDashboard({
+    env: { DB: db },
+    data: { editor: { platformRole: "sales" } },
+  });
+  const body = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(body.inventory, null);
+  assert.equal(body.latestReport, null);
+  assert.deepEqual(body.importHistory, []);
+  assert.equal(queries.some((query) => /product_inventory|inventory_imports|inventory_mappings/.test(query)), false);
+});
+
+test("sales quotation view omits current and historical inventory status", async () => {
+  const queries = [];
+  const db = {
+    prepare(query) {
+      queries.push(query);
+      const statement = {
+        bind() { return statement; },
+        first: async () => ({ id: "quote-1", reference: "AZQ-202609-000001" }),
+        all: async () => query.includes("FROM quotation_items")
+          ? { results: [{ id: 1, product_id: "p1", product_name: "Regulator", quantity: 2, requirements: "" }] }
+          : { results: [] },
+      };
+      return statement;
+    },
+  };
+  const response = await getAdminQuoteDetails({
+    env: { DB: db },
+    data: { editor: { platformRole: "sales" } },
+    params: { id: "quote-1" },
+  });
+  const body = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(body.items[0].quantity, 2);
+  assert.equal("inventoryStatusAtSubmission" in body.items[0], false);
+  assert.equal("currentInventoryStatus" in body.items[0], false);
+  assert.equal(queries.some((query) => /product_inventory|availability_status/.test(query)), false);
 });
 
 test("Azerbaijani inventory names normalize deterministically", () => {

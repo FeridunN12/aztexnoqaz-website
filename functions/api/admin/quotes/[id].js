@@ -5,7 +5,7 @@ import {
   readJson,
   requireSameOrigin,
 } from "../../../_lib/http.js";
-import { cleanOptionalText, requirePermission } from "../../../_lib/platform.js";
+import { cleanOptionalText, hasPermission, requirePermission } from "../../../_lib/platform.js";
 
 const STATUSES = new Set([
   "new",
@@ -23,18 +23,22 @@ export async function onRequestGet({ env, data, params }) {
   try {
     requirePermission(data.editor, "quotes");
     const id = String(params.id);
+    const canViewInventory = hasPermission(data.editor, "inventory");
     const [quote, items, events] = await Promise.all([
       env.DB.prepare("SELECT * FROM quotation_requests WHERE id = ?").bind(id).first(),
       env.DB
         .prepare(
-          `SELECT qi.*, i.availability_status AS current_inventory_status,
-                  COALESCE(d.availability_override, '') AS availability_override,
-                  d.override_expires_at, i.report_month AS current_report_month,
-                  i.report_year AS current_report_year
-           FROM quotation_items qi
-           LEFT JOIN product_inventory i ON i.product_id = qi.product_id
-           LEFT JOIN product_catalog_details d ON d.product_id = qi.product_id
-           WHERE qi.quotation_id = ? ORDER BY qi.id`,
+          canViewInventory
+            ? `SELECT qi.*, i.availability_status AS current_inventory_status,
+                      COALESCE(d.availability_override, '') AS availability_override,
+                      d.override_expires_at, i.report_month AS current_report_month,
+                      i.report_year AS current_report_year
+               FROM quotation_items qi
+               LEFT JOIN product_inventory i ON i.product_id = qi.product_id
+               LEFT JOIN product_catalog_details d ON d.product_id = qi.product_id
+               WHERE qi.quotation_id = ? ORDER BY qi.id`
+            : `SELECT qi.* FROM quotation_items qi
+               WHERE qi.quotation_id = ? ORDER BY qi.id`,
         )
         .bind(id)
         .all(),
@@ -61,16 +65,20 @@ export async function onRequestGet({ env, data, params }) {
         updatedAt: quote.updated_at,
       },
       items: items.results.map((item) => {
-        const overrideActive = Boolean(
-          item.availability_override
-            && (!item.override_expires_at || new Date(item.override_expires_at).getTime() > Date.now()),
-        );
-        return {
+        const summary = {
           id: item.id,
           productId: item.product_id,
           productName: item.product_name,
           quantity: item.quantity === null ? null : Number(item.quantity),
           requirements: item.requirements,
+        };
+        if (!canViewInventory) return summary;
+        const overrideActive = Boolean(
+          item.availability_override
+            && (!item.override_expires_at || new Date(item.override_expires_at).getTime() > Date.now()),
+        );
+        return {
+          ...summary,
           inventoryStatusAtSubmission: item.inventory_status_at_submission,
           inventoryReportMonthAtSubmission: item.inventory_report_month,
           inventoryReportYearAtSubmission: item.inventory_report_year,

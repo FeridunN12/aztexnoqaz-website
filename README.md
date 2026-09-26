@@ -154,7 +154,7 @@ The currently operational update mode is secure manual upload:
    source row.
 8. Download the sanitized review CSV when errors need offline review.
 9. Apply only after ambiguous rows are resolved and at least one row is mapped.
-10. Review the resulting public availability and dashboard totals.
+10. Review the inventory panel and authorized dashboard totals.
 
 Applying an import uses one D1 batch transaction. The previous inventory is
 captured in a snapshot first. A failed transaction preserves the last valid
@@ -179,9 +179,13 @@ rows remain individually auditable before quantities are combined.
 
 ## Inventory Rules
 
-The central `product_inventory` record drives public cards, product details,
-availability filters, quotation stock context, inventory tables, and dashboard
-counts.
+The central `product_inventory` record drives staff inventory tables, import
+review, authorized dashboard counts, and internal quotation context. The public
+catalogue and product API expose product content only; they do not return stock
+quantities, availability states, workbook mappings, or inventory report dates.
+Inventory endpoints and inventory-specific dashboard details require the
+`inventory` permission, currently assigned to administrators and inventory
+managers. Product editors and sales staff receive no inventory data.
 
 - Quantity greater than zero: **In stock**
 - Quantity equal to zero: **Out of stock**
@@ -189,14 +193,10 @@ counts.
 - Missing mapping or missing row: **Contact for availability**
 - No successful report: **Inventory information unavailable**
 
-No low-stock threshold is invented. Product editors can configure a threshold,
-whether exact quantity is public, and a documented availability override with
-an optional expiration. The imported status remains visible internally when an
-override is active.
-
-Public wording for the current manual process is:
-
-> Stock synchronized from the latest official monthly inventory report.
+No low-stock threshold is invented. Authorized inventory staff can configure a
+threshold and a documented internal availability override with an optional
+expiration. Exact quantity is never published. Inventory status and report
+history stay inside the signed-in staff workspace.
 
 The site never calls a local attachment real-time inventory.
 
@@ -315,16 +315,16 @@ confirmation, rollback, language switching, and desktop/mobile layouts.
 
 ## Three-Minute Demonstration
 
-1. Open the public catalogue and filter products by availability.
-2. Open and share a product, showing its latest report date.
+1. Open the public catalogue and search or filter products by category and brand.
+2. Open and share a product; confirm its stock details are private.
 3. Submit a multi-product quotation and note the generated reference.
 4. Sign in to `/admin.html` and open **Inventory imports**.
 5. Upload `tests/fixtures/sanitized-inventory.xlsx`.
 6. Review mapped, unmatched, invalid, and warning rows without applying them.
 7. Map a fake row, apply the import, and show dashboard/inventory updates.
-8. Return to the public product and show its updated availability.
-9. Open the saved quotation, compare submitted and current stock status, and
-   change the workflow status.
+8. Return to the public catalogue and confirm no stock details are exposed.
+9. As an inventory-authorized staff member, open the saved quotation and compare
+   submitted and current stock status, then change the workflow status.
 10. Roll back the fake import and explain that production currently uses
     reviewed monthly uploads; automatic cloud sync awaits a real connector.
 
