@@ -1832,15 +1832,14 @@ function initializeReferences() {
   const list = section.querySelector(".references-list");
   const controls = section.querySelector(".references-controls");
   const toggle = section.querySelector("#references-toggle");
-  const pause = section.querySelector("#references-pause");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const clone = list.cloneNode(true);
   clone.classList.add("references-clone");
   clone.setAttribute("aria-hidden", "true");
-  clone.setAttribute("inert", "");
+  // Repeated cards stay clickable, but are excluded from keyboard/AT duplication.
+  clone.querySelectorAll("a").forEach(link => link.setAttribute("tabindex", "-1"));
   clone.removeAttribute("aria-label");
   track.append(clone);
-  let paused = false;
   let expanded = false;
   let inView = false;
 
@@ -1855,20 +1854,22 @@ function initializeReferences() {
     const reduced = reducedMotion.matches;
     section.classList.toggle("references-enhanced", !reduced);
     section.classList.toggle("references-expanded", expanded && !reduced);
-    section.dataset.running = String(!reduced && !paused && !expanded && inView && !document.hidden);
+    section.dataset.running = String(!reduced && !expanded && inView && !document.hidden);
     controls.hidden = reduced;
-    pause.hidden = expanded;
-    pause.setAttribute("aria-pressed", String(paused));
-    pause.querySelector("span").textContent = t(paused ? "Resume" : "Pause");
-    pause.querySelector("svg, i")?.setAttribute("data-lucide", paused ? "play" : "pause");
     toggle.setAttribute("aria-expanded", String(expanded));
     toggle.querySelector("span").textContent = t(expanded ? "Scrolling view" : "View all");
     measure();
     refreshIcons();
   }
 
-  pause.addEventListener("click", () => { paused = !paused; sync(); });
   toggle.addEventListener("click", () => { expanded = !expanded; sync(); });
+  // Keyboard users get the same complete grid instead of chasing moving links.
+  list.addEventListener("focusin", event => {
+    if (!expanded && event.target.matches("a:focus-visible")) {
+      expanded = true;
+      sync();
+    }
+  });
   reducedMotion.addEventListener("change", sync);
   document.addEventListener("visibilitychange", sync);
   window.addEventListener("aztexnogaz:languagechange", sync);

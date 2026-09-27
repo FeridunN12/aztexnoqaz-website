@@ -3095,9 +3095,11 @@ html[dir="rtl"] .search-wrap input {
 .reference-control svg { width: 16px; height: 16px; }
 .reference-control:hover { border-color: var(--blue); background: #f0f5fc; }
 .reference-control:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
-.reference-control[aria-pressed="true"] { background: #eaf1fc; border-color: var(--blue); }
 .references-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; margin: 0; padding: 0; list-style: none; }
 .reference-card { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; height: 180px; overflow: hidden; border: 1px solid #e0e7f0; border-radius: 10px; background: #fff; box-shadow: 0 3px 10px rgba(7, 28, 55, .025); }
+.reference-link { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; color: inherit; text-decoration: none; border-radius: inherit; transition: background .2s, box-shadow .2s; }
+.reference-link:hover { background: #f7faff; box-shadow: inset 0 0 0 1px #c4d6ef; }
+.reference-link:focus-visible { outline: 3px solid var(--blue); outline-offset: -3px; }
 .reference-image { display: flex; width: 100%; min-height: 137px; align-items: center; justify-content: center; padding: 12px; }
 .reference-art { position: relative; display: block; flex-shrink: 0; width: var(--art-width); max-width: 100%; overflow: hidden; }
 .reference-art img { position: absolute; max-width: none; height: auto; user-select: none; }
@@ -3113,8 +3115,6 @@ html[dir="rtl"] .search-wrap input {
 .references-enhanced .references-list { display: flex; flex-shrink: 0; gap: 18px; padding-right: 18px; width: max-content; }
 .references-enhanced .reference-card { width: 218px; flex-shrink: 0; }
 .references-enhanced[data-running="true"] .references-track { animation-play-state: running; }
-.references-enhanced .references-viewport:hover .references-track,
-.references-enhanced .references-viewport:focus-within .references-track { animation-play-state: paused; }
 .references-expanded .references-viewport { -webkit-mask-image: none; mask-image: none; }
 .references-expanded .references-track { display: block; width: 100%; transform: none !important; animation-play-state: paused !important; }
 .references-expanded .references-list { display: grid; width: 100%; padding-right: 0; }

@@ -294,12 +294,23 @@ test("references preserve all eleven supplied logos and translate every control"
   assert.equal(logos.length,11);
   assert.equal(new Set(logos.map(logo=>logo[1])).size,11);
   assert.ok(logos.some(logo=>logo[2]==="Baku Electronics"));
+  const links = [...section.matchAll(/<a class="reference-link" href="(https:\/\/[^"]+)" target="_blank" rel="noopener noreferrer">/g)];
+  assert.equal(links.length, 11);
+  assert.equal(new Set(links.map(link => link[1])).size, 11);
+  assert.doesNotMatch(section, /references-pause|reference-motion-control/);
+  assert.match(section, /id="references-toggle"/);
+  const script = await readFile(new URL("../script.js", import.meta.url), "utf8");
+  const references = script.slice(script.indexOf("function initializeReferences()"));
+  assert.doesNotMatch(references, /references-pause|setAttribute\("inert"/);
+  assert.match(references, /link.setAttribute\("tabindex", "-1"\)/);
+  const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
+  assert.doesNotMatch(css, /references-viewport:(?:hover|focus-within)/);
   for (const logo of logos) {
     const bytes=await readFile(new URL(`../${logo[1]}`,import.meta.url));
     assert.equal(detectImageType(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength)),"image/jpeg");
   }
   const translations=await readFile(new URL("../i18n.js",import.meta.url),"utf8");
-  for (const key of ["References","Companies and organizations we work with.","View all","Scrolling view","Pause","Resume"]) {
+  for (const key of ["References","Companies and organizations we work with.","View all","Scrolling view"]) {
     const start=translations.indexOf(`"${key}": [`);
     assert.ok(start>=0);
     const array=translations.slice(translations.indexOf("[",start),translations.indexOf("],",start)+1);
