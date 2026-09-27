@@ -1825,4 +1825,69 @@ async function initializeSite() {
   void checkEditorSession();
 }
 
+function initializeReferences() {
+  const section = document.querySelector("#references");
+  if (!section) return;
+  const track = section.querySelector(".references-track");
+  const list = section.querySelector(".references-list");
+  const controls = section.querySelector(".references-controls");
+  const toggle = section.querySelector("#references-toggle");
+  const pause = section.querySelector("#references-pause");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const clone = list.cloneNode(true);
+  clone.classList.add("references-clone");
+  clone.setAttribute("aria-hidden", "true");
+  clone.setAttribute("inert", "");
+  clone.removeAttribute("aria-label");
+  track.append(clone);
+  let paused = false;
+  let expanded = false;
+  let inView = false;
+
+  function measure() {
+    if (reducedMotion.matches || expanded) return;
+    const distance = list.getBoundingClientRect().width;
+    section.style.setProperty("--reference-distance", `${distance}px`);
+    section.style.setProperty("--reference-duration", `${distance / 23}s`);
+  }
+
+  function sync() {
+    const reduced = reducedMotion.matches;
+    section.classList.toggle("references-enhanced", !reduced);
+    section.classList.toggle("references-expanded", expanded && !reduced);
+    section.dataset.running = String(!reduced && !paused && !expanded && inView && !document.hidden);
+    controls.hidden = reduced;
+    pause.hidden = expanded;
+    pause.setAttribute("aria-pressed", String(paused));
+    pause.querySelector("span").textContent = t(paused ? "Resume" : "Pause");
+    pause.querySelector("svg, i")?.setAttribute("data-lucide", paused ? "play" : "pause");
+    toggle.setAttribute("aria-expanded", String(expanded));
+    toggle.querySelector("span").textContent = t(expanded ? "Scrolling view" : "View all");
+    measure();
+    refreshIcons();
+  }
+
+  pause.addEventListener("click", () => { paused = !paused; sync(); });
+  toggle.addEventListener("click", () => { expanded = !expanded; sync(); });
+  reducedMotion.addEventListener("change", sync);
+  document.addEventListener("visibilitychange", sync);
+  window.addEventListener("aztexnogaz:languagechange", sync);
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; sync(); }, { rootMargin: "80px" }).observe(section);
+  } else {
+    inView = true;
+  }
+  if ("ResizeObserver" in window) new ResizeObserver(measure).observe(list);
+  else window.addEventListener("resize", measure);
+  sync();
+}
+
 initializeSite();
+try {
+  initializeReferences();
+} catch {
+  // Optional motion must never prevent the catalogue or static references loading.
+  document.querySelector("#references")?.classList.remove("references-enhanced", "references-expanded");
+  const controls = document.querySelector(".references-controls");
+  if (controls) controls.hidden = true;
+}

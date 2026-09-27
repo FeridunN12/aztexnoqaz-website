@@ -287,6 +287,28 @@ test("hidden editor entry retains password-manager hints and an independent shor
   assert.match(logout,/openEditorLogin\(\)/);
 });
 
+test("references preserve all eleven supplied logos and translate every control", async () => {
+  const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const section = html.slice(html.indexOf('<section class="references-section"'),html.indexOf('<section class="contact-section"'));
+  const logos = [...section.matchAll(/src="(assets\/references\/[^\"]+)" alt="([^\"]+)"/g)];
+  assert.equal(logos.length,11);
+  assert.equal(new Set(logos.map(logo=>logo[1])).size,11);
+  assert.ok(logos.some(logo=>logo[2]==="Baku Electronics"));
+  for (const logo of logos) {
+    const bytes=await readFile(new URL(`../${logo[1]}`,import.meta.url));
+    assert.equal(detectImageType(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength)),"image/jpeg");
+  }
+  const translations=await readFile(new URL("../i18n.js",import.meta.url),"utf8");
+  for (const key of ["References","Companies and organizations we work with.","View all","Scrolling view","Pause","Resume"]) {
+    const start=translations.indexOf(`"${key}": [`);
+    assert.ok(start>=0);
+    const array=translations.slice(translations.indexOf("[",start),translations.indexOf("],",start)+1);
+    const values=JSON.parse(array);
+    assert.equal(values.length,5);
+    assert.ok(values.every(value=>value.trim().length>0));
+  }
+});
+
 let passed = 0;
 for (const { name, callback } of tests) {
   try {

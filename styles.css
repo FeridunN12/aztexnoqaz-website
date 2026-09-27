@@ -3078,6 +3078,71 @@ html[dir="rtl"] .search-wrap input {
   padding-left: 14px;
 }
 
+/* References retain the supplied artwork; only its on-page viewport is cropped. */
+.references-section {
+  padding: 72px 0 76px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fff 0%, #f4f7fb 100%);
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 100px;
+}
+.references-header { display: flex; align-items: end; justify-content: space-between; gap: 28px; margin-bottom: 30px; }
+.references-heading-group .section-kicker { margin: 0 0 9px; }
+.references-heading-group h2 { margin: 0; font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1.15; letter-spacing: -.025em; }
+.references-intro { margin: 12px 0 0; color: var(--muted); font-size: .97rem; }
+.references-controls { display: flex; align-items: center; flex-shrink: 0; gap: 8px; }
+.reference-control { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); background: #fff; font-size: .83rem; font-weight: 650; transition: border-color .2s, background .2s; }
+.reference-control svg { width: 16px; height: 16px; }
+.reference-control:hover { border-color: var(--blue); background: #f0f5fc; }
+.reference-control:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+.reference-control[aria-pressed="true"] { background: #eaf1fc; border-color: var(--blue); }
+.references-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; margin: 0; padding: 0; list-style: none; }
+.reference-card { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; height: 180px; overflow: hidden; border: 1px solid #e0e7f0; border-radius: 10px; background: #fff; box-shadow: 0 3px 10px rgba(7, 28, 55, .025); }
+.reference-image { display: flex; width: 100%; min-height: 137px; align-items: center; justify-content: center; padding: 12px; }
+.reference-art { position: relative; display: block; flex-shrink: 0; width: var(--art-width); max-width: 100%; overflow: hidden; }
+.reference-art img { position: absolute; max-width: none; height: auto; user-select: none; }
+.reference-art--azeriqaz { clip-path: polygon(30% 0, 70% 0, 70% 67%, 100% 67%, 100% 97%, 97% 100%, 0 100%, 0 67%, 30% 67%); }
+.reference-art--socar { clip-path: polygon(24% 0, 78% 0, 78% 76%, 100% 76%, 100% 100%, 0 100%, 0 76%, 24% 76%); }
+.reference-art--elster { clip-path: polygon(7% 0, 100% 0, 100% 100%, 0 100%, 0 14%); }
+.reference-art--agropark-shamkir { clip-path: polygon(5% 0, 95% 0, 100% 14%, 100% 100%, 0 100%, 0 14%); }
+.reference-art--baku-electronics { clip-path: polygon(10% 0, 90% 0, 100% 25%, 100% 75%, 90% 100%, 10% 100%, 0 75%, 0 25%); }
+.reference-name { display: flex; align-items: center; justify-content: center; width: calc(100% - 28px); min-height: 40px; padding: 7px 2px; border-top: 1px solid #eef2f7; color: #526176; font-size: .75rem; font-weight: 600; text-align: center; }
+.references-clone { display: none; }
+.references-enhanced .references-viewport { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent); mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent); }
+.references-enhanced .references-track { display: flex; width: max-content; animation: references-drift var(--reference-duration, 120s) linear infinite; animation-play-state: paused; }
+.references-enhanced .references-list { display: flex; flex-shrink: 0; gap: 18px; padding-right: 18px; width: max-content; }
+.references-enhanced .reference-card { width: 218px; flex-shrink: 0; }
+.references-enhanced[data-running="true"] .references-track { animation-play-state: running; }
+.references-enhanced .references-viewport:hover .references-track,
+.references-enhanced .references-viewport:focus-within .references-track { animation-play-state: paused; }
+.references-expanded .references-viewport { -webkit-mask-image: none; mask-image: none; }
+.references-expanded .references-track { display: block; width: 100%; transform: none !important; animation-play-state: paused !important; }
+.references-expanded .references-list { display: grid; width: 100%; padding-right: 0; }
+.references-expanded .reference-card { width: auto; }
+.references-expanded .references-clone { display: none; }
+@keyframes references-drift { to { transform: translateX(calc(-1 * var(--reference-distance, 2596px))); } }
+@media (max-width: 1000px) {
+  .references-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .references-section { padding: 44px 0 48px; }
+  .references-header { align-items: start; flex-direction: column; gap: 20px; margin-bottom: 22px; }
+  .references-intro { max-width: 34ch; font-size: .91rem; }
+  .reference-control { min-height: 44px; }
+  .references-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .references-enhanced .references-list { gap: 12px; padding-right: 12px; }
+  .references-enhanced .reference-card { width: 202px; }
+  .references-expanded .reference-card { width: auto; }
+  .reference-card { height: 160px; }
+  .reference-image { min-height: 116px; padding: 10px; }
+  .reference-art { max-width: 100%; }
+  .reference-name { font-size: .68rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .references-track { animation: none !important; transform: none !important; }
+  .reference-control { transition: none; }
+}
+
 /* Keep the extended catalogue controls after the legacy responsive rules. */
 .catalog-toolbar {
   grid-template-columns: minmax(270px, 1.15fr) minmax(0, 2.6fr) repeat(3, minmax(150px, 0.65fr)) auto;
@@ -3109,6 +3174,7 @@ html[dir="rtl"] .search-wrap input {
 @media (max-width: 620px) {
   .hero h1 {
     font-size: 2.65rem;
+    overflow-wrap: anywhere;
   }
 
   .catalog-toolbar {
