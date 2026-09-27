@@ -91,6 +91,8 @@
     "How to buy": ["Necə almaq olar", "How to buy", "Nasıl satın alınır", "Как купить", "როგორ შევიძინოთ", "نحوه خرید"],
     "Contact": ["Əlaqə", "Contact", "İletişim", "Контакты", "კონტაქტი", "تماس"],
     "Editor login": ["Redaktor girişi", "Editor login", "Editör girişi", "Вход для редактора", "რედაქტორის შესვლა", "ورود ویرایشگر"],
+    "Editor menu": ["Redaktor menyusu", "Editor menu", "Editör menüsü", "Меню редактора", "რედაქტორის მენიუ"],
+    "Open staff workspace": ["İdarəetmə panelini aç", "Open staff workspace", "Yönetim panelini aç", "Открыть панель управления", "მართვის პანელის გახსნა"],
     "Request quote": ["Qiymət təklifi al", "Request quote", "Teklif iste", "Запросить предложение", "ფასის მოთხოვნა", "درخواست قیمت"],
     "Editing as": ["Redaktə edən", "Editing as", "Düzenleyen", "Редактор", "რედაქტორი", "ویرایش به‌عنوان"],
     "Add product": ["Məhsul əlavə et", "Add product", "Ürün ekle", "Добавить товар", "პროდუქტის დამატება", "افزودن محصول"],

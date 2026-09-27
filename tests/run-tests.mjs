@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { runInNewContext } from "node:vm";
 import {
   applyProductInventoryPermission,
   toProductEditorProduct,
@@ -248,6 +249,42 @@ test("optional staff requests and missing report labels cannot block catalogue r
   assert.doesNotMatch(initialization, /await\s+checkEditorSession/);
   assert.match(source, /if \(heroReportDate\) heroReportDate\.textContent/);
   assert.match(source, /if \(catalogReportNote\) catalogReportNote\.textContent/);
+});
+
+test("login preferences retain email and device name but never the password", async () => {
+  const source = await readFile(new URL("../script.js", import.meta.url), "utf8");
+  const functions = source.slice(source.indexOf("function restoreEditorLoginPreferences()"), source.indexOf("function syncEditorLoginMenu()"));
+  const values = { email: {value:""}, deviceName:{value:""}, password:{value:""} };
+  let stored;
+  const context = {
+    editorLoginPreferencesKey:"review-preferences",
+    editorLoginForm:{elements:{namedItem:name=>values[name]}},
+    localStorage:{setItem:(_key,value)=>{stored=value;},getItem:()=>stored},
+    form:new Map([["email"," editor@example.test "],["deviceName"," Office "],["password","must-not-be-stored"]]),
+  };
+  runInNewContext(`${functions}\nrememberEditorLoginPreferences(form); restoreEditorLoginPreferences();`,context);
+  assert.deepEqual(JSON.parse(stored),{email:"editor@example.test",deviceName:"Office"});
+  assert.equal(values.email.value,"editor@example.test");
+  assert.equal(values.deviceName.value,"Office");
+  assert.equal(values.password.value,"");
+  assert.doesNotMatch(stored,/must-not-be-stored|password/);
+  context.localStorage.getItem=()=>{throw new Error("Storage blocked");};
+  context.localStorage.setItem=()=>{throw new Error("Storage blocked");};
+  assert.doesNotThrow(()=>runInNewContext(`${functions}\nrememberEditorLoginPreferences(form); restoreEditorLoginPreferences();`,context));
+});
+
+test("hidden editor entry retains password-manager hints and an independent shortcut", async () => {
+  const html=await readFile(new URL("../index.html",import.meta.url),"utf8");
+  const source=await readFile(new URL("../script.js",import.meta.url),"utf8");
+  assert.match(html,/<a[^>]+id="staff-access"[^>]+hidden>/);
+  assert.match(html,/name="email"[^>]+autocomplete="username"/);
+  assert.match(html,/name="password"[^>]+autocomplete="current-password"/);
+  assert.match(source,/event\.ctrlKey && event\.altKey/);
+  assert.match(source,/if \(!editorLoginModal\.open\) editorLoginModal\.showModal\(\)/);
+  const logout=source.slice(source.indexOf("async function signOutEditor()"),source.indexOf("function clearImagePreview()"));
+  assert.ok(logout.indexOf("await readApiResponse(response)")<logout.indexOf("editorSession = null"));
+  assert.doesNotMatch(logout,/staffAccess.hidden = false/);
+  assert.match(logout,/openEditorLogin\(\)/);
 });
 
 let passed = 0;

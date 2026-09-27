@@ -2379,6 +2379,13 @@ button {
   padding: 22px 0;
 }
 
+.editor-account-panel { padding: 22px 0 8px; }
+.editor-account-panel p { display: grid; gap: 6px; margin: 0 0 22px; overflow-wrap: anywhere; }
+.editor-account-panel p span, .editor-account-panel small { color: var(--muted); }
+.editor-account-panel strong { font-size: 1.2rem; }
+.editor-account-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.editor-account-actions a { text-decoration: none; }
+
 .add-editor-form {
   display: grid;
   grid-template-columns: 0.8fr 1.25fr 1fr auto;

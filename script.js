@@ -88,6 +88,11 @@ const editorLoginModal = document.querySelector("#editor-login-modal");
 const editorLoginForm = document.querySelector("#editor-login-form");
 const editorLoginMessage = document.querySelector("#editor-login-message");
 const editorLoginSubmit = document.querySelector("#editor-login-submit");
+const editorLoginFields = document.querySelector("#editor-login-fields");
+const editorLoginFooter = document.querySelector("#editor-login-footer");
+const editorAccountPanel = document.querySelector("#editor-account-panel");
+const editorMenuSignOut = document.querySelector("#editor-menu-sign-out");
+const editorLoginPreferencesKey = "aztexnogaz:login-preferences";
 const accessModal = document.querySelector("#access-modal");
 const addEditorForm = document.querySelector("#add-editor-form");
 const accessMessage = document.querySelector("#access-message");
@@ -671,6 +676,7 @@ async function activateEditorSession(editor) {
   manageEditorsButton.hidden = role !== "administrator";
   addProductButton.hidden = !["administrator", "product_editor"].includes(role);
   document.body.classList.add("editor-mode");
+  syncEditorLoginMenu();
   await loadPrivateCatalogDetails();
   syncInventoryVisibility();
   renderProducts();
@@ -682,20 +688,58 @@ async function activateEditorSession(editor) {
   handleUrlState();
 }
 
+function restoreEditorLoginPreferences() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(editorLoginPreferencesKey) || "{}");
+    for (const name of ["email", "deviceName"]) {
+      const input = editorLoginForm.elements.namedItem(name);
+      if (!input.value && typeof saved[name] === "string") input.value = saved[name];
+    }
+  } catch {
+    // Login remains available when browser storage is blocked or cleared.
+  }
+}
+
+function rememberEditorLoginPreferences(formData) {
+  try {
+    // Passwords belong to the browser's password manager, never web storage.
+    localStorage.setItem(editorLoginPreferencesKey, JSON.stringify({
+      email: String(formData.get("email") || "").trim(),
+      deviceName: String(formData.get("deviceName") || "").trim(),
+    }));
+  } catch {
+    // Remembering these non-secret fields is optional.
+  }
+}
+
+function syncEditorLoginMenu() {
+  const signedIn = Boolean(editorSession);
+  editorLoginFields.hidden = signedIn;
+  editorLoginFooter.hidden = signedIn;
+  editorAccountPanel.hidden = !signedIn;
+  editorLoginModal.querySelector("#editor-login-title").textContent = t(signedIn ? "Editor menu" : "Editor login");
+  editorLoginModal.querySelector("#editor-account-name").textContent = editorSession?.displayName || editorSession?.email || "";
+  editorLoginModal.querySelector("#editor-account-email").textContent = editorSession?.email || "";
+  for (const input of editorLoginFields.querySelectorAll("input")) input.disabled = signedIn;
+  if (!signedIn) restoreEditorLoginPreferences();
+}
+
 function openEditorLogin() {
   setFormMessage(editorLoginMessage);
+  syncEditorLoginMenu();
   document.body.classList.add("modal-open");
-  editorLoginModal.showModal();
+  if (!editorLoginModal.open) editorLoginModal.showModal();
   refreshIcons();
 }
 
 function closeEditorLogin() {
   editorLoginModal.close();
-  document.body.classList.remove("modal-open");
+  if (!document.querySelector("dialog[open]")) document.body.classList.remove("modal-open");
 }
 
 async function submitEditorLogin(event) {
   event.preventDefault();
+  if (editorSession || editorLoginSubmit.disabled) return;
   setFormMessage(editorLoginMessage);
   editorLoginSubmit.disabled = true;
   const formData = new FormData(editorLoginForm);
@@ -711,6 +755,7 @@ async function submitEditorLogin(event) {
       }),
     });
     const body = await readApiResponse(response);
+    rememberEditorLoginPreferences(formData);
     await activateEditorSession(body.editor);
     editorLoginForm.reset();
     closeEditorLogin();
@@ -726,14 +771,16 @@ async function submitEditorLogin(event) {
 }
 
 async function signOutEditor() {
+  if (editorSignOut.disabled) return;
   editorSignOut.disabled = true;
+  editorMenuSignOut.disabled = true;
   try {
-    await fetch("/api/auth/logout", {
+    const response = await fetch("/api/auth/logout", {
       method: "POST",
       credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
     });
-  } finally {
+    await readApiResponse(response);
     editorSession = null;
     clearPrivateCatalogDetails();
     syncInventoryVisibility();
@@ -745,11 +792,20 @@ async function signOutEditor() {
       if (activeModalProduct) renderProductModalContent(activeModalProduct);
     }
     editorBar.hidden = true;
-    staffAccess.hidden = false;
+    staffAccess.hidden = true;
     document.body.classList.remove("editor-mode");
-    editorSignOut.disabled = false;
     renderProducts();
+    editorLoginForm.elements.namedItem("password").value = "";
+    openEditorLogin();
+    editorLoginForm.elements.namedItem("password").focus();
+    setFormMessage(editorLoginMessage, t("Signed out from this device."));
     showToast(t("Signed out from this device."));
+  } catch (error) {
+    openEditorLogin();
+    setFormMessage(editorLoginMessage, error.message, true);
+  } finally {
+    editorSignOut.disabled = false;
+    editorMenuSignOut.disabled = false;
   }
 }
 
@@ -1618,12 +1674,22 @@ staffAccess.addEventListener("click", (event) => {
   openEditorLogin();
 });
 editorSignOut.addEventListener("click", signOutEditor);
+editorMenuSignOut.addEventListener("click", signOutEditor);
+document.addEventListener("keydown", (event) => {
+  if (event.ctrlKey && event.altKey && !event.shiftKey && !event.metaKey
+      && !event.getModifierState?.("AltGraph")
+      && (event.code === "KeyE" || event.key?.toLowerCase() === "e")) {
+    event.preventDefault();
+    if (!event.repeat && !event.isComposing) openEditorLogin();
+  }
+});
 editorLoginForm.addEventListener("submit", submitEditorLogin);
 editorLoginModal.querySelectorAll(".login-dialog-close").forEach((button) => {
   button.addEventListener("click", closeEditorLogin);
 });
 editorLoginModal.addEventListener("close", () => {
-  document.body.classList.remove("modal-open");
+  editorLoginForm.elements.namedItem("password").value = "";
+  if (!document.querySelector("dialog[open]")) document.body.classList.remove("modal-open");
 });
 productEditorForm.addEventListener("submit", saveProduct);
 productEditorForm.querySelector('[name="availabilityOverride"]').addEventListener("change", syncAvailabilityOverrideFields);
@@ -1699,6 +1765,7 @@ confirmModal.addEventListener("close", () => {
 });
 
 window.addEventListener("aztexnogaz:languagechange", () => {
+  syncEditorLoginMenu();
   populateQuoteProducts();
   renderQuoteItems();
   populateBrandFilter();

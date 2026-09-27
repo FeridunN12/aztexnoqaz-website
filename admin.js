@@ -127,6 +127,13 @@ function statusBadge(value) {
 function showLogin() {
   workspace.hidden = true;
   loginPanel.hidden = false;
+  loginForm.elements.password.value = "";
+  try {
+    const saved = JSON.parse(localStorage.getItem("aztexnogaz:login-preferences") || "{}");
+    for (const name of ["email", "deviceName"]) {
+      if (typeof saved[name] === "string") loginForm.elements[name].value = saved[name];
+    }
+  } catch { /* Browser storage is optional; sign-in still works. */ }
   setTimeout(() => loginForm.elements.email.focus(), 30);
   refreshIcons();
 }
@@ -179,6 +186,13 @@ async function submitLogin(event) {
       }),
     }));
     const session = await api("/api/admin/session");
+    try {
+      localStorage.setItem("aztexnogaz:login-preferences", JSON.stringify({
+        email: String(form.get("email") || "").trim(),
+        deviceName: String(form.get("deviceName") || "").trim(),
+      }));
+    } catch { /* Never persist the password in web storage. */ }
+    loginForm.elements.password.value = "";
     showWorkspace(session.editor || body.editor);
   } catch (error) {
     formMessage(loginMessage, error.message, true);
@@ -188,11 +202,21 @@ async function submitLogin(event) {
 }
 
 async function signOut() {
-  await fetch("/api/auth/logout", {
-    method: "POST",
-    credentials: "same-origin",
-    headers: { "Content-Type": "application/json" },
-  }).catch(() => {});
+  const button = document.querySelector("#staff-sign-out");
+  if (button.disabled) return;
+  button.disabled = true;
+  try {
+    await readApi(await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+    }));
+  } catch (error) {
+    showToast(error.message);
+    return;
+  } finally {
+    button.disabled = false;
+  }
   state.editor = null;
   state.loaded.clear();
   state.dashboard = null;

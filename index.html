@@ -32,10 +32,10 @@
       }
     </script>
     <link rel="icon" href="assets/logo-mark.png" />
-    <link rel="stylesheet" href="styles.css?v=20260926-inventory-v2" />
+    <link rel="stylesheet" href="styles.css?v=20260927-admin-shortcut-v1" />
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-    <script defer src="i18n.js?v=20260926-inventory-v2"></script>
-    <script defer src="script.js?v=20260926-inventory-v2"></script>
+    <script defer src="i18n.js?v=20260927-admin-shortcut-v1"></script>
+    <script defer src="script.js?v=20260927-admin-shortcut-v1"></script>
   </head>
   <body>
     <a class="skip-link" href="#products">Skip to products</a>
@@ -100,7 +100,7 @@
             </button>
           </div>
         </div>
-        <a class="staff-access" id="staff-access" href="#editor-login" aria-label="Editor login" title="Editor login">
+        <a class="staff-access" id="staff-access" href="#editor-login" aria-label="Editor login" title="Editor login" hidden>
           <i data-lucide="lock-keyhole"></i>
         </a>
         <a class="nav-cta" href="#buy">
@@ -567,7 +567,7 @@
     </dialog>
 
     <dialog class="editor-modal login-modal" id="editor-login-modal" aria-labelledby="editor-login-title">
-      <form id="editor-login-form" method="dialog">
+      <form id="editor-login-form" method="post" action="/api/auth/login" autocomplete="on">
         <header class="editor-modal-header">
           <div>
             <p class="section-kicker">Private access</p>
@@ -578,7 +578,15 @@
           </button>
         </header>
 
-        <div class="login-form-fields">
+        <div id="editor-account-panel" class="editor-account-panel" hidden>
+          <p><span>Editing as</span><strong id="editor-account-name"></strong><small id="editor-account-email"></small></p>
+          <div class="editor-account-actions">
+            <a class="editor-save-button" href="admin.html"><i data-lucide="layout-dashboard"></i><span>Open staff workspace</span></a>
+            <button class="editor-secondary-button" id="editor-menu-sign-out" type="button"><i data-lucide="log-out"></i><span>Sign out</span></button>
+          </div>
+        </div>
+
+        <div class="login-form-fields" id="editor-login-fields">
           <label>
             <span>Email</span>
             <input name="email" type="email" autocomplete="username" placeholder="name@example.com" required />
@@ -594,7 +602,7 @@
         </div>
 
         <p class="editor-form-message" id="editor-login-message" role="status"></p>
-        <footer class="editor-modal-footer">
+        <footer class="editor-modal-footer" id="editor-login-footer">
           <button class="editor-secondary-button login-dialog-close" type="button">Cancel</button>
           <button class="editor-save-button" id="editor-login-submit" type="submit">
             <i data-lucide="log-in"></i>
