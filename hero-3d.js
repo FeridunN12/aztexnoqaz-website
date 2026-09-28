@@ -309,6 +309,7 @@ function productFitLimit(index) {
   }
   // Wide valves need more room beside the unchanged headline at tablet widths.
   if (window.innerWidth <= 1100) return [2.70, 2.70, 2.60, 2.55, 2.25, 2.50][index];
+  if (window.innerWidth <= 1400) return [2.80, 2.70, 2.62, 2.50, 2.45, 2.45][index];
   return 2.95;
 }
 
