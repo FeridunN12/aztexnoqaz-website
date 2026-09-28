@@ -27,7 +27,7 @@ const copy = {
     scroll: "3D · AŞAĞI SÜRÜŞDÜRÜN", static: "HƏRƏKƏTSİZ BAXIŞ",
     heading: "Altı məhsul üzrə 3D baxış",
     description: "Sürüşdürərək modellərə baxın və ya məhsul seçin. Açılan daxili görünüşlər konseptual vizual tədqiqatdır; istehsalçının CAD yığımı deyil.",
-    film: "4K filmə bax", evidence: "Texniki mənbələr və məhdudiyyətlər"
+    evidence: "Texniki mənbələr və məhdudiyyətlər"
   },
   en: {
     details: ["Gas pressure regulator", "Volume corrector", "Volume corrector", "Automatic shut-off valve", "Ball valve · DN65", "Diaphragm gas meter"],
@@ -36,7 +36,7 @@ const copy = {
     scroll: "3D · SCROLL TO EXPLORE", static: "STATIC VIEW",
     heading: "Six 3D product studies",
     description: "Scroll through the models or select a product. Opening views are conceptual visual studies; they are not manufacturer CAD assemblies.",
-    film: "Watch the 4K film", evidence: "Engineering sources and limitations"
+    evidence: "Engineering sources and limitations"
   },
   tr: {
     details: ["Gaz basınç regülatörü", "Hacim düzeltici", "Hacim düzeltici", "Otomatik kapatma vanası", "Küresel vana · DN65", "Diyaframlı gaz sayacı"],
@@ -45,7 +45,7 @@ const copy = {
     scroll: "3D · KEŞFETMEK İÇİN KAYDIRIN", static: "SABİT GÖRÜNÜM",
     heading: "Altı 3D ürün çalışması",
     description: "Modelleri kaydırarak inceleyin veya bir ürün seçin. Açılan iç görünümler kavramsaldır; üreticinin CAD montajı değildir.",
-    film: "4K filmi izle", evidence: "Teknik kaynaklar ve sınırlamalar"
+    evidence: "Teknik kaynaklar ve sınırlamalar"
   },
   ru: {
     details: ["Регулятор давления газа", "Корректор объёма", "Корректор объёма", "Автоматический запорный клапан", "Шаровой кран · DN65", "Мембранный счётчик газа"],
@@ -54,7 +54,7 @@ const copy = {
     scroll: "3D · ПРОКРУТИТЕ ДЛЯ ПРОСМОТРА", static: "СТАТИЧНЫЙ ВИД",
     heading: "Шесть 3D-моделей продукции",
     description: "Прокрутите модели или выберите продукт. Внутренние виды являются концептуальными и не представляют собой CAD-сборки производителя.",
-    film: "Смотреть фильм 4K", evidence: "Технические источники и ограничения"
+    evidence: "Технические источники и ограничения"
   },
   ka: {
     details: ["გაზის წნევის რეგულატორი", "მოცულობის კორექტორი", "მოცულობის კორექტორი", "ავტომატური ჩამკეტი სარქველი", "ბურთულიანი სარქველი · DN65", "მემბრანული გაზის მრიცხველი"],
@@ -63,7 +63,7 @@ const copy = {
     scroll: "3D · გადაახვიეთ დასათვალიერებლად", static: "სტატიკური ხედი",
     heading: "ექვსი პროდუქტის 3D მიმოხილვა",
     description: "დაათვალიერეთ მოდელები გადახვევით ან აირჩიეთ პროდუქტი. შიდა ხედები კონცეპტუალურია და არ წარმოადგენს მწარმოებლის CAD აწყობას.",
-    film: "4K ფილმის ნახვა", evidence: "ტექნიკური წყაროები და შეზღუდვები"
+    evidence: "ტექნიკური წყაროები და შეზღუდვები"
   }
 };
 const languageCopy = () => copy[window.AzTexnoI18n?.language || document.documentElement.lang] || copy.az;
@@ -178,7 +178,6 @@ function localizePanel() {
   const localized = languageCopy();
   $("#film-heading").textContent = localized.heading;
   $("#film-description").textContent = localized.description;
-  $("#film-link").textContent = localized.film;
   $("#evidence-link").textContent = localized.evidence;
   setLabel(Math.min(chapters.length - 1, Math.floor(progress * chapters.length)), 0);
 }

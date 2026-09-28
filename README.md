@@ -334,8 +334,8 @@ confirmation, rollback, language switching, and desktop/mobile layouts.
   families. Its opening interior views are conceptual, not manufacturer CAD or
   service instructions. The BROEN exterior is based on a manufacturer STEP
   file. See [3d-evidence-ledger.md](3d-evidence-ledger.md) for product sources,
-  variant limits, and scope of accuracy. The separately exported 4K film is
-  provided for viewing; the interactive sequence uses the web-ready GLB.
+  variant limits, and scope of accuracy. The interactive sequence uses the
+  web-ready GLB.
 - The refinery background was generated for this site as an original visual
   plate. It is illustrative and does not depict an AzTexnoQaz facility.
 - No cloud workbook source or credentials are currently configured, so daily

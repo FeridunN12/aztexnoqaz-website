@@ -79,7 +79,6 @@
 .product-film-chapters,.product-film-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
 .product-film-chapters button,.product-film-links a { padding: 11px 14px; border: 1px solid #7ca7d35c; border-radius: 6px; color: #eaf5ff; background: #d2e8ff14; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
 .product-film-chapters button:hover,.product-film-chapters button:focus-visible,.product-film-links a:hover { border-color: #7cc5ff; background: #2772bc58; }
-#film-review { display: block; width: min(100%,980px); aspect-ratio: 16/9; margin-top: 30px; border: 1px solid #8fbce24d; border-radius: 8px; background: #070e1a; }
 @media (max-width: 1400px) {
   .nav-shell,.hero-stage .hero-content { width: calc(100% - 8vw); }
   .brand { min-width: 225px; }
