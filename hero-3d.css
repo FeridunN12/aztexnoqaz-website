@@ -153,7 +153,7 @@
   .hero-stage .hero-metrics div { min-height: 90px; padding: 13px 14px; border-left-width: 3px; }
   .hero-stage .hero-metrics dt { font-size: 29px; }
   .hero-stage .hero-metrics dd { font-size: 12px; }
-  .model-shell { position: sticky; z-index: 1; inset: auto; top: calc(var(--hero-nav-height) + 12px); right: auto; width: 100%; max-width: none; height: 430px; margin: var(--mobile-model-offset,295px) 0 calc(-430px - var(--mobile-model-offset,295px)) 14%; }
+  .model-shell { position: sticky; z-index: 1; inset: auto; top: calc(var(--hero-nav-height) + 12px); right: auto; width: 90%; max-width: none; height: 430px; margin: var(--mobile-model-offset,295px) 0 calc(-430px - var(--mobile-model-offset,295px)) 10%; }
   .model-pedestal { left: 8%; right: 5%; bottom: 4%; height: 14%; opacity: .8; }
   .model-caption { top: calc(var(--mobile-model-offset,295px) + 116px); right: 10px; bottom: auto; left: auto; width: min(38%,142px); min-height: 0; display: block; padding: 10px 11px; }
   .model-caption::before,.model-caption::after { display: none; }
