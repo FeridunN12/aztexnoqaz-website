@@ -68,6 +68,24 @@ const copy = {
 };
 const languageCopy = () => copy[window.AzTexnoI18n?.language || document.documentElement.lang] || copy.az;
 
+// Keep the mobile product beside the end of the translated introduction.
+// Its position follows text wrapping instead of assuming one language's height.
+function positionMobileModel() {
+  if (!smallScreen.matches) return;
+  const hero = stage.querySelector('.hero');
+  const copy = hero.querySelector('.hero-copy');
+  const offset = Math.max(260, Math.round(copy.getBoundingClientRect().bottom - hero.getBoundingClientRect().top - 105));
+  hero.style.setProperty('--mobile-model-offset', `${offset}px`);
+}
+if ('ResizeObserver' in window) {
+  const mobileCopyObserver = new ResizeObserver(positionMobileModel);
+  mobileCopyObserver.observe(stage.querySelector('.hero-copy'));
+  mobileCopyObserver.observe(stage.querySelector('h1'));
+}
+window.addEventListener('aztexnogaz:languagechange', positionMobileModel);
+window.addEventListener('resize', positionMobileModel, { passive: true });
+positionMobileModel();
+
 const $ = (selector) => document.querySelector(selector);
 const clamp = (value, min = 0, max = 1) => Math.max(min, Math.min(max, value));
 const smooth = (a, b, x) => {
@@ -94,10 +112,22 @@ function headerOffset() {
 
 function getProgress() {
   if (!sequence || reducedMotion.matches || forceStatic) return 0;
-  const rect = sequence.getBoundingClientRect();
-  const travel = Math.max(1, sequence.offsetHeight - stage.offsetHeight);
-  const stickyStart = document.querySelector('.site-header').offsetHeight;
-  return clamp((stickyStart - rect.top) / travel);
+  const { start, travel } = progressRange();
+  return clamp((window.scrollY - start) / travel);
+}
+
+function progressRange() {
+  if (smallScreen.matches) {
+    const hero = stage.querySelector('.hero');
+    return {
+      start: hero.getBoundingClientRect().top + window.scrollY - headerOffset(),
+      travel: Math.max(1, hero.offsetHeight - canvas.clientHeight + 12)
+    };
+  }
+  return {
+    start: sequence.getBoundingClientRect().top + window.scrollY - document.querySelector('.site-header').offsetHeight,
+    travel: Math.max(1, sequence.offsetHeight - stage.offsetHeight)
+  };
 }
 
 function saveBase(object) {
@@ -457,8 +487,7 @@ async function boot() {
       get progress() { return progress; },
       get loaded() { return loaded; },
       setProgress(value) {
-        const travel = Math.max(1, sequence.offsetHeight - stage.offsetHeight);
-        const start = sequence.getBoundingClientRect().top + window.scrollY - document.querySelector('.site-header').offsetHeight;
+        const { start, travel } = progressRange();
         window.scrollTo({ top: start + clamp(value) * travel, behavior: "instant" });
         invalidate();
       },
@@ -475,9 +504,8 @@ window.addEventListener("scroll", invalidate, { passive: true });
 window.addEventListener("resize", invalidate, { passive: true });
 
 function goToProgress(value) {
-  const travel = Math.max(1, sequence.offsetHeight - stage.offsetHeight);
-  const top = sequence.getBoundingClientRect().top + window.scrollY - document.querySelector('.site-header').offsetHeight;
-  window.scrollTo({top:top + clamp(value)*travel,behavior:'instant'});
+  const { start, travel } = progressRange();
+  window.scrollTo({top:start + clamp(value)*travel,behavior:'instant'});
   invalidate();
 }
 

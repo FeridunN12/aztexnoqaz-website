@@ -66,6 +66,15 @@ const modalShare = document.querySelector("#modal-share");
 const modalClose = document.querySelector(".modal-close");
 const navToggle = document.querySelector(".nav-toggle");
 const navLinks = document.querySelector("#main-menu");
+const headerLanguagePicker = document.querySelector("#language-picker");
+const railControls = document.querySelector(".rail-controls");
+const mobileHeader = window.matchMedia("(max-width: 700px)");
+function placeLanguagePicker() {
+  if (mobileHeader.matches) navToggle.before(headerLanguagePicker);
+  else railControls.prepend(headerLanguagePicker);
+}
+placeLanguagePicker();
+mobileHeader.addEventListener?.("change", placeLanguagePicker);
 const staffAccess = document.querySelector("#staff-access");
 const editorBar = document.querySelector("#editor-bar");
 const editorEmail = document.querySelector("#editor-email");
