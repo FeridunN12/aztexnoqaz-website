@@ -17,6 +17,10 @@
 
   // Active values are ordered as Azerbaijani, English, Turkish, Russian, Georgian.
   const rows = {
+    "See our latest products on Instagram": ["Ən son məhsullarımızı Instagram-da kəşf edin", "See our latest products on Instagram", "En yeni ürünlerimizi Instagram'da keşfedin", "Наши новинки в Instagram", "ნახეთ ჩვენი უახლესი პროდუქტები Instagram-ზე"],
+    "Explore product photos, equipment highlights and company updates.": ["Məhsul şəkilləri, avadanlıqlar və şirkət yenilikləri ilə tanış olun.", "Explore product photos, equipment highlights and company updates.", "Ürün fotoğraflarını, ekipmanları ve şirket haberlerini inceleyin.", "Фотографии продукции, обзоры оборудования и новости компании.", "დაათვალიერეთ პროდუქციის ფოტოები, გაეცანით მოწყობილობებსა და კომპანიის სიახლეებს."],
+    "Follow on Instagram": ["Instagram-da izləyin", "Follow on Instagram", "Instagram'da takip edin", "Подписаться в Instagram", "გამოგვყევით Instagram-ზე"],
+    "AzTexnoQaz on Instagram (opens in a new tab)": ["AzTexnoQaz Instagram-da (yeni vərəqdə açılır)", "AzTexnoQaz on Instagram (opens in a new tab)", "AzTexnoQaz Instagram'da (yeni sekmede açılır)", "AzTexnoQaz в Instagram (откроется в новой вкладке)", "AzTexnoQaz Instagram-ზე (იხსნება ახალ ჩანართში)"],
     "Home": ["Ana səhifə", "Home", "Ana sayfa", "Главная", "მთავარი"],
     "Categories": ["Kateqoriyalar", "Categories", "Kategoriler", "Категории", "კატეგორიები"],
     "Brands": ["Brendlər", "Brands", "Markalar", "Бренды", "ბრენდები"],
