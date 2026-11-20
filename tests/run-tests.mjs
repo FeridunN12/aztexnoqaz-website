@@ -285,6 +285,65 @@ test("hidden editor entry retains password-manager hints and an independent shor
   assert.ok(logout.indexOf("await readApiResponse(response)")<logout.indexOf("editorSession = null"));
   assert.doesNotMatch(logout,/staffAccess.hidden = false/);
   assert.match(logout,/openEditorLogin\(\)/);
+  const successfulLogout = logout.slice(0, logout.indexOf("} catch"));
+  assert.match(successfulLogout, /closeEditorLogin\(\)/);
+  assert.doesNotMatch(successfulLogout, /openEditorLogin\(\)/);
+});
+
+test("editor shortcuts open once on computers and never on phones or tablets", async () => {
+  const source = await readFile(new URL("../script.js", import.meta.url), "utf8");
+  const functions = source.slice(source.indexOf("function supportsEditorShortcut()"), source.indexOf('document.addEventListener("keydown", handleEditorShortcut'));
+  let opened = 0;
+  let prevented = 0;
+  const context = {
+    navigator: { userAgent: "Windows", platform: "Win32", maxTouchPoints: 0 },
+    window: { matchMedia: () => ({ matches: true }) },
+    openEditorLogin: () => { opened += 1; },
+  };
+  runInNewContext(functions, context);
+  const shortcut = (overrides = {}) => context.handleEditorShortcut({
+    ctrlKey: true, shiftKey: true, altKey: false, metaKey: false,
+    code: "KeyI", key: "I", repeat: false, isComposing: false,
+    preventDefault: () => { prevented += 1; }, stopPropagation: () => {},
+    ...overrides,
+  });
+  shortcut();
+  assert.equal(opened, 1);
+  assert.equal(prevented, 1);
+  shortcut({ repeat: true });
+  shortcut({ ctrlKey: false });
+  shortcut({ altKey: true });
+  shortcut({ metaKey: true });
+  shortcut({ isComposing: true });
+  shortcut({ code: "KeyJ", key: "j" });
+  assert.equal(opened, 1);
+  // The physical I key works with a non-Latin keyboard layout.
+  shortcut({ key: "Ш" });
+  assert.equal(opened, 2);
+  // Existing staff keep their previous shortcut.
+  shortcut({ shiftKey: false, altKey: true, code: "KeyE", key: "e" });
+  assert.equal(opened, 3);
+  shortcut({ shiftKey: false, altKey: true, code: "KeyE", key: "e", getModifierState: () => true });
+  assert.equal(opened, 3);
+  // Touchscreen laptops with a mouse still qualify as computers.
+  context.navigator.maxTouchPoints = 10;
+  shortcut();
+  assert.equal(opened, 4);
+  for (const navigator of [
+    { userAgent: "Android", platform: "Linux", maxTouchPoints: 5 },
+    { userAgent: "iPhone", platform: "iPhone", maxTouchPoints: 5 },
+    { userAgent: "iPad", platform: "iPad", maxTouchPoints: 5 },
+    { userAgent: "Macintosh", platform: "MacIntel", maxTouchPoints: 5 },
+    { userAgent: "Mobile", userAgentData: { mobile: true } },
+  ]) {
+    context.navigator = navigator;
+    shortcut();
+    assert.equal(opened, 4);
+  }
+  context.navigator = { userAgent: "Linux", platform: "Linux", maxTouchPoints: 0 };
+  context.window.matchMedia = () => ({ matches: false });
+  shortcut();
+  assert.equal(opened, 4);
 });
 
 test("references preserve all eleven supplied logos and translate every control", async () => {

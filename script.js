@@ -805,9 +805,7 @@ async function signOutEditor() {
     document.body.classList.remove("editor-mode");
     renderProducts();
     editorLoginForm.elements.namedItem("password").value = "";
-    openEditorLogin();
-    editorLoginForm.elements.namedItem("password").focus();
-    setFormMessage(editorLoginMessage, t("Signed out from this device."));
+    closeEditorLogin();
     showToast(t("Signed out from this device."));
   } catch (error) {
     openEditorLogin();
@@ -1684,14 +1682,29 @@ staffAccess.addEventListener("click", (event) => {
 });
 editorSignOut.addEventListener("click", signOutEditor);
 editorMenuSignOut.addEventListener("click", signOutEditor);
-document.addEventListener("keydown", (event) => {
-  if (event.ctrlKey && event.altKey && !event.shiftKey && !event.metaKey
-      && !event.getModifierState?.("AltGraph")
-      && (event.code === "KeyE" || event.key?.toLowerCase() === "e")) {
-    event.preventDefault();
-    if (!event.repeat && !event.isComposing) openEditorLogin();
-  }
-});
+
+function supportsEditorShortcut() {
+  const mobileDevice = navigator.userAgentData?.mobile
+    || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const touchTablet = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+  return !mobileDevice && !touchTablet
+    && window.matchMedia("(any-hover: hover) and (any-pointer: fine)").matches;
+}
+
+function handleEditorShortcut(event) {
+  const editorShortcut = event.ctrlKey && event.shiftKey && !event.altKey && !event.metaKey
+    && (event.code === "KeyI" || event.key?.toLowerCase() === "i");
+  // Retain the previous shortcut for existing staff and browsers reserving Ctrl+Shift+I.
+  const legacyShortcut = event.ctrlKey && event.altKey && !event.shiftKey && !event.metaKey
+    && !event.getModifierState?.("AltGraph")
+    && (event.code === "KeyE" || event.key?.toLowerCase() === "e");
+  if ((!editorShortcut && !legacyShortcut) || event.isComposing || !supportsEditorShortcut()) return;
+  event.preventDefault();
+  event.stopPropagation();
+  if (!event.repeat) openEditorLogin();
+}
+
+document.addEventListener("keydown", handleEditorShortcut, { capture: true });
 editorLoginForm.addEventListener("submit", submitEditorLogin);
 editorLoginModal.querySelectorAll(".login-dialog-close").forEach((button) => {
   button.addEventListener("click", closeEditorLogin);

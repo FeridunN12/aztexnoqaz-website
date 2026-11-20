@@ -17,6 +17,7 @@
 
   // Active values are ordered as Azerbaijani, English, Turkish, Russian, Georgian.
   const rows = {
+    "Enelsan official website": ["Enelsan rəsmi veb-saytı", "Enelsan official website", "Enelsan resmi web sitesi", "Официальный сайт Enelsan", "Enelsan-ის ოფიციალური ვებსაიტი"],
     "See our latest products on Instagram": ["Ən son məhsullarımızı Instagram-da kəşf edin", "See our latest products on Instagram", "En yeni ürünlerimizi Instagram'da keşfedin", "Наши новинки в Instagram", "ნახეთ ჩვენი უახლესი პროდუქტები Instagram-ზე"],
     "Explore product photos, equipment highlights and company updates.": ["Məhsul şəkilləri, avadanlıqlar və şirkət yenilikləri ilə tanış olun.", "Explore product photos, equipment highlights and company updates.", "Ürün fotoğraflarını, ekipmanları ve şirket haberlerini inceleyin.", "Фотографии продукции, обзоры оборудования и новости компании.", "დაათვალიერეთ პროდუქციის ფოტოები, გაეცანით მოწყობილობებსა და კომპანიის სიახლეებს."],
     "Follow on Instagram": ["Instagram-da izləyin", "Follow on Instagram", "Instagram'da takip edin", "Подписаться в Instagram", "გამოგვყევით Instagram-ზე"],

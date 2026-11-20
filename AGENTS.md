@@ -11,6 +11,11 @@ details to resume work without asking them to identify the website again.
 - Production branch: `main`; pushes automatically trigger the existing
   Cloudflare Pages GitHub integration. Local edits alone do not deploy.
 - Official Instagram: https://www.instagram.com/aztexnoqaz/ (`@aztexnoqaz`)
+- Hidden editor login: `Ctrl+Shift+I` on computers (`Ctrl+Alt+E` also retained).
+  Successful login restores the existing editor toolbar on future visits through
+  the persistent secure session cookie. Logout hides it and closes the login dialog.
+- Enelsan wordmark: `assets/brands/enelsan.png`, sourced from the manufacturer's
+  `https://enelsan.com/Upload/Dosyalar/resim-png/logo-1-0bf08fc5-b8e4-4ef0-adc6-a14b9784d063.png`.
 
 Preserve the existing site, content, 3D showcase, catalogue, staff workspace,
 and functionality when the owner requests a small addition. Match the existing
